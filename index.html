@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt" class="dark">
 <head>
@@ -85,7 +86,7 @@
 
   <canvas id="cosmosCanvas" aria-hidden="true"></canvas>
 
-  <!-- Modal de Login Académico (E-mail, Classe, Turma A-C, Curso 2.º Ciclo CFB / CEJ / CH) -->
+  <!-- Modal de Login Académico -->
   <div id="loginModal" class="hidden fixed inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
     <div class="w-full max-w-lg pro-card rounded-2xl p-6 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -164,7 +165,7 @@
     </div>
   </div>
 
-  <!-- Modal de Autenticação Hierárquica (Códigos jamais expostos) -->
+  <!-- Modal de Autenticação Restrita -->
   <div id="hierarchyModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
     <div class="w-full max-w-sm pro-card rounded-2xl p-6 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
@@ -183,7 +184,6 @@
   </div>
 
   <div id="aureaAppShell" class="min-h-screen flex flex-col justify-between pb-10">
-    <!-- Cabeçalho Profissional -->
     <header class="sticky top-0 z-30 pro-card border-b border-slate-800/90">
       <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-3">
@@ -202,7 +202,7 @@
         <div class="flex items-center gap-2 flex-wrap">
           <img id="headerAvatarImg" src="" alt="" class="hidden w-8 h-8 rounded-full object-cover border border-slate-600" />
           <span id="userContextBadge" class="text-xs px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-200">
-            Sófocles • 7.ª Classe • Turma A • Geral
+            Sófocles • 7.ª Classe • Turma A • Geral (1.º Ciclo)
           </span>
           <button type="button" id="btnOpenLogin" class="px-3.5 py-1.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/40 text-sky-300 text-xs font-semibold transition">
             Login / Perfil
@@ -210,19 +210,19 @@
         </div>
       </div>
 
-      <!-- Navegação de Módulos -->
+      <!-- Navegação: abas restritas ocultas por padrão para alunos -->
       <nav aria-label="Módulos principais" class="max-w-6xl mx-auto px-4 pb-3 flex items-center gap-2 overflow-x-auto" id="mainNavTabs">
         <button type="button" data-tab="saga" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-500 text-slate-950 whitespace-nowrap transition">S.A.G.A.</button>
-        <button type="button" data-tab="exam" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">Avaliação Cronometrada</button>
         <button type="button" data-tab="chat" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">Chat da Turma &amp; DMs</button>
         <button type="button" data-tab="cej" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">CEJ &amp; Saúde Mental</button>
-        <button type="button" data-tab="governance" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">Governança &amp; IA Infiltrada</button>
+        <button type="button" data-tab="exam" data-restricted-tab="exam" class="nav-tab hidden px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">Avaliação Cronometrada</button>
+        <button type="button" data-tab="governance" data-restricted-tab="governance" class="nav-tab hidden px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">Governança &amp; IA Infiltrada</button>
       </nav>
     </header>
 
     <main class="max-w-6xl w-full mx-auto px-4 py-6 space-y-6 flex-1">
 
-      <!-- 1. NÚCLEO S.A.G.A. + FALLBACK AUTOMÁTICO DE CALCULADORA QUANDO SEM REDE -->
+      <!-- 1. NÚCLEO S.A.G.A. + CALCULADORA -->
       <section id="panel-saga" class="module-sec space-y-5">
         <div class="pro-card rounded-2xl p-5 md:p-6 space-y-4">
           <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
@@ -262,7 +262,6 @@
           </form>
         </div>
 
-        <!-- Calculadora Simples, Científica e Financeira (ativa sempre e automática sem rede) -->
         <div id="offlineCalculatorCard" class="pro-card rounded-2xl p-5 md:p-6 space-y-4">
           <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
             <div>
@@ -315,42 +314,7 @@
         </div>
       </section>
 
-      <!-- 2. AVALIAÇÃO CRONOMETRADA (APENAS AGENTE DIRECTIVO LANÇA; AUSÊNCIA 2 MIN = FECHA + 0 + BLOQUEIA S.A.G.A.) -->
-      <section id="panel-exam" class="module-sec hidden space-y-5">
-        <div class="pro-card rounded-2xl p-5 md:p-6 space-y-5">
-          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
-            <div>
-              <h2 class="font-display text-3xl font-bold text-white">Avaliação Oficial</h2>
-              <p class="text-xs text-slate-400">Lançamento exclusivo do Agente Directivo. Ausência de 2 minutos encerra com nota 0,0 e bloqueia o S.A.G.A.</p>
-            </div>
-            <span id="examClockDisplay" class="font-mono text-sm px-3.5 py-1.5 rounded-xl bg-slate-950 border border-slate-700 text-sky-300">
-              Tempo: —
-            </span>
-          </div>
-
-          <!-- Formulário exclusivo do Agente Directivo -->
-          <form id="directiveExamForm" class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-mono uppercase text-sky-400">Lançamento de Avaliação (Exclusivo Agente Directivo)</span>
-              <span id="directiveOnlyTag" class="text-[11px] font-mono text-slate-400">Requer perfil Agente Directivo</span>
-            </div>
-            <input id="examTitleInput" type="text" required placeholder="Título da avaliação (ex.: Prova de Contabilidade Geral)" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
-            <input id="examQuestionInput" type="text" required placeholder="Enunciado da questão para resposta objetiva" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <input id="examExpectedAnswerInput" type="text" required placeholder="Resposta esperada / chave" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
-              <input id="examDurationMinutesInput" type="number" min="1" max="180" value="15" required placeholder="Duração (minutos)" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-white" />
-            </div>
-            <button type="submit" class="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Lançar Avaliação</button>
-          </form>
-
-          <!-- Área de realização do aluno -->
-          <div id="activeExamContainer" class="p-4 rounded-xl bg-slate-950/90 border border-slate-800 space-y-3">
-            <p class="text-xs text-slate-400">Nenhuma avaliação ativa no momento.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- 3. CHAT DA TURMA, DMs, CORES DISTINTAS, FOTOS (11.ª+) & MONITORIZAÇÃO DE CONTEÚDO -->
+      <!-- 2. CHAT DA TURMA & DMs -->
       <section id="panel-chat" class="module-sec hidden space-y-5">
         <div class="pro-card rounded-2xl p-5 md:p-6 space-y-4">
           <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
@@ -386,10 +350,9 @@
         </div>
       </section>
 
-      <!-- 4. CEJ (GRÁFICOS DE GESTÃO EMPRESARIAL) & SAÚDE MENTAL -->
+      <!-- 3. CEJ & SAÚDE MENTAL -->
       <section id="panel-cej" class="module-sec hidden space-y-5">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <!-- Gráficos Básicos para CEJ / Gerência de Empresa -->
           <div class="pro-card rounded-2xl p-6 space-y-4">
             <h3 class="font-display text-3xl font-bold text-white">CEJ — Indicadores &amp; Gráficos Empresariais</h3>
             <p class="text-xs text-slate-400">Simulação de receitas, custos e margem líquida para análise empresarial no curso CEJ.</p>
@@ -412,7 +375,6 @@
             <div id="cejKpiSummary" class="text-xs font-mono text-sky-300"></div>
           </div>
 
-          <!-- Cálculo de Percentagem da Saúde Mental -->
           <div class="pro-card rounded-2xl p-6 space-y-4">
             <h3 class="font-display text-3xl font-bold text-white">Indicador de Saúde Mental (%)</h3>
             <p class="text-xs text-slate-400">Avalia o equilíbrio entre sono, carga de estudo, pressão e tranquilidade diária.</p>
@@ -439,8 +401,41 @@
         </div>
       </section>
 
-      <!-- 5. GOVERNANÇA (ADM / AGENTE DIRECTIVO), APROVEITAMENTO, ALERTAS & IA INFILTRADA SILENCIOSA -->
-      <section id="panel-governance" class="module-sec hidden space-y-5">
+      <!-- 4. AVALIAÇÃO CRONOMETRADA (RESTRITA) -->
+      <section id="panel-exam" data-restricted-panel="exam" class="module-sec hidden space-y-5">
+        <div class="pro-card rounded-2xl p-5 md:p-6 space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="font-display text-3xl font-bold text-white">Avaliação Oficial</h2>
+              <p class="text-xs text-slate-400">Lançamento exclusivo do Agente Directivo. Ausência de 2 minutos encerra com nota 0,0 e bloqueia o S.A.G.A.</p>
+            </div>
+            <span id="examClockDisplay" class="font-mono text-sm px-3.5 py-1.5 rounded-xl bg-slate-950 border border-slate-700 text-sky-300">
+              Tempo: —
+            </span>
+          </div>
+
+          <form id="directiveExamForm" class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono uppercase text-sky-400">Lançamento de Avaliação (Exclusivo Agente Directivo)</span>
+              <span id="directiveOnlyTag" class="text-[11px] font-mono text-slate-400">Requer perfil Agente Directivo</span>
+            </div>
+            <input id="examTitleInput" type="text" required placeholder="Título da avaliação (ex.: Prova de Contabilidade Geral)" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+            <input id="examQuestionInput" type="text" required placeholder="Enunciado da questão para resposta objetiva" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <input id="examExpectedAnswerInput" type="text" required placeholder="Resposta esperada / chave" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+              <input id="examDurationMinutesInput" type="number" min="1" max="180" value="15" required placeholder="Duração (minutos)" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-white" />
+            </div>
+            <button type="submit" class="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Lançar Avaliação</button>
+          </form>
+
+          <div id="activeExamContainer" class="p-4 rounded-xl bg-slate-950/90 border border-slate-800 space-y-3">
+            <p class="text-xs text-slate-400">Nenhuma avaliação ativa no momento.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. GOVERNANÇA & IA INFILTRADA (RESTRITA) -->
+      <section id="panel-governance" data-restricted-panel="governance" class="module-sec hidden space-y-5">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div class="pro-card rounded-2xl p-6 space-y-4">
             <div class="flex items-center justify-between flex-wrap gap-2">
@@ -448,7 +443,6 @@
               <span id="activeRoleBadge" class="font-mono text-xs px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-300">Perfil: Estudante</span>
             </div>
 
-            <!-- Cálculo e envio automático de aproveitamento escolar para o sistema directivo -->
             <div class="p-4 rounded-xl bg-slate-950/85 border border-slate-800 space-y-2.5">
               <div class="text-xs font-mono uppercase text-sky-400">Aproveitamento Escolar → Sistema Directivo</div>
               <div class="flex gap-2">
@@ -462,7 +456,6 @@
               </div>
             </div>
 
-            <!-- Avisos / Mensagens Técnicas (ADM 2013 / ADM 2012 / Agente Directivo 1841) -->
             <div id="techAdminBox" class="p-4 rounded-xl bg-slate-950/85 border border-slate-800 space-y-2.5">
               <div class="text-xs font-mono uppercase text-amber-300">Avisos &amp; Controlo Operacional</div>
               <div class="flex gap-2">
@@ -473,7 +466,6 @@
             </div>
           </div>
 
-          <!-- Alertas de Conduta (DM Sexual / Álcool e Drogas fora de estudo) & IA Infiltrada Silenciosa -->
           <div class="pro-card rounded-2xl p-6 space-y-4">
             <h3 class="font-display text-3xl font-bold text-white">Monitorização &amp; IA Infiltrada</h3>
             <p class="text-xs text-slate-400">
@@ -499,7 +491,6 @@
 
     </main>
 
-    <!-- Rodapé com acesso reservado no fundo -->
     <footer class="max-w-6xl w-full mx-auto px-4 pt-8 pb-4 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
       <span>EXorg MT — Sistema Áurea • Complexo Escolar Privado Madre Trindade</span>
       <button type="button" id="btnFooterRestricted" class="px-3.5 py-1.5 rounded-lg bg-slate-950 hover:bg-slate-900 border border-slate-800 text-[11px] font-mono text-slate-400 hover:text-white transition">
@@ -510,7 +501,6 @@
 
   <script>
     (function () {
-      // Validação por digest sem expor códigos em lugar algum
       function digestSecret(s) {
         let h = 2166136261;
         for (let i = 0; i < s.length; i++) {
@@ -527,10 +517,10 @@
       };
 
       const USER_COLOR_MAP = {
-        steelBlue: { bg: 'bg-[#172d4a]', border: 'border-sky-500/30', label: 'Azul Aço' },
-        slateGraphite: { bg: 'bg-[#1c2432]', border: 'border-slate-600/40', label: 'Grafite Escuro' },
-        forestDark: { bg: 'bg-[#122621]', border: 'border-emerald-600/30', label: 'Verde Pinheiro' },
-        bronzeEarth: { bg: 'bg-[#261d16]', border: 'border-amber-700/30', label: 'Castanho Sóbrio' },
+        steelBlue: { bg: 'bg-[#172d4a]', border: 'border-sky-500/30' },
+        slateGraphite: { bg: 'bg-[#1c2432]', border: 'border-slate-600/40' },
+        forestDark: { bg: 'bg-[#122621]', border: 'border-emerald-600/30' },
+        bronzeEarth: { bg: 'bg-[#261d16]', border: 'border-amber-700/30' },
       };
 
       const state = {
@@ -541,12 +531,12 @@
         curso: 'Geral (1.º Ciclo)',
         msgColor: 'steelBlue',
         avatarDataUrl: '',
-        role: 'STUDENT', // 'STUDENT' | 'ADMIN_2012' | 'ADMIN_2013' | 'DIRECTIVE'
+        role: 'STUDENT',
         photoUnlockedBelow11: false,
         sagaBlockedByExam: false,
         lastSagaText: 'Pronto para trabalhar contigo.',
         voiceMode: 'male',
-        exam: null, // { title, question, expected, endsAt, awaySince, status }
+        exam: null,
         grades: [],
         notices: ['Sistema Áurea em operação profissional no Complexo Escolar Privado Madre Trindade.'],
         conductAlerts: [],
@@ -564,6 +554,10 @@
 
       function isTechAdmin() {
         return state.role === 'ADMIN_2013' || state.role === 'ADMIN_2012' || state.role === 'DIRECTIVE';
+      }
+
+      function hasRestrictedAccess() {
+        return isTechAdmin();
       }
 
       function recordSilent(action) {
@@ -586,7 +580,49 @@
         }
       }
 
-      // --- FUNDO DISCRETO ---
+      function enforceRestrictedVisibility(targetTabIfAllowed) {
+        const allowed = hasRestrictedAccess();
+        document.querySelectorAll('[data-restricted-tab]').forEach((btn) => {
+          btn.classList.toggle('hidden', !allowed);
+          btn.setAttribute('data-hidden', String(!allowed));
+        });
+
+        const activeSec = document.querySelector('.module-sec:not(.hidden)');
+        if (!allowed && activeSec && activeSec.hasAttribute('data-restricted-panel')) {
+          switchTab('saga');
+          return;
+        }
+
+        if (targetTabIfAllowed) {
+          switchTab(targetTabIfAllowed);
+        }
+      }
+
+      function switchTab(tab) {
+        const isRestricted = tab === 'exam' || tab === 'governance';
+        if (isRestricted && !hasRestrictedAccess()) {
+          tab = 'saga';
+        }
+        document.querySelectorAll('.nav-tab').forEach((b) => {
+          const on = b.dataset.tab === tab;
+          b.classList.toggle('bg-sky-500', on);
+          b.classList.toggle('text-slate-950', on);
+          b.classList.toggle('font-bold', on);
+          b.classList.toggle('bg-slate-900', !on);
+          b.classList.toggle('text-slate-300', !on);
+          b.classList.toggle('font-semibold', !on);
+        });
+        document.querySelectorAll('.module-sec').forEach((sec) => {
+          const match = sec.id === `panel-${tab}`;
+          sec.classList.toggle('hidden', !match);
+          sec.setAttribute('data-hidden', String(!match));
+        });
+      }
+
+      document.querySelectorAll('.nav-tab').forEach((btn) => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
       const canvas = document.getElementById('cosmosCanvas');
       const ctx = canvas ? canvas.getContext('2d') : null;
       let pts = [];
@@ -626,7 +662,6 @@
       resizePts();
       tickPts();
 
-      // --- VOZ MASCULINA / FEMININA ---
       function speakPortuguese(text) {
         const clean = String(text || '').replace(/<[^>]*>/g, '').trim();
         if (!clean || !('speechSynthesis' in window)) return;
@@ -652,7 +687,6 @@
         } catch {}
       }
 
-      // --- CALCULADORA SIMPLES, CIENTÍFICA E FINANCEIRA ---
       function evaluateScientific(exprRaw) {
         let e = String(exprRaw || '').trim();
         if (!e) return 'Introduz uma expressão.';
@@ -727,7 +761,6 @@
         `;
       });
 
-      // --- ESTADO DE REDE E CONVERSÃO AUTOMÁTICA PARA CALCULADORA ---
       function syncNetworkStatus() {
         const online = navigator.onLine;
         const pill = document.getElementById('networkStatusPill');
@@ -750,7 +783,6 @@
       });
       syncNetworkStatus();
 
-      // --- S.A.G.A. ---
       const sagaStream = document.getElementById('sagaStream');
       const sagaStar = document.getElementById('sagaStarIndicator');
 
@@ -817,7 +849,6 @@
         recordSilent('Histórico local do S.A.G.A. limpo.');
       });
 
-      // --- LOGIN DO ALUNO (E-MAIL, CLASSE, TURMA A-C, CFB/CEJ/CH, COR, FOTO) ---
       const loginModal = document.getElementById('loginModal');
 
       function applyUserUI() {
@@ -865,6 +896,7 @@
             ? 'text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40'
             : 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30';
         }
+        enforceRestrictedVisibility();
       }
 
       document.getElementById('btnOpenLogin')?.addEventListener('click', () => {
@@ -906,7 +938,6 @@
         recordSilent(`Login efetuado: ${state.nome} (${state.classe} ${state.turma} ${state.curso}).`);
       });
 
-      // --- ACESSO ADM / AGENTE DIRECTIVO (SEM EXPOSIÇÃO DE CÓDIGOS) ---
       const hierarchyModal = document.getElementById('hierarchyModal');
       const hierarchyFeedback = document.getElementById('hierarchyFeedback');
 
@@ -944,27 +975,9 @@
         recordSilent(`Sessão elevada para ${state.role}.`);
         hierarchyModal?.classList.add('hidden');
         hierarchyModal?.setAttribute('data-hidden', 'true');
+        switchTab(isDirective() ? 'exam' : 'governance');
       });
 
-      // --- NAVEGAÇÃO ---
-      document.querySelectorAll('.nav-tab').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const t = btn.dataset.tab;
-          document.querySelectorAll('.nav-tab').forEach((b) => {
-            const on = b.dataset.tab === t;
-            b.className = on
-              ? 'nav-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-500 text-slate-950 whitespace-nowrap transition'
-              : 'nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition';
-          });
-          document.querySelectorAll('.module-sec').forEach((sec) => {
-            const match = sec.id === `panel-${t}`;
-            sec.classList.toggle('hidden', !match);
-            sec.setAttribute('data-hidden', String(!match));
-          });
-        });
-      });
-
-      // --- AVALIAÇÃO CRONOMETRADA & AUSÊNCIA DE 2 MINUTOS ---
       function recordGradeAuto(aluno, disciplina, nota, motivo) {
         state.grades.push({
           aluno,
@@ -1101,7 +1114,6 @@
 
       setInterval(checkExamTimers, 1000);
 
-      // --- CHAT POR TURMA, DMs, FOTOS (11.ª+) & DETEÇÃO DE CONTEÚDO ---
       function canUploadChatPhoto() {
         const clsNum = parseInt(state.classe, 10);
         return (!Number.isNaN(clsNum) && clsNum >= 11) || state.photoUnlockedBelow11 || isTechAdmin();
@@ -1207,7 +1219,6 @@
         e.target.value = '';
       });
 
-      // --- CEJ (GRÁFICOS EMPRESARIAIS) & SAÚDE MENTAL ---
       function drawCejChart() {
         const cnv = document.getElementById('cejBusinessChart');
         const kpi = document.getElementById('cejKpiSummary');
@@ -1279,7 +1290,6 @@
         }
       });
 
-      // --- APROVEITAMENTO & AVISOS ---
       document.getElementById('btnAddGradeAndSync')?.addEventListener('click', () => {
         const val = parseFloat(document.getElementById('gradeEntryInput')?.value || '');
         if (Number.isNaN(val) || val < 0 || val > 20) return;
@@ -1312,7 +1322,7 @@
       renderChatMessages();
       renderActiveExamView();
       renderNotices();
-      recordSilent('Sistema Áurea inicializado em modo profissional.');
+      recordSilent('Sistema Áurea inicializado com abas restritas ocultas para alunos.');
     })();
   </script>
 </body>
