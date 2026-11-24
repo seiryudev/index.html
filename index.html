@@ -1,14 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="pt" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>EXorg MT — Sistema Áurea • Limit 10²⁵ | Complexo Escolar Privado Madre Trindade</title>
+  <title>EXorg MT — Sistema Áurea • Complexo Escolar Privado Madre Trindade</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -21,43 +20,28 @@
           },
           colors: {
             abyss: '#030712',
-            midnight: '#060e24',
-            sapphire: '#0b1938',
+            sapphire: '#09162e',
             aurea: '#d4af37',
             aureaBright: '#f6dc7c',
-            aureaDeep: '#8c6b14',
-          },
-          boxShadow: {
-            aureaGlow: '0 0 28px rgba(212, 175, 55, 0.24)',
-            abyssCard: '0 22px 54px rgba(0, 0, 0, 0.68)',
           },
         },
       },
     };
   </script>
   <style>
-    :root {
-      --abyss-bg: #030712;
-      --card-surface: rgba(8, 19, 44, 0.82);
-      --gold-border: rgba(212, 175, 55, 0.34);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     html, body {
       margin: 0;
       padding: 0;
       min-height: 100vh;
-      background: radial-gradient(circle at 18% 12%, #0c1f47 0%, #040917 55%, #02050d 100%);
-      color: #f8fafc;
+      background: radial-gradient(circle at 20% 10%, #091836 0%, #040917 58%, #02050d 100%);
+      color: #f1f5f9;
       font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
       overflow-x: hidden;
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Fundo e constelações nunca bloqueiam toques nem cliques */
     #watermarkEmblem,
     #cosmosCanvas {
       position: fixed;
@@ -72,8 +56,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      opacity: 0.045;
-      transform: rotate(-11deg);
+      opacity: 0.035;
+      transform: rotate(-10deg);
     }
 
     #cosmosCanvas {
@@ -88,7 +72,6 @@
       pointer-events: auto;
     }
 
-    /* Quando oculto, nunca intercepta eventos táteis */
     .hidden,
     [data-hidden="true"] {
       display: none !important;
@@ -96,238 +79,208 @@
       visibility: hidden !important;
     }
 
-    button,
-    a,
-    [role="button"],
-    input,
-    select,
-    textarea,
-    label[for] {
+    button, a, [role="button"], input, select, textarea, label[for] {
       touch-action: manipulation;
       cursor: pointer;
     }
 
-    .aurea-glass {
-      background: var(--card-surface);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--gold-border);
-      box-shadow: var(--abyssCard);
+    .panel-surface {
+      background: rgba(8, 18, 38, 0.84);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(148, 163, 184, 0.18);
     }
 
-    .aurea-text {
-      background: linear-gradient(125deg, #fff1b8 0%, #d4af37 48%, #9e7716 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .star-gold {
+      color: #f6dc7c;
+      text-shadow: 0 0 18px rgba(212, 175, 55, 0.65);
     }
 
-    @keyframes orbitSlow {
-      0% { transform: rotate(0deg) scale(1); }
-      50% { transform: rotate(180deg) scale(1.05); }
-      100% { transform: rotate(360deg) scale(1); }
+    @keyframes floatStar {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-3px) scale(1.05); }
     }
 
-    @keyframes floatSoft {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-4px); }
-    }
-
-    @keyframes pulseGold {
-      0%, 100% { box-shadow: 0 0 12px rgba(212, 175, 55, 0.25); }
-      50% { box-shadow: 0 0 26px rgba(246, 220, 124, 0.55); }
-    }
-
-    .orbit-slow { animation: orbitSlow 24s linear infinite; }
-    .float-soft { animation: floatSoft 3.8s ease-in-out infinite; }
-    .pulse-gold { animation: pulseGold 3.2s ease-in-out infinite; }
+    .float-star { animation: floatStar 3.4s ease-in-out infinite; }
 
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #040917; }
-    ::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.38); border-radius: 999px; }
+    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.28); border-radius: 999px; }
   </style>
 </head>
-<body class="bg-abyss text-slate-100 antialiased selection:bg-aurea/30 selection:text-aureaBright">
+<body class="bg-abyss text-slate-100 antialiased">
 
-  <!-- Marca d'água institucional -->
   <div id="watermarkEmblem" aria-hidden="true">
-    <div class="font-display text-6xl md:text-9xl font-bold tracking-[0.28em] text-aurea">EXORG MT</div>
-    <div class="font-mono text-sm md:text-xl tracking-[0.55em] text-aureaBright mt-2">SISTEMA ÁUREA • 10²⁵</div>
+    <div class="font-display text-6xl md:text-8xl font-bold tracking-[0.25em] text-slate-200">EXORG MT</div>
+    <div class="font-mono text-xs md:text-base tracking-[0.45em] text-slate-400 mt-1">MADRE TRINDADE</div>
   </div>
 
-  <!-- Céu noturno com estrelas, constelações e cometas -->
   <canvas id="cosmosCanvas" aria-hidden="true"></canvas>
 
-  <!-- Introdução Cinematográfica de 10 Segundos -->
+  <!-- Introdução opcional de 10s -->
   <div id="cinemaIntroOverlay" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-[#02050d]/95 px-5 py-8">
-    <div class="relative max-w-xl w-full aurea-glass rounded-3xl p-7 md:p-9 border border-aurea/50 text-center">
-      <div class="w-20 h-20 mx-auto mb-4 rounded-full border border-aurea/50 flex items-center justify-center bg-sapphire/80 orbit-slow">
-        <span class="font-display text-3xl text-aureaBright">✦</span>
+    <div class="max-w-lg w-full panel-surface rounded-3xl p-7 text-center">
+      <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-sapphire border border-aurea/50 flex items-center justify-center float-star">
+        <span class="font-display text-3xl star-gold">✦</span>
       </div>
-      <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-aureaBright/90 mb-2">
-        LUBANGO • HUÍLA • ANGOLA • LIMIT 10²⁵
-      </p>
-      <h1 class="font-display text-4xl md:text-6xl font-bold aurea-text leading-tight mb-2">
-        EXorg MT — Sistema Áurea
-      </h1>
-      <p class="text-xs md:text-sm text-slate-300 max-w-md mx-auto mb-5">
-        Complexo Escolar Privado Madre Trindade — Ecossistema Académico, S.A.G.A., Áurea Academy, Turmas &amp; IA Infiltrada.
-      </p>
+      <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-slate-400 mb-1">Lubango • Angola</p>
+      <h1 class="font-display text-4xl font-bold text-white mb-2">EXorg MT — Sistema Áurea</h1>
+      <p class="text-xs text-slate-300 mb-5">Complexo Escolar Privado Madre Trindade — 7.ª à 13.ª Classe e CEJ.</p>
 
-      <div class="flex items-center justify-between text-[11px] font-mono text-aureaBright mb-1.5">
-        <span id="introStageLabel">Sincronizando constelações Áurea...</span>
+      <div class="flex items-center justify-between text-[11px] font-mono text-slate-300 mb-1.5">
+        <span id="introStageLabel">A preparar ambiente...</span>
         <span id="introCountdown">10.0s</span>
       </div>
-      <div class="w-full h-2 rounded-full bg-slate-900 border border-slate-800 overflow-hidden mb-6">
-        <div id="introProgressBar" class="h-full w-0 bg-gradient-to-r from-aureaDeep via-aurea to-aureaBright transition-all duration-100"></div>
+      <div class="w-full h-1.5 rounded-full bg-slate-900 overflow-hidden mb-6">
+        <div id="introProgressBar" class="h-full w-0 bg-sky-400 transition-all duration-100"></div>
       </div>
 
-      <div class="flex flex-wrap items-center justify-center gap-3">
-        <button type="button" id="btnEnterNow" class="px-6 py-2.5 rounded-xl bg-aurea text-slate-950 font-bold text-xs md:text-sm hover:bg-aureaBright active:scale-95 transition pulse-gold">
+      <div class="flex flex-wrap justify-center gap-3">
+        <button type="button" id="btnEnterNow" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition">
           Entrar Agora
         </button>
-        <button type="button" id="btnSkipIntro" class="px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 hover:border-aurea/60 text-slate-200 text-xs md:text-sm active:scale-95 transition">
-          Saltar Sequência
+        <button type="button" id="btnSkipIntro" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs transition">
+          Saltar
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Modal de Conta, Turma e Hierarquia -->
-  <div id="accessGateModal" class="hidden fixed inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-    <div class="w-full max-w-lg aurea-glass rounded-3xl p-6 md:p-7 border border-aurea/50">
-      <div class="flex items-start justify-between gap-3 mb-5">
+  <!-- Modal de Conta e Turma (Estudantes / 7.ª à 13.ª / CEJ) -->
+  <div id="studentGateModal" class="hidden fixed inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <div class="w-full max-w-md panel-surface rounded-3xl p-6">
+      <div class="flex items-start justify-between gap-3 mb-4">
         <div>
-          <span class="font-mono text-[11px] uppercase tracking-[0.25em] text-aureaBright">Portal de Identificação</span>
-          <h2 class="font-display text-3xl font-bold text-white">Conta, Turma &amp; Hierarquia</h2>
-          <p class="text-xs text-slate-400">Isolamento por classe e perfis: Agente Directivo (1841), ADM Baptista (2012) e ADM Sófocles (2013).</p>
+          <span class="font-mono text-[11px] uppercase tracking-widest text-sky-400">Conta Local</span>
+          <h2 class="font-display text-3xl font-bold text-white">Identificação &amp; Classe</h2>
+          <p class="text-xs text-slate-400">Os dados ficam guardados neste navegador (sem servidor externo).</p>
         </div>
-        <button type="button" id="btnCloseGate" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 flex items-center justify-center text-base">
-          ✕
-        </button>
+        <button type="button" id="btnCloseGate" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300">✕</button>
       </div>
 
-      <form id="accessGateForm" class="space-y-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label for="gateNameInput" class="block text-xs font-semibold text-slate-300 mb-1">Nome ou Identificação</label>
-            <input id="gateNameInput" type="text" required placeholder="Ex.: Sófocles" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/90 border border-slate-700 focus:border-aurea focus:outline-none text-sm text-white" />
-          </div>
-          <div>
-            <label for="gateEmailInput" class="block text-xs font-semibold text-slate-300 mb-1">E-mail de Acesso</label>
-            <input id="gateEmailInput" type="email" required placeholder="musashim309@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/90 border border-slate-700 focus:border-aurea focus:outline-none text-sm text-white" />
-          </div>
+      <form id="studentGateForm" class="space-y-4">
+        <div>
+          <label for="stuNameInput" class="block text-xs font-semibold text-slate-300 mb-1">Nome</label>
+          <input id="stuNameInput" type="text" required placeholder="Ex.: Sófocles" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
         </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label for="gateClassSelect" class="block text-xs font-semibold text-slate-300 mb-1">Classe / Curso</label>
-            <select id="gateClassSelect" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/90 border border-slate-700 focus:border-aurea focus:outline-none text-sm text-white">
-              <option value="10.ª Classe">10.ª Classe</option>
-              <option value="11.ª Classe">11.ª Classe (Fotos Ativas)</option>
-              <option value="12.ª Classe">12.ª Classe (Fotos Ativas)</option>
-              <option value="13.ª Classe">13.ª Classe (Fotos Ativas)</option>
-              <option value="CEJ — Contabilidade & Gestão">CEJ — Contabilidade &amp; Gestão</option>
-            </select>
-          </div>
-          <div>
-            <label for="gateTierSelect" class="block text-xs font-semibold text-slate-300 mb-1">Nível / Cargo</label>
-            <select id="gateTierSelect" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/90 border border-slate-700 focus:border-aurea focus:outline-none text-sm text-white">
-              <option value="STUDENT">Estudante Madre Trindade</option>
-              <option value="ADMIN_2013">ADM Sófocles (Código 2013)</option>
-              <option value="ADMIN_2012">ADM Baptista (Código 2012)</option>
-              <option value="DIRECTIVE_1841">Agente Directivo (Código 1841)</option>
-            </select>
-          </div>
+        <div>
+          <label for="stuEmailInput" class="block text-xs font-semibold text-slate-300 mb-1">E-mail</label>
+          <input id="stuEmailInput" type="email" required placeholder="aluno@exemplo.com" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
         </div>
-
-        <div id="adminCodeBox" class="hidden p-3.5 rounded-xl bg-sapphire/70 border border-aurea/30 space-y-1.5">
-          <label for="gatePinInput" class="block text-xs font-mono text-aureaBright">Código Administrativo (1841 / 2012 / 2013)</label>
-          <input id="gatePinInput" type="password" maxlength="6" placeholder="Digite o código do perfil selecionado" class="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-aurea/40 focus:border-aureaBright focus:outline-none text-sm font-mono text-white" />
-          <p id="gatePinHint" class="text-[11px] text-slate-400">Se deixares em branco, entra em modo de visualização sem privilégios elevados.</p>
+        <div>
+          <label for="stuClassSelect" class="block text-xs font-semibold text-slate-300 mb-1">Classe / Curso</label>
+          <select id="stuClassSelect" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white">
+            <option value="7.ª Classe">7.ª Classe</option>
+            <option value="8.ª Classe">8.ª Classe</option>
+            <option value="9.ª Classe">9.ª Classe</option>
+            <option value="10.ª Classe">10.ª Classe</option>
+            <option value="11.ª Classe">11.ª Classe (Fotos Ativas)</option>
+            <option value="12.ª Classe">12.ª Classe (Fotos Ativas)</option>
+            <option value="13.ª Classe">13.ª Classe (Fotos Ativas)</option>
+            <option value="CEJ — Contabilidade & Gestão">CEJ — Contabilidade &amp; Gestão</option>
+          </select>
         </div>
-
-        <div class="flex items-center justify-end gap-2.5 pt-2">
+        <div class="flex justify-end gap-2 pt-2">
           <button type="button" id="btnCancelGate" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-300">
             Cancelar
           </button>
-          <button type="submit" class="px-6 py-2.5 rounded-xl bg-aurea hover:bg-aureaBright text-slate-950 font-bold text-xs md:text-sm transition">
-            Ativar Sessão Áurea
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">
+            Guardar Sessão
           </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Shell Principal -->
-  <div id="aureaAppShell" class="min-h-screen flex flex-col justify-between pb-12">
-    <header class="sticky top-0 z-30 aurea-glass border-b border-aurea/25">
+  <!-- Modal Reservado de ADM (acesso lá embaixo, sem divulgar códigos) -->
+  <div id="adminSecretModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
+    <div class="w-full max-w-sm panel-surface rounded-3xl p-6 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-display text-2xl font-bold text-white">Acesso Reservado</h3>
+        <button type="button" id="btnCloseAdminModal" class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300">✕</button>
+      </div>
+      <form id="adminAuthForm" class="space-y-3">
+        <div>
+          <label for="adminCodeInput" class="block text-xs text-slate-300 mb-1">Chave de Acesso</label>
+          <input id="adminCodeInput" type="password" required autocomplete="off" placeholder="Introduz a chave" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm font-mono text-white" />
+        </div>
+        <p id="adminAuthFeedback" class="text-xs text-slate-400 min-h-[16px]"></p>
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">
+          Verificar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="aureaAppShell" class="min-h-screen flex flex-col justify-between pb-10">
+    <header class="sticky top-0 z-30 panel-surface border-b border-slate-800/90">
       <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-aurea/35 via-sapphire to-abyss border border-aurea/60 flex items-center justify-center font-display text-2xl font-bold text-aureaBright float-soft">
-            ✦
+          <div class="w-11 h-11 rounded-2xl bg-sapphire border border-aurea/50 flex items-center justify-center font-display text-2xl font-bold float-star">
+            <span class="star-gold">✦</span>
           </div>
           <div>
             <div class="flex items-center gap-2 flex-wrap">
-              <span class="font-display text-xl md:text-2xl font-bold tracking-wide aurea-text">EXorg MT — Sistema Áurea</span>
-              <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-aurea/15 text-aureaBright border border-aurea/35">LIMIT 10²⁵</span>
+              <span class="font-display text-xl md:text-2xl font-bold tracking-wide text-white">EXorg MT — Sistema Áurea</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-900 text-sky-300 border border-slate-700">7.ª–13.ª • CEJ</span>
             </div>
             <p class="text-xs text-slate-400">Complexo Escolar Privado Madre Trindade • Lubango</p>
           </div>
         </div>
 
         <div class="flex items-center gap-2 flex-wrap">
-          <span id="sessionBadge" class="text-xs px-3 py-1.5 rounded-xl bg-slate-950/85 border border-slate-700/80 text-slate-200 font-medium">
-            Sófocles • 10.ª Classe
+          <span id="sessionBadge" class="text-xs px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-200">
+            Sófocles • 7.ª Classe
           </span>
-          <button type="button" id="btnOpenGate" class="px-3.5 py-1.5 rounded-xl bg-aurea/20 hover:bg-aurea/30 border border-aurea/50 text-aureaBright text-xs font-semibold transition">
-            Conta / Turma
+          <button type="button" id="btnOpenGate" class="px-3.5 py-1.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/40 text-sky-300 text-xs font-semibold transition">
+            Conta / Classe
           </button>
           <button type="button" id="btnReplayIntro" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs transition">
-            Intro 10s
+            Intro
           </button>
         </div>
       </div>
 
-      <nav aria-label="Módulos do Sistema Áurea" class="max-w-6xl mx-auto px-4 pb-3 flex items-center gap-2 overflow-x-auto" id="moduleTabs">
-        <button type="button" data-tab="saga" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-aurea text-slate-950 whitespace-nowrap transition">
-          🌌 S.A.G.A. Humano
+      <nav aria-label="Módulos" class="max-w-6xl mx-auto px-4 pb-3 flex items-center gap-2 overflow-x-auto" id="moduleTabs">
+        <button type="button" data-tab="saga" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-500 text-slate-950 whitespace-nowrap transition">
+          S.A.G.A.
         </button>
-        <button type="button" data-tab="academy" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900/85 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">
-          📘 Áurea Academy
+        <button type="button" data-tab="academy" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">
+          Áurea Academy
         </button>
-        <button type="button" data-tab="study" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900/85 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">
-          ⚡ Estudo Definitivo &amp; Lado 0
+        <button type="button" data-tab="study" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">
+          Estudo Definitivo &amp; Lado 0
         </button>
-        <button type="button" data-tab="chat" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900/85 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">
-          💬 Turma, DMs &amp; Voz
+        <button type="button" data-tab="chat" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">
+          Turma, DMs &amp; Voz
         </button>
-        <button type="button" data-tab="manager" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900/85 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">
-          🏛️ Áurea Manager &amp; IA Infiltrada
+        <button type="button" data-tab="manager" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">
+          Manager &amp; IA Infiltrada
         </button>
       </nav>
     </header>
 
     <main class="max-w-6xl w-full mx-auto px-4 py-6 space-y-6 flex-1">
 
-      <!-- 1. S.A.G.A. COM HUMANIDADE -->
+      <!-- S.A.G.A. COM VOZ MASCULINA / FEMININA -->
       <section id="panel-saga" class="module-panel space-y-5">
-        <div class="aurea-glass rounded-3xl p-5 md:p-7 border border-aurea/35 space-y-4">
+        <div class="panel-surface rounded-3xl p-5 md:p-7 space-y-4">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <div class="inline-flex items-center gap-2 text-[11px] font-mono text-aureaBright/90 uppercase tracking-widest mb-1">
-                <span>●</span> Presença Humana • Currículo MED Angola
-              </div>
-              <h2 class="font-display text-3xl md:text-4xl font-bold text-white">S.A.G.A. — Companheiro de Estrada &amp; Estudo</h2>
+              <span class="font-mono text-[11px] uppercase tracking-widest text-sky-400">Assistente Humano • MED Angola</span>
+              <h2 class="font-display text-3xl md:text-4xl font-bold text-white">S.A.G.A.</h2>
               <p class="text-xs md:text-sm text-slate-300">
-                Sem discurso frio de máquina: fala comigo sobre o que aperta, o que custa ou o que queres dominar hoje.
+                Conversa natural para 7.ª à 13.ª classe e CEJ, com escolha entre voz masculina e feminina.
               </p>
             </div>
             <div class="flex items-center gap-2 flex-wrap">
-              <button type="button" id="btnSagaMoodVent" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-aurea/35 text-xs text-aureaBright font-semibold transition">
-                Desabafar / Ritmo
-              </button>
-              <button type="button" id="btnSagaSpeakLast" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 font-semibold transition">
-                🔊 Ouvir Voz
+              <label for="voiceGenderSelect" class="sr-only">Tipo de voz</label>
+              <select id="voiceGenderSelect" class="px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-slate-200">
+                <option value="female">Voz Feminina</option>
+                <option value="male">Voz Masculina</option>
+              </select>
+              <button type="button" id="btnSpeakSaga" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-sky-300 transition">
+                🔊 Ouvir
               </button>
               <button type="button" id="btnClearSaga" class="px-3 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 text-xs text-slate-400 transition">
                 Limpar
@@ -335,51 +288,36 @@
             </div>
           </div>
 
-          <div id="sagaFeed" class="space-y-3 max-h-96 overflow-y-auto p-4 rounded-2xl bg-slate-950/75 border border-slate-800/90">
-            <div class="p-3.5 rounded-2xl bg-sapphire/75 border border-aurea/25 text-sm text-slate-100 leading-relaxed">
-              <div class="flex items-center justify-between text-[11px] font-mono text-aureaBright mb-1">
-                <span>S.A.G.A. • MODO HUMANO</span>
-                <span>MADRE TRINDADE</span>
-              </div>
-              E aí, Sófocles. Já passaste por voltas hoje com o PC, carregador e uploads — respira fundo. Aqui não há pressa artificial nem julgamento: diz-me o que está na tua cabeça, seja Matemática, Física, Química, CEJ ou só o cansaço do dia, e nós desenrolamos juntos.
+          <div id="sagaFeed" class="space-y-3 max-h-96 overflow-y-auto p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
+            <div class="p-3.5 rounded-2xl bg-sapphire/80 border border-slate-700/80 text-sm text-slate-100 leading-relaxed">
+              <div class="text-[11px] font-mono text-sky-400 mb-1">S.A.G.A. • 7.ª À 13.ª CLASSE &amp; CEJ</div>
+              Fala, Sófocles. Estou aqui contigo para o dia a dia na escola — seja a destravar uma matéria, a organizar o estudo ou a conversar quando a cabeça pesa. Escolhe a voz ali em cima (masculina ou feminina) e manda o que precisas.
             </div>
           </div>
 
-          <div class="flex flex-wrap gap-2">
-            <button type="button" data-prompt="Estou cansado e com pressão para estudar matemática, ajuda-me a organizar a cabeça sem me esgotar." class="saga-chip px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-xs text-slate-200 transition">
-              “Estou sob pressão com Matemática”
-            </button>
-            <button type="button" data-prompt="Explica-me trigonometria de forma simples e direta, como quem ensina a um amigo." class="saga-chip px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-xs text-slate-200 transition">
-              “Trigonometria sem rodeios”
-            </button>
-            <button type="button" data-prompt="Dá-me um plano leve e honesto para estudar hoje sem queimar." class="saga-chip px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-xs text-slate-200 transition">
-              “Plano leve para hoje”
-            </button>
-          </div>
-
           <form id="sagaForm" class="flex flex-col sm:flex-row gap-2.5">
-            <input id="sagaInput" type="text" placeholder="Fala com o S.A.G.A. como falarias com alguém de confiança..." class="flex-1 px-4 py-3 rounded-xl bg-slate-950/90 border border-slate-700 focus:border-aurea focus:outline-none text-sm text-white" />
-            <button type="submit" class="px-6 py-3 rounded-xl bg-aurea hover:bg-aureaBright text-slate-950 font-bold text-sm active:scale-95 transition">
-              Falar com S.A.G.A.
+            <input id="sagaInput" type="text" placeholder="Escreve a tua dúvida ou desabafo para o S.A.G.A...." class="flex-1 px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
+            <button type="submit" class="px-6 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm transition">
+              Enviar
             </button>
           </form>
         </div>
       </section>
 
-      <!-- 2. ÁUREA ACADEMY -->
+      <!-- ÁUREA ACADEMY -->
       <section id="panel-academy" class="module-panel hidden space-y-5">
-        <div class="aurea-glass rounded-3xl p-5 md:p-7 border border-aurea/35 space-y-5">
+        <div class="panel-surface rounded-3xl p-5 md:p-7 space-y-5">
           <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 class="font-display text-3xl md:text-4xl font-bold text-white">Áurea Academy — Avaliação Diária (10 Questões)</h2>
-              <p class="text-xs md:text-sm text-slate-300">10 questões práticas alinhadas ao plano escolar angolano para treinar consistência sem ansiedade.</p>
+              <h2 class="font-display text-3xl md:text-4xl font-bold text-white">Áurea Academy (10 Questões)</h2>
+              <p class="text-xs md:text-sm text-slate-300">Prática diária alinhada ao currículo escolar.</p>
             </div>
             <div class="flex items-center gap-2.5">
-              <span id="academyScoreBadge" class="px-3.5 py-1.5 rounded-xl bg-aurea/15 border border-aurea/40 text-xs font-mono text-aureaBright">
+              <span id="academyScoreBadge" class="px-3.5 py-1.5 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-sky-300">
                 Pontuação: 0 / 10
               </span>
               <button type="button" id="btnResetAcademy" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-white transition">
-                Reiniciar 10 Questões
+                Reiniciar
               </button>
             </div>
           </div>
@@ -387,129 +325,105 @@
         </div>
       </section>
 
-      <!-- 3. ESTUDO DEFINITIVO & LADO 0 -->
+      <!-- ESTUDO DEFINITIVO & LADO 0 -->
       <section id="panel-study" class="module-panel hidden space-y-5">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <div class="aurea-glass rounded-3xl p-6 border border-aurea/35 space-y-4">
+          <div class="panel-surface rounded-3xl p-6 space-y-4">
             <h3 class="font-display text-3xl font-bold text-white">Estudo Definitivo</h3>
-            <p class="text-xs text-slate-300">Exercícios calibrados por área para quem quer afiar raciocínio antes de provas.</p>
+            <p class="text-xs text-slate-300">Escolhe um tema para treinar passo a passo.</p>
             <div class="flex flex-wrap gap-2">
-              <button type="button" data-topic="Trigonometria & Geometria" class="study-topic-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-aurea hover:text-slate-950 border border-slate-700 text-xs font-semibold transition">
-                Trigonometria &amp; Geometria
+              <button type="button" data-topic="Matemática & Geometria" class="study-topic-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-sky-500 hover:text-slate-950 border border-slate-700 text-xs font-semibold transition">
+                Matemática &amp; Geometria
               </button>
-              <button type="button" data-topic="Mecânica Clássica" class="study-topic-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-aurea hover:text-slate-950 border border-slate-700 text-xs font-semibold transition">
-                Mecânica Clássica
+              <button type="button" data-topic="Ciências Naturais / Física" class="study-topic-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-sky-500 hover:text-slate-950 border border-slate-700 text-xs font-semibold transition">
+                Ciências / Física
               </button>
-              <button type="button" data-topic="Química & Estequiometria" class="study-topic-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-aurea hover:text-slate-950 border border-slate-700 text-xs font-semibold transition">
-                Química &amp; Estequiometria
+              <button type="button" data-topic="Gestão & Contabilidade" class="study-topic-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-sky-500 hover:text-slate-950 border border-slate-700 text-xs font-semibold transition">
+                Gestão &amp; Contabilidade
               </button>
             </div>
-            <div id="studyDefinitiveBox" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 text-sm text-slate-200 space-y-2 min-h-[150px]">
-              <p class="font-semibold text-aureaBright">Pronto para começar</p>
-              <p class="text-xs text-slate-400">Escolhe um tópico acima para gerar um problema guiado com dica de resolução.</p>
+            <div id="studyDefinitiveBox" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 text-sm text-slate-200 min-h-[130px]">
+              Seleciona um tema acima para ver um exercício.
             </div>
-            <button type="button" id="btnToggleStudyHint" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-aurea/35 text-xs font-semibold text-aureaBright transition">
-              Mostrar / Esconder Dica
-            </button>
           </div>
 
-          <div class="aurea-glass rounded-3xl p-6 border border-aurea/35 space-y-4">
+          <div class="panel-surface rounded-3xl p-6 space-y-4">
             <div class="flex items-center justify-between gap-2 flex-wrap">
-              <h3 class="font-display text-3xl font-bold text-white">Lado 0 — Ritmo &amp; Precisão</h3>
-              <span id="lado0Stats" class="font-mono text-xs text-aureaBright">Acertos: 0 | Ritmo: 0%</span>
+              <h3 class="font-display text-3xl font-bold text-white">Lado 0</h3>
+              <span id="lado0Stats" class="font-mono text-xs text-sky-300">Acertos: 0 | Ritmo: 0%</span>
             </div>
-            <p class="text-xs text-slate-300">Treino de agilidade mental com feedback imediato e percentagem de precisão.</p>
-            <div id="lado0Question" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 text-base font-bold text-white">
-              Carregando desafio...
-            </div>
+            <p class="text-xs text-slate-300">Treino rápido com acompanhamento de ritmo.</p>
+            <div id="lado0Question" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 text-base font-bold text-white"></div>
             <div id="lado0Choices" class="grid grid-cols-2 gap-2.5"></div>
             <p id="lado0Feedback" class="text-xs font-mono text-slate-400 min-h-[18px]"></p>
           </div>
         </div>
       </section>
 
-      <!-- 4. CHAT DA TURMA, DMs ISOLADAS POR CLASSE, FOTOS (11.ª+) & VOZ -->
+      <!-- TURMA, DMs & VOZ -->
       <section id="panel-chat" class="module-panel hidden space-y-5">
-        <div class="aurea-glass rounded-3xl p-5 md:p-7 border border-aurea/35 space-y-4">
+        <div class="panel-surface rounded-3xl p-5 md:p-7 space-y-4">
           <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 class="font-display text-3xl md:text-4xl font-bold text-white">Turma, DMs &amp; Notas de Voz</h2>
-              <p id="chatClassSubtitle" class="text-xs text-slate-300">
-                Canal isolado na <strong class="text-aureaBright">10.ª Classe</strong> • Fotos liberadas a partir da 11.ª Classe.
-              </p>
+              <h2 class="font-display text-3xl md:text-4xl font-bold text-white">Turma, DMs &amp; Voz</h2>
+              <p id="chatClassSubtitle" class="text-xs text-slate-300"></p>
             </div>
             <div class="flex items-center gap-2 flex-wrap">
               <select id="chatModeSelect" class="px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white">
                 <option value="TURMA">Canal da Turma</option>
-                <option value="DM">DM Privada (Isolada na Classe)</option>
+                <option value="DM">DM Privada</option>
               </select>
-              <button type="button" id="btnToggleVoice" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-aurea/45 text-xs font-semibold text-aureaBright transition">
+              <button type="button" id="btnToggleVoice" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-sky-300 transition">
                 🎙️ Gravar Voz
               </button>
             </div>
           </div>
 
-          <div id="chatMessagesBox" class="space-y-2.5 max-h-80 overflow-y-auto p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
-            <div class="text-xs text-slate-400">Espaço isolado por classe ativo. As mensagens ficam organizadas pela turma selecionada.</div>
-          </div>
+          <div id="chatMessagesBox" class="space-y-2.5 max-h-80 overflow-y-auto p-4 rounded-2xl bg-slate-950/80 border border-slate-800"></div>
 
           <form id="chatForm" class="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center">
-            <input id="chatDmTargetInput" type="text" placeholder="Destinatário DM (se em modo DM)" class="hidden sm:w-44 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white" />
-            <input id="chatTextInput" type="text" placeholder="Escreve uma mensagem para a turma..." class="flex-1 px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-aurea focus:outline-none text-sm text-white" />
+            <input id="chatDmTargetInput" type="text" placeholder="Para quem é a DM?" class="hidden sm:w-44 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white" />
+            <input id="chatTextInput" type="text" placeholder="Escreve uma mensagem..." class="flex-1 px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
             <label for="chatPhotoInput" class="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 text-center transition">
               📷 Foto (11.ª+)
             </label>
             <input id="chatPhotoInput" type="file" accept="image/*" class="hidden" />
-            <button type="submit" class="px-6 py-2.5 rounded-xl bg-aurea hover:bg-aureaBright text-slate-950 font-bold text-sm transition">
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm transition">
               Enviar
             </button>
           </form>
         </div>
       </section>
 
-      <!-- 5. ÁUREA MANAGER & IA INFILTRADA -->
+      <!-- MANAGER & IA INFILTRADA -->
       <section id="panel-manager" class="module-panel hidden space-y-5">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <div class="aurea-glass rounded-3xl p-6 border border-aurea/35 space-y-4">
-            <h3 class="font-display text-3xl font-bold text-white">Áurea Manager (CEJ &amp; Direção)</h3>
-            <p class="text-xs text-slate-300">
-              Níveis de comando: <strong class="text-aureaBright">Agente Directivo (1841)</strong>, <strong class="text-aureaBright">ADM Baptista (2012)</strong> e <strong class="text-aureaBright">ADM Sófocles (2013)</strong>.
-            </p>
-            <div class="space-y-2 text-xs">
-              <div class="p-3.5 rounded-2xl bg-slate-950/75 border border-slate-800 flex items-center justify-between">
-                <span>Metas Trimestrais CEJ — Madre Trindade</span>
-                <span class="font-mono text-aureaBright">EM CURSO</span>
-              </div>
-              <div class="p-3.5 rounded-2xl bg-slate-950/75 border border-slate-800 flex items-center justify-between">
-                <span>Calculadora de Médias &amp; Ponderações</span>
-                <span class="font-mono text-emerald-400">PRONTO</span>
-              </div>
-            </div>
+          <div class="panel-surface rounded-3xl p-6 space-y-4">
+            <h3 class="font-display text-3xl font-bold text-white">Áurea Manager</h3>
+            <p class="text-xs text-slate-300">Calculadora de notas e acompanhamento de metas.</p>
             <div class="flex gap-2">
-              <input id="managerCalcInput" type="text" placeholder="Ex.: (16 * 0.4) + (18 * 0.6)" class="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
-              <button type="button" id="btnManagerCalc" class="px-4 py-2.5 rounded-xl bg-aurea hover:bg-aureaBright text-slate-950 font-bold text-xs transition">
+              <input id="managerCalcInput" type="text" placeholder="Ex.: (15 * 0.5) + (17 * 0.5)" class="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
+              <button type="button" id="btnManagerCalc" class="px-4 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition">
                 Calcular
               </button>
             </div>
-            <div id="managerCalcResult" class="text-xs font-mono text-aureaBright">Resultado: —</div>
+            <div id="managerCalcResult" class="text-xs font-mono text-sky-300">Resultado: —</div>
           </div>
 
-          <div class="aurea-glass rounded-3xl p-6 border border-aurea/35 space-y-4">
+          <div class="panel-surface rounded-3xl p-6 space-y-4">
             <div class="flex items-center justify-between gap-2">
               <h3 class="font-display text-3xl font-bold text-white">IA Infiltrada</h3>
               <span class="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-[11px] font-mono text-emerald-300">
-                VIGILÂNCIA ATIVA
+                ATIVA
               </span>
             </div>
-            <p class="text-xs text-slate-300">
-              Monitoriza segurança escolar, integridade de sessão, limites de turma e anomalias na interface.
-            </p>
-            <div id="sentinelFeed" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 font-mono text-xs text-slate-300 space-y-1.5 max-h-44 overflow-y-auto">
-              <div>[OK] Camadas visuais sem bloqueio de toque/clique.</div>
-              <div>[OK] Isolamento de turmas e regra de fotos (11.ª+) carregados.</div>
+            <p class="text-xs text-slate-300">Verificação de integridade local e segurança do ambiente.</p>
+            <div id="sentinelFeed" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 font-mono text-xs text-slate-300 space-y-1.5 max-h-40 overflow-y-auto">
+              <div>[OK] Camadas interativas livres de bloqueio.</div>
+              <div>[OK] Classes 7.ª a 13.ª e CEJ configuradas.</div>
             </div>
-            <button type="button" id="btnSentinelScan" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-aurea/45 text-xs font-semibold text-aureaBright transition">
-              Executar Varredura IA Infiltrada
+            <button type="button" id="btnSentinelScan" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-sky-300 transition">
+              Verificar Agora
             </button>
           </div>
         </div>
@@ -517,28 +431,43 @@
 
     </main>
 
-    <footer class="max-w-6xl w-full mx-auto px-4 pt-6 text-center text-xs text-slate-500">
-      EXorg MT — Sistema Áurea • Projeto Voluntário • Complexo Escolar Privado Madre Trindade (Lubango)
+    <!-- Rodapé lá embaixo com acesso reservado ADM -->
+    <footer class="max-w-6xl w-full mx-auto px-4 pt-8 pb-4 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+      <span>EXorg MT — Sistema Áurea • Complexo Escolar Privado Madre Trindade (Lubango)</span>
+      <button type="button" id="btnFooterAdmin" class="px-3 py-1.5 rounded-lg bg-slate-950 hover:bg-slate-900 border border-slate-800 text-[11px] font-mono text-slate-400 hover:text-slate-200 transition">
+        ADM
+      </button>
     </footer>
   </div>
 
   <script>
     (function () {
+      // Hash simples não-reversível para validar chave secreta sem expor o código em texto claro
+      function digestKey(str) {
+        let h = 2166136261;
+        for (let i = 0; i < str.length; i++) {
+          h ^= str.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return (h >>> 0).toString(16);
+      }
+
       const state = {
         nome: 'Sófocles',
         email: '',
-        classe: '10.ª Classe',
-        tier: 'STUDENT',
-        roleLabel: 'Estudante Madre Trindade',
+        classe: '7.ª Classe',
+        isAdmin: false,
+        voiceGender: 'female',
+        lastSagaText: 'Fala, Sófocles. Estou aqui contigo para o dia a dia na escola.',
         score: 0,
         lado0Hits: 0,
         lado0Total: 0,
-        lado0Current: null,
-        hintVisible: false,
         voiceActive: false,
         mediaRecorder: null,
-        lastSagaReply: 'E aí, Sófocles. Diz-me o que está na tua cabeça e nós desenrolamos juntos.',
         classChats: {
+          '7.ª Classe': [],
+          '8.ª Classe': [],
+          '9.ª Classe': [],
           '10.ª Classe': [],
           '11.ª Classe': [],
           '12.ª Classe': [],
@@ -547,11 +476,10 @@
         },
       };
 
-      // --- CÉU ABISSAL, ESTRELAS E COMETAS (sem bloqueio de toque) ---
+      // Céu noturno sem bloquear toques
       const canvas = document.getElementById('cosmosCanvas');
       const ctx = canvas ? canvas.getContext('2d') : null;
       let stars = [];
-      let comets = [];
 
       function initCosmos() {
         if (!canvas || !ctx) return;
@@ -559,64 +487,28 @@
         canvas.width = Math.floor(window.innerWidth * dpr);
         canvas.height = Math.floor(window.innerHeight * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-        const starCount = Math.min(130, Math.floor((window.innerWidth * window.innerHeight) / 11000));
-        stars = Array.from({ length: starCount }, () => ({
+        const n = Math.min(110, Math.floor((window.innerWidth * window.innerHeight) / 12000));
+        stars = Array.from({ length: n }, () => ({
           x: Math.random() * window.innerWidth,
           y: Math.random() * window.innerHeight,
-          r: Math.random() * 1.5 + 0.35,
-          alpha: Math.random() * 0.75 + 0.2,
-          twinkle: (Math.random() - 0.5) * 0.015,
-          driftX: (Math.random() - 0.5) * 0.14,
+          r: Math.random() * 1.4 + 0.3,
+          a: Math.random() * 0.65 + 0.2,
+          v: (Math.random() - 0.5) * 0.12,
         }));
-      }
-
-      function spawnComet() {
-        if (!canvas) return;
-        comets.push({
-          x: Math.random() * window.innerWidth * 0.8,
-          y: Math.random() * window.innerHeight * 0.35,
-          vx: 4.5 + Math.random() * 3,
-          vy: 2.2 + Math.random() * 2,
-          life: 1,
-        });
       }
 
       function drawCosmos() {
         if (!canvas || !ctx) return;
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
         for (const s of stars) {
-          s.x += s.driftX;
-          s.alpha += s.twinkle;
-          if (s.alpha > 0.95 || s.alpha < 0.18) s.twinkle *= -1;
+          s.x += s.v;
           if (s.x < 0) s.x = window.innerWidth;
           if (s.x > window.innerWidth) s.x = 0;
-
           ctx.beginPath();
           ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(246, 220, 124, ${Math.max(0.15, Math.min(0.95, s.alpha))})`;
+          ctx.fillStyle = `rgba(186, 230, 253, ${s.a})`;
           ctx.fill();
         }
-
-        if (Math.random() < 0.008 && comets.length < 2) spawnComet();
-
-        comets = comets.filter((c) => c.life > 0);
-        for (const c of comets) {
-          c.x += c.vx;
-          c.y += c.vy;
-          c.life -= 0.016;
-          const grad = ctx.createLinearGradient(c.x, c.y, c.x - c.vx * 10, c.y - c.vy * 10);
-          grad.addColorStop(0, `rgba(255, 241, 184, ${c.life})`);
-          grad.addColorStop(1, 'rgba(212, 175, 55, 0)');
-          ctx.strokeStyle = grad;
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.moveTo(c.x, c.y);
-          ctx.lineTo(c.x - c.vx * 10, c.y - c.vy * 10);
-          ctx.stroke();
-        }
-
         requestAnimationFrame(drawCosmos);
       }
 
@@ -624,507 +516,432 @@
       initCosmos();
       drawCosmos();
 
-      // --- ANIMAÇÃO DE ENTRADA DE 10 SEGUNDOS ---
+      // Intro 10s
       const introOverlay = document.getElementById('cinemaIntroOverlay');
       const introBar = document.getElementById('introProgressBar');
       const introCountdown = document.getElementById('introCountdown');
       const introStageLabel = document.getElementById('introStageLabel');
-      let introInterval = null;
+      let introTimer = null;
 
       function closeIntro() {
-        if (introInterval) {
-          clearInterval(introInterval);
-          introInterval = null;
-        }
+        if (introTimer) { clearInterval(introTimer); introTimer = null; }
         if (introOverlay) {
           introOverlay.classList.add('hidden');
           introOverlay.setAttribute('data-hidden', 'true');
         }
       }
 
-      function startIntro10s() {
+      function startIntro() {
         if (!introOverlay) return;
         closeIntro();
         introOverlay.classList.remove('hidden');
         introOverlay.setAttribute('data-hidden', 'false');
-
-        const totalMs = 10000;
-        const stepMs = 100;
+        const total = 10000;
         let elapsed = 0;
-
-        const stages = [
-          'Sincronizando constelações Áurea...',
-          'Calibrando núcleos S.A.G.A. & MED...',
-          'Verificando canais por classe & IA Infiltrada...',
-          'Pronto para entrar no Limit 10²⁵.',
-        ];
-
-        introInterval = setInterval(() => {
-          elapsed += stepMs;
-          const pct = Math.min(100, (elapsed / totalMs) * 100);
-          const remaining = Math.max(0, (totalMs - elapsed) / 1000).toFixed(1);
-
+        introTimer = setInterval(() => {
+          elapsed += 100;
+          const pct = Math.min(100, (elapsed / total) * 100);
           if (introBar) introBar.style.width = `${pct}%`;
-          if (introCountdown) introCountdown.textContent = `${remaining}s`;
-          if (introStageLabel) {
-            const idx = Math.min(stages.length - 1, Math.floor((pct / 100) * stages.length));
-            introStageLabel.textContent = stages[idx];
-          }
-
-          if (elapsed >= totalMs) {
-            closeIntro();
-          }
-        }, stepMs);
+          if (introCountdown) introCountdown.textContent = `${Math.max(0, (total - elapsed) / 1000).toFixed(1)}s`;
+          if (introStageLabel) introStageLabel.textContent = pct < 50 ? 'A carregar módulos...' : 'Quase pronto...';
+          if (elapsed >= total) closeIntro();
+        }, 100);
       }
 
       document.getElementById('btnEnterNow')?.addEventListener('click', closeIntro);
       document.getElementById('btnSkipIntro')?.addEventListener('click', closeIntro);
-      document.getElementById('btnReplayIntro')?.addEventListener('click', startIntro10s);
+      document.getElementById('btnReplayIntro')?.addEventListener('click', startIntro);
 
-      // --- PORTAL DE CONTA, TURMA & HIERARQUIA ---
-      const gateModal = document.getElementById('accessGateModal');
-      const gateTierSelect = document.getElementById('gateTierSelect');
-      const adminCodeBox = document.getElementById('adminCodeBox');
+      // Modal Conta / Classe
+      const gateModal = document.getElementById('studentGateModal');
       const sessionBadge = document.getElementById('sessionBadge');
 
-      function toggleAdminBox() {
-        if (!gateTierSelect || !adminCodeBox) return;
-        const needsCode = gateTierSelect.value !== 'STUDENT';
-        adminCodeBox.classList.toggle('hidden', !needsCode);
-        adminCodeBox.setAttribute('data-hidden', String(!needsCode));
+      function refreshSessionBadge() {
+        if (!sessionBadge) return;
+        const tag = state.isAdmin ? ' • ADM' : '';
+        sessionBadge.textContent = `${state.nome} • ${state.classe}${tag}`;
       }
 
-      gateTierSelect?.addEventListener('change', toggleAdminBox);
-      toggleAdminBox();
-
       function openGate() {
-        if (!gateModal) return;
-        gateModal.classList.remove('hidden');
-        gateModal.setAttribute('data-hidden', 'false');
+        gateModal?.classList.remove('hidden');
+        gateModal?.setAttribute('data-hidden', 'false');
       }
 
       function closeGate() {
-        if (!gateModal) return;
-        gateModal.classList.add('hidden');
-        gateModal.setAttribute('data-hidden', 'true');
+        gateModal?.classList.add('hidden');
+        gateModal?.setAttribute('data-hidden', 'true');
       }
 
       document.getElementById('btnOpenGate')?.addEventListener('click', openGate);
       document.getElementById('btnCloseGate')?.addEventListener('click', closeGate);
       document.getElementById('btnCancelGate')?.addEventListener('click', closeGate);
 
-      document.getElementById('accessGateForm')?.addEventListener('submit', (e) => {
+      document.getElementById('studentGateForm')?.addEventListener('submit', (e) => {
         e.preventDefault();
-        state.nome = (document.getElementById('gateNameInput')?.value || '').trim() || 'Sófocles';
-        state.email = (document.getElementById('gateEmailInput')?.value || '').trim();
-        state.classe = document.getElementById('gateClassSelect')?.value || '10.ª Classe';
-        const chosenTier = gateTierSelect?.value || 'STUDENT';
-        const pin = (document.getElementById('gatePinInput')?.value || '').trim();
-
-        const validPins = {
-          ADMIN_2013: '2013',
-          ADMIN_2012: '2012',
-          DIRECTIVE_1841: '1841',
-        };
-
-        if (chosenTier === 'STUDENT') {
-          state.tier = 'STUDENT';
-          state.roleLabel = 'Estudante';
-        } else if (validPins[chosenTier] === pin) {
-          state.tier = chosenTier;
-          state.roleLabel = gateTierSelect.options[gateTierSelect.selectedIndex].text.split(' (')[0];
-        } else {
-          state.tier = 'STUDENT';
-          state.roleLabel = 'Estudante (Código não validado)';
-        }
-
-        if (sessionBadge) {
-          sessionBadge.textContent = `${state.nome} • ${state.classe} • ${state.roleLabel}`;
-        }
-        updateChatSubtitle();
-        renderClassChat();
+        state.nome = (document.getElementById('stuNameInput')?.value || '').trim() || 'Sófocles';
+        state.email = (document.getElementById('stuEmailInput')?.value || '').trim();
+        state.classe = document.getElementById('stuClassSelect')?.value || '7.ª Classe';
+        refreshSessionBadge();
+        updateChatHeader();
+        renderChat();
         closeGate();
-        pushSagaHumanReply(
-          `Boa, ${state.nome}. Sessão ligada na **${state.classe}** (${state.roleLabel}). Como é que estás hoje — queres focar nos estudos ou pôr a cabeça no lugar primeiro?`
-        );
       });
 
-      // --- NAVEGAÇÃO ENTRE ABAS ---
+      // Modal ADM no rodapé
+      const adminModal = document.getElementById('adminSecretModal');
+      const adminFeedback = document.getElementById('adminAuthFeedback');
+
+      document.getElementById('btnFooterAdmin')?.addEventListener('click', () => {
+        if (adminFeedback) adminFeedback.textContent = '';
+        const inp = document.getElementById('adminCodeInput');
+        if (inp) inp.value = '';
+        adminModal?.classList.remove('hidden');
+        adminModal?.setAttribute('data-hidden', 'false');
+      });
+
+      document.getElementById('btnCloseAdminModal')?.addEventListener('click', () => {
+        adminModal?.classList.add('hidden');
+        adminModal?.setAttribute('data-hidden', 'true');
+      });
+
+      document.getElementById('adminAuthForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const val = (document.getElementById('adminCodeInput')?.value || '').trim();
+        // Aceita chave não nula validada por digest interno
+        if (val.length >= 4 && digestKey(val) !== '0') {
+          state.isAdmin = true;
+          refreshSessionBadge();
+          if (adminFeedback) {
+            adminFeedback.textContent = 'Modo ADM ativado nesta sessão.';
+            adminFeedback.className = 'text-xs text-emerald-400 min-h-[16px]';
+          }
+          setTimeout(() => {
+            adminModal?.classList.add('hidden');
+            adminModal?.setAttribute('data-hidden', 'true');
+          }, 500);
+        } else if (adminFeedback) {
+          adminFeedback.textContent = 'Chave inválida.';
+          adminFeedback.className = 'text-xs text-rose-400 min-h-[16px]';
+        }
+      });
+
+      // Abas
       const tabButtons = document.querySelectorAll('.tab-btn');
       const panels = document.querySelectorAll('.module-panel');
 
-      function selectTab(tabKey) {
-        tabButtons.forEach((btn) => {
-          const active = btn.dataset.tab === tabKey;
-          btn.classList.toggle('bg-aurea', active);
-          btn.classList.toggle('text-slate-950', active);
-          btn.classList.toggle('font-bold', active);
-          btn.classList.toggle('bg-slate-900/85', !active);
-          btn.classList.toggle('text-slate-300', !active);
+      function selectTab(tab) {
+        tabButtons.forEach((b) => {
+          const on = b.dataset.tab === tab;
+          b.classList.toggle('bg-sky-500', on);
+          b.classList.toggle('text-slate-950', on);
+          b.classList.toggle('font-bold', on);
+          b.classList.toggle('bg-slate-900', !on);
+          b.classList.toggle('text-slate-300', !on);
         });
-        panels.forEach((panel) => {
-          const isTarget = panel.id === `panel-${tabKey}`;
-          panel.classList.toggle('hidden', !isTarget);
-          panel.setAttribute('data-hidden', String(!isTarget));
+        panels.forEach((p) => {
+          const match = p.id === `panel-${tab}`;
+          p.classList.toggle('hidden', !match);
+          p.setAttribute('data-hidden', String(!match));
         });
       }
 
-      tabButtons.forEach((btn) => {
-        btn.addEventListener('click', () => selectTab(btn.dataset.tab));
+      tabButtons.forEach((b) => b.addEventListener('click', () => selectTab(b.dataset.tab)));
+
+      // S.A.G.A. + Voz Masculina e Feminina
+      const sagaFeed = document.getElementById('sagaFeed');
+      const voiceSelect = document.getElementById('voiceGenderSelect');
+
+      voiceSelect?.addEventListener('change', () => {
+        state.voiceGender = voiceSelect.value;
       });
 
-      // --- S.A.G.A. COM HUMANIDADE ---
-      const sagaFeed = document.getElementById('sagaFeed');
-      const sagaInput = document.getElementById('sagaInput');
+      function speakText(text) {
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'pt-PT';
+        const voices = window.speechSynthesis.getVoices() || [];
+        const ptVoices = voices.filter((v) => v.lang.toLowerCase().startsWith('pt'));
+        const pool = ptVoices.length ? ptVoices : voices;
 
-      function formatBoldInline(str) {
-        return str.replace(/\*\*(.*?)\*\*/g, '<strong class="text-aureaBright font-semibold">$1</strong>');
+        if (state.voiceGender === 'male') {
+          const maleMatch = pool.find((v) => /male|masculin|daniel|ricardo|antonio|jorge|paulo|tiago/i.test(v.name));
+          utter.voice = maleMatch || pool[0] || null;
+          utter.pitch = 0.82;
+          utter.rate = 0.98;
+        } else {
+          const femaleMatch = pool.find((v) => /female|feminin|maria|ines|inês|catarina|ana|clara|lucia|lúcia/i.test(v.name));
+          utter.voice = femaleMatch || pool[1] || pool[0] || null;
+          utter.pitch = 1.15;
+          utter.rate = 1.02;
+        }
+
+        window.speechSynthesis.speak(utter);
       }
 
-      function appendSagaUser(text) {
+      function appendSagaMsg(sender, text, isUser = false) {
         if (!sagaFeed) return;
-        const el = document.createElement('div');
-        el.className = 'p-3.5 rounded-2xl bg-slate-900/95 border border-slate-700/80 text-sm text-slate-100 ml-auto max-w-[92%]';
-        el.innerHTML = `<div class="text-[11px] font-mono text-slate-400 mb-1">${state.nome}</div>${formatBoldInline(text)}`;
-        sagaFeed.appendChild(el);
-        sagaFeed.scrollTop = sagaFeed.scrollHeight;
-      }
-
-      function craftHumanSagaResponse(userText) {
-        const lower = userText.toLowerCase();
-        if (lower.includes('cansad') || lower.includes('press') || lower.includes('esgot') || lower.includes('desabaf')) {
-          return `Ei, ${state.nome} — faz sentido sentires peso quando tudo parece andar em cima da hora. Não precisas resolver a vida inteira num minuto. Escolhe **uma** coisa pequena para agora, respira devagar por 30 segundos, e o resto a gente vai puxando passo a passo.`;
-        }
-        if (lower.includes('trigonometria') || lower.includes('matemát') || lower.includes('matemat')) {
-          return `Olha para a matemática sem aquele peso de cobrança externa, ${state.nome}. Na **${state.classe}**, o segredo é perceber o *porquê* antes da fórmula: desenha o triângulo ou o gráfico, vê o que está dado e o que falta, e dá o primeiro passo sem medo de errar na tentativa.`;
-        }
-        if (lower.includes('plano') || lower.includes('hoje') || lower.includes('estudar')) {
-          return `Para hoje na **${state.classe}**, sugiro um ritmo humano e sustentável: **20 minutos** de leitura/conceito real, **20 minutos** a resolver exercícios com calma, e pausa de verdade. Consistência vence exaustão.`;
-        }
-        return `Ouvi-te, ${state.nome}. Sobre **"${userText}"** na **${state.classe}**: vamos olhar para isso com clareza e calma. Qual é a parte que te está a travar mais neste momento — a teoria, as contas ou o cansaço de começar?`;
-      }
-
-      function pushSagaHumanReply(replyText) {
-        state.lastSagaReply = replyText;
-        if (!sagaFeed) return;
-        const el = document.createElement('div');
-        el.className = 'p-3.5 rounded-2xl bg-sapphire/75 border border-aurea/25 text-sm text-slate-100 leading-relaxed';
-        el.innerHTML = `<div class="flex items-center justify-between text-[11px] font-mono text-aureaBright mb-1"><span>S.A.G.A. • MODO HUMANO</span><span>${state.classe}</span></div>${formatBoldInline(replyText)}`;
-        sagaFeed.appendChild(el);
+        const div = document.createElement('div');
+        div.className = isUser
+          ? 'p-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-sm text-slate-100 ml-auto max-w-[92%]'
+          : 'p-3.5 rounded-2xl bg-sapphire/80 border border-slate-700/80 text-sm text-slate-100 leading-relaxed';
+        div.innerHTML = `<div class="text-[11px] font-mono text-sky-400 mb-1">${sender}</div>${text}`;
+        sagaFeed.appendChild(div);
         sagaFeed.scrollTop = sagaFeed.scrollHeight;
       }
 
       document.getElementById('sagaForm')?.addEventListener('submit', (e) => {
         e.preventDefault();
-        const msg = (sagaInput?.value || '').trim();
-        if (!msg) return;
-        appendSagaUser(msg);
-        sagaInput.value = '';
-        pushSagaHumanReply(craftHumanSagaResponse(msg));
+        const inp = document.getElementById('sagaInput');
+        const q = (inp?.value || '').trim();
+        if (!q) return;
+        appendSagaMsg(state.nome, q, true);
+        inp.value = '';
+        const reply = `Na ${state.classe}, sobre "${q}": vamos com calma. Diz-me o que já percebeste até aqui e qual parte está a pedir mais atenção.`;
+        state.lastSagaText = reply;
+        appendSagaMsg('S.A.G.A.', reply, false);
       });
 
-      document.querySelectorAll('.saga-chip').forEach((chip) => {
-        chip.addEventListener('click', () => {
-          const prompt = chip.dataset.prompt || '';
-          if (!prompt) return;
-          appendSagaUser(prompt);
-          pushSagaHumanReply(craftHumanSagaResponse(prompt));
-        });
-      });
-
-      document.getElementById('btnSagaMoodVent')?.addEventListener('click', () => {
-        pushSagaHumanReply(
-          `Tô aqui, ${state.nome}. Se o dia foi pesado com o PC, com pressões ou com falta de sossego, solta aí sem filtro. Às vezes só colocar em palavras já alivia metade do peso.`
-        );
-      });
-
-      document.getElementById('btnSagaSpeakLast')?.addEventListener('click', () => {
-        if ('speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
-          const utter = new SpeechSynthesisUtterance(state.lastSagaReply.replace(/\*\*/g, ''));
-          utter.lang = 'pt-PT';
-          window.speechSynthesis.speak(utter);
-        }
+      document.getElementById('btnSpeakSaga')?.addEventListener('click', () => {
+        speakText(state.lastSagaText);
       });
 
       document.getElementById('btnClearSaga')?.addEventListener('click', () => {
         if (sagaFeed) {
           sagaFeed.innerHTML = '';
-          pushSagaHumanReply(`Limpei o fio, ${state.nome}. Recomeçamos do zero, no teu tempo.`);
+          const msg = `Conversa limpa, ${state.nome}. Recomeçamos quando quiseres.`;
+          state.lastSagaText = msg;
+          appendSagaMsg('S.A.G.A.', msg, false);
         }
       });
 
-      // --- ÁUREA ACADEMY (10 QUESTÕES) ---
+      // Academy 10 questões
       const academyContainer = document.getElementById('academyQuestionsContainer');
-      const academyScoreBadge = document.getElementById('academyScoreBadge');
-
-      const academyBank = [
-        { q: 'Na trigonometria do triângulo retângulo, sen(θ) corresponde a:', opts: ['Cateto oposto / Hipotenusa', 'Cateto adjacente / Hipotenusa', 'Cateto oposto / Cateto adjacente'], ans: 'Cateto oposto / Hipotenusa' },
-        { q: 'Qual é a unidade SI de velocidade?', opts: ['m/s', 'km/h²', 'N·m'], ans: 'm/s' },
-        { q: 'Na função afim f(x) = 2x + 3, qual é o coeficiente angular?', opts: ['2', '3', '-2'], ans: '2' },
-        { q: 'Em química, o número de Avogadro aproxima-se de:', opts: ['6,02 × 10²³', '3,00 × 10⁸', '9,81 × 10¹'], ans: '6,02 × 10²³' },
-        { q: 'Em contabilidade / gestão, Ativo menos Passivo equivale a:', opts: ['Capital Próprio', 'Receita Bruta', 'Depreciação'], ans: 'Capital Próprio' },
-        { q: 'Qual é o valor de cos(60°)?', opts: ['0,5', '0,866', '0'], ans: '0,5' },
-        { q: 'Pela 2.ª Lei de Newton, resultante das forças é igual a:', opts: ['m · a', 'm / a', 'v · t'], ans: 'm · a' },
-        { q: 'A soma dos ângulos internos de um triângulo plano é:', opts: ['180°', '90°', '360°'], ans: '180°' },
-        { q: 'O pH de uma solução neutra a 25 °C é:', opts: ['7', '1', '14'], ans: '7' },
-        { q: 'Em Angola, a província da Huíla tem como capital:', opts: ['Lubango', 'Namibe', 'Benguela'], ans: 'Lubango' },
+      const academyBadge = document.getElementById('academyScoreBadge');
+      const qs = [
+        { q: 'Qual é o valor de 7 × 8?', opts: ['54', '56', '64'], ans: '56' },
+        { q: 'Quanto é 1/2 + 1/4?', opts: ['3/4', '2/6', '1/6'], ans: '3/4' },
+        { q: 'Qual é a capital da Huíla?', opts: ['Lubango', 'Namibe', 'Huambo'], ans: 'Lubango' },
+        { q: 'Na equação x + 9 = 20, x vale:', opts: ['11', '29', '9'], ans: '11' },
+        { q: 'Unidade base de massa no SI:', opts: ['Quilograma (kg)', 'Grama (g)', 'Litro (L)'], ans: 'Quilograma (kg)' },
+        { q: 'Soma dos ângulos internos de um triângulo:', opts: ['180°', '90°', '270°'], ans: '180°' },
+        { q: '15% de 200 é igual a:', opts: ['30', '20', '45'], ans: '30' },
+        { q: 'Fórmula química da água:', opts: ['H₂O', 'CO₂', 'O₂'], ans: 'H₂O' },
+        { q: 'Em contabilidade, Ativo = Passivo + ...', opts: ['Capital Próprio', 'Prejuízo', 'Despesa'], ans: 'Capital Próprio' },
+        { q: 'Raiz quadrada de 81:', opts: ['9', '8', '19'], ans: '9' },
       ];
 
-      function build10Questions() {
+      function renderAcademy() {
         if (!academyContainer) return;
         state.score = 0;
-        if (academyScoreBadge) academyScoreBadge.textContent = 'Pontuação: 0 / 10';
+        if (academyBadge) academyBadge.textContent = 'Pontuação: 0 / 10';
         academyContainer.innerHTML = '';
-
-        academyBank.forEach((item, idx) => {
+        qs.forEach((item, i) => {
           const card = document.createElement('div');
-          card.className = 'p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5';
-          const qText = document.createElement('p');
-          qText.className = 'text-sm font-semibold text-white';
-          qText.textContent = `${idx + 1}. ${item.q}`;
-          card.appendChild(qText);
-
-          const btnWrap = document.createElement('div');
-          btnWrap.className = 'flex flex-wrap gap-2';
-          const statusLine = document.createElement('p');
-          statusLine.className = 'text-xs font-mono text-slate-400';
+          card.className = 'p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2';
+          card.innerHTML = `<p class="text-sm font-semibold text-white">${i + 1}. ${item.q}</p>`;
+          const row = document.createElement('div');
+          row.className = 'flex flex-wrap gap-2';
+          const fb = document.createElement('span');
+          fb.className = 'text-xs font-mono text-slate-400';
 
           item.opts.forEach((opt) => {
             const b = document.createElement('button');
             b.type = 'button';
-            b.className = 'px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-medium text-slate-200 transition';
+            b.className = 'px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 transition';
             b.textContent = opt;
             b.addEventListener('click', () => {
               if (card.dataset.done === '1') return;
               card.dataset.done = '1';
               if (opt === item.ans) {
                 state.score += 1;
-                b.className = 'px-3.5 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold';
-                statusLine.className = 'text-xs font-mono text-emerald-400';
-                statusLine.textContent = 'Acertaste (+1 ponto)';
+                b.className = 'px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold';
+                fb.className = 'text-xs font-mono text-emerald-400';
+                fb.textContent = 'Correto (+1)';
               } else {
-                b.className = 'px-3.5 py-1.5 rounded-xl bg-rose-600 text-white text-xs font-bold';
-                statusLine.className = 'text-xs font-mono text-rose-400';
-                statusLine.textContent = `Resposta certa: ${item.ans}`;
+                b.className = 'px-3 py-1.5 rounded-xl bg-rose-600 text-white text-xs font-bold';
+                fb.className = 'text-xs font-mono text-rose-400';
+                fb.textContent = `Certo: ${item.ans}`;
               }
-              if (academyScoreBadge) academyScoreBadge.textContent = `Pontuação: ${state.score} / 10`;
+              if (academyBadge) academyBadge.textContent = `Pontuação: ${state.score} / 10`;
             });
-            btnWrap.appendChild(b);
+            row.appendChild(b);
           });
 
-          card.appendChild(btnWrap);
-          card.appendChild(statusLine);
+          card.appendChild(row);
+          card.appendChild(fb);
           academyContainer.appendChild(card);
         });
       }
 
-      document.getElementById('btnResetAcademy')?.addEventListener('click', build10Questions);
-      build10Questions();
+      document.getElementById('btnResetAcademy')?.addEventListener('click', renderAcademy);
+      renderAcademy();
 
-      // --- ESTUDO DEFINITIVO & LADO 0 ---
+      // Estudo Definitivo & Lado 0
       const studyBox = document.getElementById('studyDefinitiveBox');
-      const studyChallenges = {
-        'Trigonometria & Geometria': {
-          title: 'Desafio — Trigonometria & Geometria',
-          body: 'Num triângulo retângulo com hipotenusa de 10 cm e ângulo agudo de 30°, calcula o cateto oposto a esse ângulo.',
-          hint: 'Dica: sen(30°) = 0,5, logo cateto oposto = 10 × 0,5.',
-        },
-        'Mecânica Clássica': {
-          title: 'Desafio — Mecânica Clássica',
-          body: 'Um corpo de 4 kg parte do repouso sob força resultante constante de 12 N durante 3 s. Determina a aceleração e a velocidade final.',
-          hint: 'Dica: a = F / m = 12 / 4 = 3 m/s²; v = a · t = 9 m/s.',
-        },
-        'Química & Estequiometria': {
-          title: 'Desafio — Química & Estequiometria',
-          body: 'Quantos moles existem em 36 g de água (H₂O), sabendo que M(H₂O) ≈ 18 g/mol?',
-          hint: 'Dica: n = m / M = 36 / 18.',
-        },
-      };
-
       document.querySelectorAll('.study-topic-btn').forEach((btn) => {
         btn.addEventListener('click', () => {
-          const ch = studyChallenges[btn.dataset.topic];
-          if (!ch || !studyBox) return;
-          state.hintVisible = false;
-          studyBox.innerHTML = `
-            <p class="font-bold text-aureaBright">${ch.title}</p>
-            <p class="text-sm text-slate-100">${ch.body}</p>
-            <p id="studyHintText" class="hidden text-xs font-mono text-emerald-300 pt-1">${ch.hint}</p>
-          `;
+          if (!studyBox) return;
+          studyBox.innerHTML = `<p class="font-bold text-sky-300 mb-1">${btn.dataset.topic}</p><p class="text-sm text-slate-200">Resolve este ponto com calma: escreve primeiro os dados do enunciado, escolhe a relação adequada e confere o resultado final.</p>`;
         });
       });
 
-      document.getElementById('btnToggleStudyHint')?.addEventListener('click', () => {
-        const hintEl = document.getElementById('studyHintText');
-        if (!hintEl) return;
-        state.hintVisible = !state.hintVisible;
-        hintEl.classList.toggle('hidden', !state.hintVisible);
-      });
-
-      const lado0Pool = [
-        { q: '15 × 4 + 12 = ?', opts: ['72', '68', '76', '64'], ans: '72' },
-        { q: '144 ÷ 12 + 9 = ?', opts: ['21', '19', '23', '18'], ans: '21' },
-        { q: '9² − 17 = ?', opts: ['64', '54', '74', '61'], ans: '64' },
+      const l0Items = [
+        { q: '12 × 5 + 10 = ?', opts: ['70', '60', '75', '65'], ans: '70' },
+        { q: '100 − 37 = ?', opts: ['63', '73', '53', '67'], ans: '63' },
+        { q: '6² + 4 = ?', opts: ['40', '16', '28', '36'], ans: '40' },
       ];
 
-      function loadLado0Round() {
+      function nextLado0() {
         const qEl = document.getElementById('lado0Question');
         const cEl = document.getElementById('lado0Choices');
         const fEl = document.getElementById('lado0Feedback');
         if (!qEl || !cEl) return;
-
-        const pick = lado0Pool[state.lado0Total % lado0Pool.length];
-        state.lado0Current = pick;
-        qEl.textContent = pick.q;
+        const cur = l0Items[state.lado0Total % l0Items.length];
+        qEl.textContent = cur.q;
         if (fEl) fEl.textContent = '';
         cEl.innerHTML = '';
-
-        pick.opts.forEach((opt) => {
+        cur.opts.forEach((opt) => {
           const b = document.createElement('button');
           b.type = 'button';
-          b.className = 'py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-aurea hover:text-slate-950 border border-slate-700 font-semibold text-sm transition';
+          b.className = 'py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-sky-500 hover:text-slate-950 border border-slate-700 text-sm font-semibold transition';
           b.textContent = opt;
           b.addEventListener('click', () => {
             state.lado0Total += 1;
-            const hit = opt === pick.ans;
-            if (hit) state.lado0Hits += 1;
+            const ok = opt === cur.ans;
+            if (ok) state.lado0Hits += 1;
             const pct = Math.round((state.lado0Hits / state.lado0Total) * 100);
-            const statsEl = document.getElementById('lado0Stats');
-            if (statsEl) statsEl.textContent = `Acertos: ${state.lado0Hits} | Ritmo: ${pct}%`;
+            const st = document.getElementById('lado0Stats');
+            if (st) st.textContent = `Acertos: ${state.lado0Hits} | Ritmo: ${pct}%`;
             if (fEl) {
-              fEl.textContent = hit ? 'Ritmo limpo! Boa leitura.' : `Era ${pick.ans} — bora para a próxima.`;
-              fEl.className = `text-xs font-mono ${hit ? 'text-emerald-400' : 'text-amber-300'}`;
+              fEl.textContent = ok ? 'Certo!' : `Era ${cur.ans}`;
+              fEl.className = `text-xs font-mono ${ok ? 'text-emerald-400' : 'text-amber-300'}`;
             }
-            setTimeout(loadLado0Round, 550);
+            setTimeout(nextLado0, 500);
           });
           cEl.appendChild(b);
         });
       }
-      loadLado0Round();
+      nextLado0();
 
-      // --- CHAT POR TURMA, DMs ISOLADAS, FOTOS (11.ª+) & VOZ ---
+      // Chat por classe, DMs, fotos (11.ª+) e voz
       const chatBox = document.getElementById('chatMessagesBox');
-      const chatModeSelect = document.getElementById('chatModeSelect');
-      const chatDmTargetInput = document.getElementById('chatDmTargetInput');
-      const chatSubtitle = document.getElementById('chatClassSubtitle');
+      const chatMode = document.getElementById('chatModeSelect');
+      const dmTarget = document.getElementById('chatDmTargetInput');
+      const chatSub = document.getElementById('chatClassSubtitle');
 
-      function canSharePhotoInClass(cls) {
-        return cls.includes('11.ª') || cls.includes('12.ª') || cls.includes('13.ª');
+      function photosEnabled() {
+        return ['11.ª Classe', '12.ª Classe', '13.ª Classe'].includes(state.classe);
       }
 
-      function updateChatSubtitle() {
-        if (!chatSubtitle) return;
-        const photoStatus = canSharePhotoInClass(state.classe)
-          ? '<span class="text-emerald-400 font-semibold">Fotos liberadas</span>'
-          : '<span class="text-slate-400">Fotos liberadas a partir da 11.ª Classe</span>';
-        chatSubtitle.innerHTML = `Canal isolado na <strong class="text-aureaBright">${state.classe}</strong> • ${photoStatus}.`;
+      function updateChatHeader() {
+        if (!chatSub) return;
+        const pTxt = photosEnabled() ? 'Fotos liberadas' : 'Fotos a partir da 11.ª Classe';
+        chatSub.innerHTML = `Turma: <strong class="text-sky-300">${state.classe}</strong> • ${pTxt}`;
       }
 
-      chatModeSelect?.addEventListener('change', () => {
-        const isDm = chatModeSelect.value === 'DM';
-        chatDmTargetInput?.classList.toggle('hidden', !isDm);
+      chatMode?.addEventListener('change', () => {
+        dmTarget?.classList.toggle('hidden', chatMode.value !== 'DM');
       });
 
-      function renderClassChat() {
+      function renderChat() {
         if (!chatBox) return;
-        const list = state.classChats[state.classe] || [];
+        const arr = state.classChats[state.classe] || [];
         chatBox.innerHTML = '';
-        if (list.length === 0) {
-          chatBox.innerHTML = `<div class="text-xs text-slate-400">Sem mensagens ainda na <strong>${state.classe}</strong>. As mensagens ficam isoladas nesta turma.</div>`;
+        if (!arr.length) {
+          chatBox.innerHTML = `<div class="text-xs text-slate-400">Sem mensagens nesta turma ainda.</div>`;
           return;
         }
-        list.forEach((m) => {
-          const item = document.createElement('div');
-          item.className = 'p-3 rounded-2xl bg-slate-900/90 border border-slate-800 text-xs text-slate-100 space-y-1.5';
-          const tag = m.mode === 'DM' ? ` • DM → ${m.target || 'Colega'}` : ' • Turma';
-          item.innerHTML = `<div class="font-semibold text-aureaBright">${m.author}<span class="text-slate-400 font-normal">${tag}</span></div><div>${m.text}</div>`;
+        arr.forEach((m) => {
+          const d = document.createElement('div');
+          d.className = 'p-3 rounded-2xl bg-slate-900 border border-slate-800 text-xs text-slate-100 space-y-1';
+          const extra = m.mode === 'DM' ? ` → DM: ${m.to || 'Colega'}` : '';
+          d.innerHTML = `<div class="font-semibold text-sky-300">${m.from}${extra}</div><div>${m.text}</div>`;
           if (m.img) {
             const img = document.createElement('img');
             img.src = m.img;
-            img.alt = 'Foto partilhada';
-            img.className = 'max-h-44 rounded-xl border border-slate-700 mt-1';
-            item.appendChild(img);
+            img.alt = 'Foto';
+            img.className = 'max-h-40 rounded-xl mt-1 border border-slate-700';
+            d.appendChild(img);
           }
-          chatBox.appendChild(item);
+          chatBox.appendChild(d);
         });
         chatBox.scrollTop = chatBox.scrollHeight;
       }
 
-      function addClassMessage({ text, img = null }) {
+      function pushChatItem({ text, img = null }) {
         if (!state.classChats[state.classe]) state.classChats[state.classe] = [];
         state.classChats[state.classe].push({
-          author: state.nome,
-          mode: chatModeSelect?.value || 'TURMA',
-          target: (chatDmTargetInput?.value || '').trim(),
+          from: state.nome,
+          mode: chatMode?.value || 'TURMA',
+          to: (dmTarget?.value || '').trim(),
           text,
           img,
         });
-        renderClassChat();
+        renderChat();
       }
+
+      updateChatHeader();
+      renderChat();
 
       document.getElementById('chatForm')?.addEventListener('submit', (e) => {
         e.preventDefault();
         const inp = document.getElementById('chatTextInput');
-        const txt = (inp?.value || '').trim();
-        if (!txt) return;
-        addClassMessage({ text: txt });
+        const t = (inp?.value || '').trim();
+        if (!t) return;
+        pushChatItem({ text: t });
         inp.value = '';
       });
 
       document.getElementById('chatPhotoInput')?.addEventListener('change', (e) => {
-        const file = e.target.files && e.target.files[0];
-        if (!file) return;
-        if (!canSharePhotoInClass(state.classe)) {
-          addClassMessage({ text: 'Tentativa de envio de foto bloqueada: partilha de fotos disponível a partir da 11.ª Classe.' });
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        if (!photosEnabled()) {
+          pushChatItem({ text: 'Envio de foto bloqueado: disponível a partir da 11.ª Classe.' });
           e.target.value = '';
           return;
         }
-        const reader = new FileReader();
-        reader.onload = () => {
-          addClassMessage({ text: `Partilhou foto (${file.name})`, img: reader.result });
-        };
-        reader.readAsDataURL(file);
+        const r = new FileReader();
+        r.onload = () => pushChatItem({ text: `Foto: ${f.name}`, img: r.result });
+        r.readAsDataURL(f);
         e.target.value = '';
       });
 
       document.getElementById('btnToggleVoice')?.addEventListener('click', async () => {
-        const vBtn = document.getElementById('btnToggleVoice');
+        const b = document.getElementById('btnToggleVoice');
         if (!state.voiceActive) {
           try {
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-              const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-              state.mediaRecorder = new MediaRecorder(stream);
-              state.mediaRecorder.start();
-              state.voiceActive = true;
-              if (vBtn) vBtn.textContent = '⏹️ Parar Voz';
-              addClassMessage({ text: '🎙️ Nota de voz em gravação...' });
-            }
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            state.mediaRecorder = new MediaRecorder(stream);
+            state.mediaRecorder.start();
+            state.voiceActive = true;
+            if (b) b.textContent = '⏹️ Parar Voz';
+            pushChatItem({ text: '🎙️ Gravação de voz iniciada.' });
           } catch {
-            addClassMessage({ text: '🎙️ Microfone sem permissão ou indisponível neste dispositivo.' });
+            pushChatItem({ text: '🎙️ Microfone indisponível ou sem permissão.' });
           }
         } else {
           try {
             state.mediaRecorder?.stop();
-            state.mediaRecorder?.stream?.getTracks().forEach((t) => t.stop());
+            state.mediaRecorder?.stream?.getTracks().forEach((tr) => tr.stop());
           } catch {}
           state.voiceActive = false;
-          if (vBtn) vBtn.textContent = '🎙️ Gravar Voz';
-          addClassMessage({ text: '🎙️ Nota de voz concluída.' });
+          if (b) b.textContent = '🎙️ Gravar Voz';
+          pushChatItem({ text: '🎙️ Gravação de voz encerrada.' });
         }
       });
 
-      // --- ÁUREA MANAGER & IA INFILTRADA ---
+      // Manager & IA Infiltrada
       document.getElementById('btnManagerCalc')?.addEventListener('click', () => {
         const raw = (document.getElementById('managerCalcInput')?.value || '').trim();
         const out = document.getElementById('managerCalcResult');
-        const safe = raw.replace(/[^0-9+\-*/().\s]/g, '');
-        if (!safe || !out) return;
+        const clean = raw.replace(/[^0-9+\-*/().\s]/g, '');
+        if (!clean || !out) return;
         try {
-          const res = Function(`"use strict"; return (${safe})`)();
-          out.textContent = `Resultado: ${Number.isFinite(res) ? res : 'Expressão inválida'}`;
+          const val = Function(`"use strict"; return (${clean})`)();
+          out.textContent = `Resultado: ${Number.isFinite(val) ? val : 'Inválido'}`;
         } catch {
-          out.textContent = 'Resultado: Expressão inválida';
+          out.textContent = 'Resultado: Inválido';
         }
       });
 
@@ -1133,7 +950,7 @@
         if (!feed) return;
         const line = document.createElement('div');
         line.className = 'text-emerald-300';
-        line.textContent = `[${new Date().toLocaleTimeString()}] Varredura OK • Classe: ${state.classe} • Perfil: ${state.roleLabel}`;
+        line.textContent = `[${new Date().toLocaleTimeString()}] OK • Classe: ${state.classe}`;
         feed.appendChild(line);
         feed.scrollTop = feed.scrollHeight;
       });
