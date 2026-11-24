@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="pt" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>EXorg MT — Sistema Áurea • Complexo Escolar Privado Madre Trindade</title>
+  <title>EXorg MT — Sistema Áurea • S.A.G.A. Núcleo | Madre Trindade</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -85,59 +86,89 @@
     }
 
     .panel-surface {
-      background: rgba(8, 18, 38, 0.84);
+      background: rgba(8, 18, 38, 0.86);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(148, 163, 184, 0.18);
+      border: 1px solid rgba(148, 163, 184, 0.2);
     }
 
     .star-gold {
       color: #f6dc7c;
-      text-shadow: 0 0 18px rgba(212, 175, 55, 0.65);
+      text-shadow: 0 0 18px rgba(212, 175, 55, 0.75);
     }
 
     @keyframes floatStar {
       0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-3px) scale(1.05); }
+      50% { transform: translateY(-4px) scale(1.06); }
     }
 
-    .float-star { animation: floatStar 3.4s ease-in-out infinite; }
+    @keyframes starHopThinking {
+      0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+      25% { transform: translateY(-11px) rotate(-12deg) scale(1.14); }
+      50% { transform: translateY(-3px) rotate(8deg) scale(1.04); }
+      75% { transform: translateY(-13px) rotate(14deg) scale(1.16); }
+    }
+
+    @keyframes pulseRing {
+      0% { transform: scale(0.85); opacity: 0.8; }
+      100% { transform: scale(1.65); opacity: 0; }
+    }
+
+    .float-star { animation: floatStar 3.2s ease-in-out infinite; }
+    .star-thinking { animation: starHopThinking 0.72s ease-in-out infinite; }
+    .pulse-ring { animation: pulseRing 1.4s ease-out infinite; }
 
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #040917; }
-    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.28); border-radius: 999px; }
+    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.3); border-radius: 999px; }
   </style>
 </head>
 <body class="bg-abyss text-slate-100 antialiased">
 
   <div id="watermarkEmblem" aria-hidden="true">
     <div class="font-display text-6xl md:text-8xl font-bold tracking-[0.25em] text-slate-200">EXORG MT</div>
-    <div class="font-mono text-xs md:text-base tracking-[0.45em] text-slate-400 mt-1">MADRE TRINDADE</div>
+    <div class="font-mono text-xs md:text-base tracking-[0.45em] text-slate-400 mt-1">MADRE TRINDADE • S.A.G.A.</div>
   </div>
 
   <canvas id="cosmosCanvas" aria-hidden="true"></canvas>
 
-  <!-- Introdução opcional de 10s -->
+  <!-- Animação de Entrada Encorpada do S.A.G.A. / Sistema Áurea -->
   <div id="cinemaIntroOverlay" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-[#02050d]/95 px-5 py-8">
-    <div class="max-w-lg w-full panel-surface rounded-3xl p-7 text-center">
-      <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-sapphire border border-aurea/50 flex items-center justify-center float-star">
-        <span class="font-display text-3xl star-gold">✦</span>
-      </div>
-      <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-slate-400 mb-1">Lubango • Angola</p>
-      <h1 class="font-display text-4xl font-bold text-white mb-2">EXorg MT — Sistema Áurea</h1>
-      <p class="text-xs text-slate-300 mb-5">Complexo Escolar Privado Madre Trindade — 7.ª à 13.ª Classe e CEJ.</p>
-
-      <div class="flex items-center justify-between text-[11px] font-mono text-slate-300 mb-1.5">
-        <span id="introStageLabel">A preparar ambiente...</span>
-        <span id="introCountdown">10.0s</span>
-      </div>
-      <div class="w-full h-1.5 rounded-full bg-slate-900 overflow-hidden mb-6">
-        <div id="introProgressBar" class="h-full w-0 bg-sky-400 transition-all duration-100"></div>
+    <div class="max-w-xl w-full panel-surface rounded-3xl p-7 md:p-8 text-center space-y-5 border border-sky-400/30">
+      <div class="relative w-20 h-20 mx-auto flex items-center justify-center">
+        <span class="absolute inset-0 rounded-full border border-amber-300/50 pulse-ring"></span>
+        <div class="w-20 h-20 rounded-2xl bg-sapphire border border-aurea/60 flex items-center justify-center float-star">
+          <span class="font-display text-4xl star-gold">✦</span>
+        </div>
       </div>
 
-      <div class="flex flex-wrap justify-center gap-3">
-        <button type="button" id="btnEnterNow" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition">
-          Entrar Agora
+      <div class="space-y-1">
+        <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-sky-400">Lubango • Angola • Núcleo S.A.G.A.</p>
+        <h1 class="font-display text-4xl md:text-5xl font-bold text-white">EXorg MT — Sistema Áurea</h1>
+        <p class="text-xs md:text-sm text-slate-300">
+          Complexo Escolar Privado Madre Trindade — 7.ª à 13.ª Classe &amp; CEJ • Estudo, Histórias, Gestão &amp; Psicologia.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 text-[11px] font-mono">
+        <div id="introMod1" class="p-2 rounded-xl bg-slate-950/90 border border-slate-800 text-slate-400">S.A.G.A. VIVO</div>
+        <div id="introMod2" class="p-2 rounded-xl bg-slate-950/90 border border-slate-800 text-slate-400">WEB REALTIME</div>
+        <div id="introMod3" class="p-2 rounded-xl bg-slate-950/90 border border-slate-800 text-slate-400">IA INFILTRADA</div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between text-[11px] font-mono text-slate-300 mb-1.5">
+          <span id="introStageLabel">A despertar o núcleo S.A.G.A...</span>
+          <span id="introCountdown">10.0s</span>
+        </div>
+        <div class="w-full h-2 rounded-full bg-slate-900 overflow-hidden">
+          <div id="introProgressBar" class="h-full w-0 bg-gradient-to-r from-sky-500 to-amber-300 transition-all duration-100"></div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-3 pt-1">
+        <button type="button" id="btnEnterNow" class="px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition">
+          Entrar Agora no S.A.G.A.
         </button>
         <button type="button" id="btnSkipIntro" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs transition">
           Saltar
@@ -146,14 +177,14 @@
     </div>
   </div>
 
-  <!-- Modal de Conta e Turma (Estudantes / 7.ª à 13.ª / CEJ) -->
+  <!-- Modal de Conta e Classe -->
   <div id="studentGateModal" class="hidden fixed inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
     <div class="w-full max-w-md panel-surface rounded-3xl p-6">
       <div class="flex items-start justify-between gap-3 mb-4">
         <div>
           <span class="font-mono text-[11px] uppercase tracking-widest text-sky-400">Conta Local</span>
           <h2 class="font-display text-3xl font-bold text-white">Identificação &amp; Classe</h2>
-          <p class="text-xs text-slate-400">Os dados ficam guardados neste navegador (sem servidor externo).</p>
+          <p class="text-xs text-slate-400">Dados guardados localmente neste navegador (sem servidor próprio).</p>
         </div>
         <button type="button" id="btnCloseGate" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300">✕</button>
       </div>
@@ -165,7 +196,7 @@
         </div>
         <div>
           <label for="stuEmailInput" class="block text-xs font-semibold text-slate-300 mb-1">E-mail</label>
-          <input id="stuEmailInput" type="email" required placeholder="aluno@exemplo.com" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
+          <input id="stuEmailInput" type="email" required placeholder="musashim309@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
         </div>
         <div>
           <label for="stuClassSelect" class="block text-xs font-semibold text-slate-300 mb-1">Classe / Curso</label>
@@ -192,21 +223,21 @@
     </div>
   </div>
 
-  <!-- Modal Reservado de ADM (acesso lá embaixo, sem divulgar códigos) -->
+  <!-- Modal Reservado de ADM (Chave Secreta no Rodapé) -->
   <div id="adminSecretModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
     <div class="w-full max-w-sm panel-surface rounded-3xl p-6 space-y-4">
       <div class="flex items-center justify-between">
-        <h3 class="font-display text-2xl font-bold text-white">Acesso Reservado</h3>
+        <h3 class="font-display text-2xl font-bold text-white">Acesso ADM</h3>
         <button type="button" id="btnCloseAdminModal" class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300">✕</button>
       </div>
       <form id="adminAuthForm" class="space-y-3">
         <div>
-          <label for="adminCodeInput" class="block text-xs text-slate-300 mb-1">Chave de Acesso</label>
-          <input id="adminCodeInput" type="password" required autocomplete="off" placeholder="Introduz a chave" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm font-mono text-white" />
+          <label for="adminCodeInput" class="block text-xs text-slate-300 mb-1">Chave Reservada</label>
+          <input id="adminCodeInput" type="password" required autocomplete="off" placeholder="Introduz a chave secreta" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm font-mono text-white" />
         </div>
         <p id="adminAuthFeedback" class="text-xs text-slate-400 min-h-[16px]"></p>
         <button type="submit" class="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">
-          Verificar
+          Entrar como ADM
         </button>
       </form>
     </div>
@@ -216,7 +247,7 @@
     <header class="sticky top-0 z-30 panel-surface border-b border-slate-800/90">
       <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-2xl bg-sapphire border border-aurea/50 flex items-center justify-center font-display text-2xl font-bold float-star">
+          <div id="headerStarBadge" class="w-11 h-11 rounded-2xl bg-sapphire border border-aurea/50 flex items-center justify-center font-display text-2xl font-bold float-star">
             <span class="star-gold">✦</span>
           </div>
           <div>
@@ -243,7 +274,7 @@
 
       <nav aria-label="Módulos" class="max-w-6xl mx-auto px-4 pb-3 flex items-center gap-2 overflow-x-auto" id="moduleTabs">
         <button type="button" data-tab="saga" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-500 text-slate-950 whitespace-nowrap transition">
-          S.A.G.A.
+          S.A.G.A. Núcleo
         </button>
         <button type="button" data-tab="academy" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">
           Áurea Academy
@@ -262,25 +293,35 @@
 
     <main class="max-w-6xl w-full mx-auto px-4 py-6 space-y-6 flex-1">
 
-      <!-- S.A.G.A. COM VOZ MASCULINA / FEMININA -->
+      <!-- NÚCLEO S.A.G.A. -->
       <section id="panel-saga" class="module-panel space-y-5">
         <div class="panel-surface rounded-3xl p-5 md:p-7 space-y-4">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <span class="font-mono text-[11px] uppercase tracking-widest text-sky-400">Assistente Humano • MED Angola</span>
-              <h2 class="font-display text-3xl md:text-4xl font-bold text-white">S.A.G.A.</h2>
-              <p class="text-xs md:text-sm text-slate-300">
-                Conversa natural para 7.ª à 13.ª classe e CEJ, com escolha entre voz masculina e feminina.
-              </p>
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div id="sagaThinkingStar" class="w-12 h-12 rounded-2xl bg-sapphire border border-aurea/60 flex items-center justify-center font-display text-3xl shrink-0">
+                <span class="star-gold">✦</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="font-mono text-[11px] uppercase tracking-widest text-sky-400">Núcleo Central • Pai, Mentor &amp; Psicólogo</span>
+                  <span id="sagaLockBadge" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                    S.A.G.A. LIBERADO
+                  </span>
+                </div>
+                <h2 class="font-display text-3xl md:text-4xl font-bold text-white">S.A.G.A.</h2>
+                <p class="text-xs md:text-sm text-slate-300">
+                  Histórias com problemas reais de matemática, biologia, Angola e mundo, gestão de empresas, apoio emocional e pesquisa web ao vivo.
+                </p>
+              </div>
             </div>
+
             <div class="flex items-center gap-2 flex-wrap">
-              <label for="voiceGenderSelect" class="sr-only">Tipo de voz</label>
               <select id="voiceGenderSelect" class="px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-slate-200">
-                <option value="female">Voz Feminina</option>
                 <option value="male">Voz Masculina</option>
+                <option value="female">Voz Feminina</option>
               </select>
               <button type="button" id="btnSpeakSaga" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-sky-300 transition">
-                🔊 Ouvir
+                🔊 Ouvir Voz
               </button>
               <button type="button" id="btnClearSaga" class="px-3 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 text-xs text-slate-400 transition">
                 Limpar
@@ -288,16 +329,37 @@
             </div>
           </div>
 
+          <!-- Atalhos criativos do S.A.G.A. -->
+          <div class="flex flex-wrap gap-2">
+            <button type="button" data-saga-preset="story-math-bio" class="saga-preset-btn px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 transition">
+              História com Matemática &amp; Biologia
+            </button>
+            <button type="button" data-saga-preset="angola-world" class="saga-preset-btn px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 transition">
+              Realidade de Angola &amp; Outros Países
+            </button>
+            <button type="button" data-saga-preset="business-guide" class="saga-preset-btn px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 transition">
+              Como Criar &amp; Gerir Empresa
+            </button>
+            <button type="button" data-saga-preset="psych-talk" class="saga-preset-btn px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 transition">
+              Conversa de Psicólogo / Cabeça Pesada
+            </button>
+          </div>
+
+          <div id="sagaThinkingBar" class="hidden items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-sapphire/60 border border-aurea/35 text-xs font-mono text-aureaBright">
+            <span class="text-lg star-thinking">✦</span>
+            <span id="sagaThinkingStatus">S.A.G.A. a pensar e a consultar dados em tempo real...</span>
+          </div>
+
           <div id="sagaFeed" class="space-y-3 max-h-96 overflow-y-auto p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
             <div class="p-3.5 rounded-2xl bg-sapphire/80 border border-slate-700/80 text-sm text-slate-100 leading-relaxed">
-              <div class="text-[11px] font-mono text-sky-400 mb-1">S.A.G.A. • 7.ª À 13.ª CLASSE &amp; CEJ</div>
-              Fala, Sófocles. Estou aqui contigo para o dia a dia na escola — seja a destravar uma matéria, a organizar o estudo ou a conversar quando a cabeça pesa. Escolhe a voz ali em cima (masculina ou feminina) e manda o que precisas.
+              <div class="text-[11px] font-mono text-sky-400 mb-1">S.A.G.A. • NÚCLEO ATIVO</div>
+              Salve, Sófocles! Eu sou o S.A.G.A. — tô aqui como aquele parceiro, pai e conselheiro que puxa por ti sem te deixar cair. Quer história que esconde problema de matemática ou biologia? Quer saber como montar e gerir um negócio? Quer botar pra fora o que tá apertando na cabeça? Ou quer pesquisar algo ao vivo na internet? Manda ver!
             </div>
           </div>
 
           <form id="sagaForm" class="flex flex-col sm:flex-row gap-2.5">
-            <input id="sagaInput" type="text" placeholder="Escreve a tua dúvida ou desabafo para o S.A.G.A...." class="flex-1 px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
-            <button type="submit" class="px-6 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm transition">
+            <input id="sagaInput" type="text" placeholder="Pergunta qualquer coisa, pede história, negócio, desabafo ou pesquisa em tempo real..." class="flex-1 px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
+            <button type="submit" id="btnSendSaga" class="px-6 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm transition">
               Enviar
             </button>
           </form>
@@ -310,7 +372,7 @@
           <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h2 class="font-display text-3xl md:text-4xl font-bold text-white">Áurea Academy (10 Questões)</h2>
-              <p class="text-xs md:text-sm text-slate-300">Prática diária alinhada ao currículo escolar.</p>
+              <p class="text-xs md:text-sm text-slate-300">Treino diário de 7.ª à 13.ª classe e CEJ.</p>
             </div>
             <div class="flex items-center gap-2.5">
               <span id="academyScoreBadge" class="px-3.5 py-1.5 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-sky-300">
@@ -335,11 +397,11 @@
               <button type="button" data-topic="Matemática & Geometria" class="study-topic-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-sky-500 hover:text-slate-950 border border-slate-700 text-xs font-semibold transition">
                 Matemática &amp; Geometria
               </button>
-              <button type="button" data-topic="Ciências Naturais / Física" class="study-topic-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-sky-500 hover:text-slate-950 border border-slate-700 text-xs font-semibold transition">
-                Ciências / Física
+              <button type="button" data-topic="Biologia, Física & Química" class="study-topic-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-sky-500 hover:text-slate-950 border border-slate-700 text-xs font-semibold transition">
+                Biologia, Física &amp; Química
               </button>
-              <button type="button" data-topic="Gestão & Contabilidade" class="study-topic-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-sky-500 hover:text-slate-950 border border-slate-700 text-xs font-semibold transition">
-                Gestão &amp; Contabilidade
+              <button type="button" data-topic="Criação & Gestão de Empresa" class="study-topic-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-sky-500 hover:text-slate-950 border border-slate-700 text-xs font-semibold transition">
+                Criação &amp; Gestão de Empresa
               </button>
             </div>
             <div id="studyDefinitiveBox" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 text-sm text-slate-200 min-h-[130px]">
@@ -376,6 +438,9 @@
               <button type="button" id="btnToggleVoice" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-sky-300 transition">
                 🎙️ Gravar Voz
               </button>
+              <button type="button" id="btnClearClassChat" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-rose-500/40 text-xs font-semibold text-rose-300 transition">
+                Limpar Chat
+              </button>
             </div>
           </div>
 
@@ -395,19 +460,60 @@
         </div>
       </section>
 
-      <!-- MANAGER & IA INFILTRADA -->
+      <!-- MANAGER, PODER ADM & IA INFILTRADA -->
       <section id="panel-manager" class="module-panel hidden space-y-5">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div class="panel-surface rounded-3xl p-6 space-y-4">
-            <h3 class="font-display text-3xl font-bold text-white">Áurea Manager</h3>
-            <p class="text-xs text-slate-300">Calculadora de notas e acompanhamento de metas.</p>
-            <div class="flex gap-2">
-              <input id="managerCalcInput" type="text" placeholder="Ex.: (15 * 0.5) + (17 * 0.5)" class="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
-              <button type="button" id="btnManagerCalc" class="px-4 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition">
-                Calcular
-              </button>
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <h3 class="font-display text-3xl font-bold text-white">Áurea Manager &amp; Notas</h3>
+              <span id="admStatusPill" class="text-[11px] font-mono px-2.5 py-1 rounded-full bg-slate-900 text-slate-400 border border-slate-700">
+                MODO ALUNO
+              </span>
             </div>
-            <div id="managerCalcResult" class="text-xs font-mono text-sky-300">Resultado: —</div>
+
+            <!-- Lançamento de Avaliações + Média Automática -->
+            <form id="gradeLaunchForm" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3">
+              <div class="text-xs font-mono text-sky-400 uppercase">Lançamento de Avaliação &amp; Média Automática</div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <input id="gradeStudentInput" type="text" required placeholder="Nome do aluno" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+                <input id="gradeSubjectInput" type="text" required placeholder="Disciplina (ex.: Mat)" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+                <input id="gradeValueInput" type="number" step="0.1" min="0" max="20" required placeholder="Nota (0–20)" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-white" />
+              </div>
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <button type="submit" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition">
+                  Lançar Nota
+                </button>
+                <span id="gradesAverageBanner" class="text-xs font-mono text-emerald-300">
+                  Média Geral: — (0 avaliações)
+                </span>
+              </div>
+              <div id="gradesListBox" class="space-y-1.5 max-h-36 overflow-y-auto text-xs text-slate-200 pt-1"></div>
+            </form>
+
+            <!-- Comando Direto do ADM para o Núcleo S.A.G.A. -->
+            <div id="admCommandPanel" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
+              <div class="text-xs font-mono text-amber-300 uppercase">Comando de Atualização / Controlo S.A.G.A.</div>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" id="btnToggleSagaLock" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-amber-300 transition">
+                  🔒 Bloquear / Liberar S.A.G.A.
+                </button>
+                <button type="button" id="btnAdmClearChat" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-rose-300 transition">
+                  🧹 Limpar Chat da Turma
+                </button>
+                <button type="button" id="btnRunAdmCheckup" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-sky-300 transition">
+                  📡 Check-up Rede &amp; S.A.G.A.
+                </button>
+              </div>
+              <div class="flex gap-2">
+                <input id="admPatchInput" type="text" placeholder="Instrução direta para o S.A.G.A. aplicar na sessão..." class="flex-1 px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+                <button type="button" id="btnApplyAdmPatch" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition">
+                  Aplicar
+                </button>
+              </div>
+              <div id="admCheckupBox" class="p-3 rounded-xl bg-black/60 border border-slate-800 font-mono text-[11px] text-slate-300 space-y-1">
+                <div>Check-up em português: aguarda execução ou resposta em tempo real do S.A.G.A.</div>
+              </div>
+            </div>
           </div>
 
           <div class="panel-surface rounded-3xl p-6 space-y-4">
@@ -417,13 +523,15 @@
                 ATIVA
               </span>
             </div>
-            <p class="text-xs text-slate-300">Verificação de integridade local e segurança do ambiente.</p>
-            <div id="sentinelFeed" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 font-mono text-xs text-slate-300 space-y-1.5 max-h-40 overflow-y-auto">
+            <p class="text-xs text-slate-300">
+              Vigília contínua sobre o núcleo S.A.G.A., médias lançadas, mensagens da turma e estado da internet.
+            </p>
+            <div id="sentinelFeed" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 font-mono text-xs text-slate-300 space-y-1.5 max-h-64 overflow-y-auto">
               <div>[OK] Camadas interativas livres de bloqueio.</div>
-              <div>[OK] Classes 7.ª a 13.ª e CEJ configuradas.</div>
+              <div>[OK] Núcleo S.A.G.A., média automática e chat por classe ativos.</div>
             </div>
             <button type="button" id="btnSentinelScan" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-sky-300 transition">
-              Verificar Agora
+              Executar Varredura IA Infiltrada
             </button>
           </div>
         </div>
@@ -431,7 +539,7 @@
 
     </main>
 
-    <!-- Rodapé lá embaixo com acesso reservado ADM -->
+    <!-- Rodapé com acesso reservado ADM -->
     <footer class="max-w-6xl w-full mx-auto px-4 pt-8 pb-4 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
       <span>EXorg MT — Sistema Áurea • Complexo Escolar Privado Madre Trindade (Lubango)</span>
       <button type="button" id="btnFooterAdmin" class="px-3 py-1.5 rounded-lg bg-slate-950 hover:bg-slate-900 border border-slate-800 text-[11px] font-mono text-slate-400 hover:text-slate-200 transition">
@@ -442,28 +550,33 @@
 
   <script>
     (function () {
-      // Hash simples não-reversível para validar chave secreta sem expor o código em texto claro
-      function digestKey(str) {
-        let h = 2166136261;
-        for (let i = 0; i < str.length; i++) {
-          h ^= str.charCodeAt(i);
-          h = Math.imul(h, 16777619);
+      // Validação secreta (não imprime código no DOM)
+      function secretDigest(v) {
+        let h = 0x811c9dc5;
+        for (let i = 0; i < v.length; i++) {
+          h ^= v.charCodeAt(i);
+          h = Math.imul(h, 0x01000193);
         }
         return (h >>> 0).toString(16);
       }
+      const ADM_TARGET_DIGEST = secretDigest('2013');
 
       const state = {
         nome: 'Sófocles',
         email: '',
         classe: '7.ª Classe',
         isAdmin: false,
-        voiceGender: 'female',
-        lastSagaText: 'Fala, Sófocles. Estou aqui contigo para o dia a dia na escola.',
+        sagaLocked: false,
+        customDirective: '',
+        voiceGender: 'male',
+        audioUnlocked: false,
+        lastSagaText: 'Salve, Sófocles! Tô aqui como parceiro, pai e conselheiro pra gente estudar, criar histórias, falar de negócios, desabafar e buscar respostas reais.',
         score: 0,
         lado0Hits: 0,
         lado0Total: 0,
         voiceActive: false,
         mediaRecorder: null,
+        grades: [],
         classChats: {
           '7.ª Classe': [],
           '8.ª Classe': [],
@@ -476,7 +589,81 @@
         },
       };
 
-      // Céu noturno sem bloquear toques
+      // --- DESBLOQUEIO DE ÁUDIO & VOZ MASCULINA / FEMININA ---
+      function unlockAudioEngine() {
+        state.audioUnlocked = true;
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.getVoices();
+        }
+      }
+      window.addEventListener('pointerdown', unlockAudioEngine, { once: true, passive: true });
+      window.addEventListener('keydown', unlockAudioEngine, { once: true, passive: true });
+
+      if ('speechSynthesis' in window && typeof window.speechSynthesis.onvoiceschanged !== 'undefined') {
+        window.speechSynthesis.onvoiceschanged = () => {
+          window.speechSynthesis.getVoices();
+        };
+      }
+
+      function playFallbackTone(isMale) {
+        try {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) return;
+          const actx = new AudioCtx();
+          const osc = actx.createOscillator();
+          const gain = actx.createGain();
+          osc.type = isMale ? 'triangle' : 'sine';
+          osc.frequency.setValueAtTime(isMale ? 190 : 340, actx.currentTime);
+          gain.gain.setValueAtTime(0.04, actx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + 0.18);
+          osc.connect(gain);
+          gain.connect(actx.destination);
+          osc.start();
+          osc.stop(actx.currentTime + 0.19);
+        } catch {}
+      }
+
+      function speakSaga(rawText) {
+        const clean = String(rawText || '').replace(/<[^>]*>/g, '').replace(/\*\*/g, '').trim();
+        if (!clean) return;
+        const isMale = state.voiceGender === 'male';
+
+        if (!('speechSynthesis' in window)) {
+          playFallbackTone(isMale);
+          return;
+        }
+
+        try {
+          window.speechSynthesis.cancel();
+          const utter = new SpeechSynthesisUtterance(clean);
+          utter.lang = 'pt-PT';
+          const voices = window.speechSynthesis.getVoices() || [];
+          const ptVoices = voices.filter((v) => /pt/i.test(v.lang));
+          const list = ptVoices.length ? ptVoices : voices;
+
+          if (isMale) {
+            const mVoice = list.find((v) => /male|masculin|daniel|ricardo|antonio|antónio|jorge|paulo|tiago|felipe|bruno/i.test(v.name));
+            utter.voice = mVoice || list[0] || null;
+            utter.pitch = 0.78;
+            utter.rate = 1.0;
+          } else {
+            const fVoice = list.find((v) => /female|feminin|maria|ines|inês|catarina|ana|clara|lucia|lúcia|camila|vitoria|vitória/i.test(v.name));
+            utter.voice = fVoice || list[list.length - 1] || null;
+            utter.pitch = 1.22;
+            utter.rate = 1.04;
+          }
+
+          utter.onerror = () => playFallbackTone(isMale);
+          window.speechSynthesis.speak(utter);
+          if (voices.length === 0) {
+            playFallbackTone(isMale);
+          }
+        } catch {
+          playFallbackTone(isMale);
+        }
+      }
+
+      // --- CÉU ESTRELADO ---
       const canvas = document.getElementById('cosmosCanvas');
       const ctx = canvas ? canvas.getContext('2d') : null;
       let stars = [];
@@ -487,13 +674,13 @@
         canvas.width = Math.floor(window.innerWidth * dpr);
         canvas.height = Math.floor(window.innerHeight * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const n = Math.min(110, Math.floor((window.innerWidth * window.innerHeight) / 12000));
+        const n = Math.min(115, Math.floor((window.innerWidth * window.innerHeight) / 11500));
         stars = Array.from({ length: n }, () => ({
           x: Math.random() * window.innerWidth,
           y: Math.random() * window.innerHeight,
-          r: Math.random() * 1.4 + 0.3,
+          r: Math.random() * 1.4 + 0.35,
           a: Math.random() * 0.65 + 0.2,
-          v: (Math.random() - 0.5) * 0.12,
+          v: (Math.random() - 0.5) * 0.14,
         }));
       }
 
@@ -516,7 +703,7 @@
       initCosmos();
       drawCosmos();
 
-      // Intro 10s
+      // --- ANIMAÇÃO DE ENTRADA ---
       const introOverlay = document.getElementById('cinemaIntroOverlay');
       const introBar = document.getElementById('introProgressBar');
       const introCountdown = document.getElementById('introCountdown');
@@ -538,56 +725,86 @@
         introOverlay.setAttribute('data-hidden', 'false');
         const total = 10000;
         let elapsed = 0;
+        const m1 = document.getElementById('introMod1');
+        const m2 = document.getElementById('introMod2');
+        const m3 = document.getElementById('introMod3');
+
         introTimer = setInterval(() => {
           elapsed += 100;
           const pct = Math.min(100, (elapsed / total) * 100);
           if (introBar) introBar.style.width = `${pct}%`;
           if (introCountdown) introCountdown.textContent = `${Math.max(0, (total - elapsed) / 1000).toFixed(1)}s`;
-          if (introStageLabel) introStageLabel.textContent = pct < 50 ? 'A carregar módulos...' : 'Quase pronto...';
+
+          if (pct >= 25 && m1) m1.className = 'p-2 rounded-xl bg-sky-500/20 border border-sky-400/50 text-sky-300';
+          if (pct >= 55 && m2) m2.className = 'p-2 rounded-xl bg-amber-400/20 border border-amber-300/50 text-amber-200';
+          if (pct >= 80 && m3) m3.className = 'p-2 rounded-xl bg-emerald-500/20 border border-emerald-400/50 text-emerald-300';
+
+          if (introStageLabel) {
+            if (pct < 35) introStageLabel.textContent = 'A despertar o núcleo S.A.G.A...';
+            else if (pct < 70) introStageLabel.textContent = 'A ligar canais de pesquisa em tempo real...';
+            else introStageLabel.textContent = 'A ativar IA Infiltrada & gestão de notas...';
+          }
           if (elapsed >= total) closeIntro();
         }, 100);
       }
 
-      document.getElementById('btnEnterNow')?.addEventListener('click', closeIntro);
+      document.getElementById('btnEnterNow')?.addEventListener('click', () => {
+        unlockAudioEngine();
+        closeIntro();
+      });
       document.getElementById('btnSkipIntro')?.addEventListener('click', closeIntro);
       document.getElementById('btnReplayIntro')?.addEventListener('click', startIntro);
 
-      // Modal Conta / Classe
+      // --- CONTA / CLASSE ---
       const gateModal = document.getElementById('studentGateModal');
       const sessionBadge = document.getElementById('sessionBadge');
 
-      function refreshSessionBadge() {
-        if (!sessionBadge) return;
-        const tag = state.isAdmin ? ' • ADM' : '';
-        sessionBadge.textContent = `${state.nome} • ${state.classe}${tag}`;
+      function refreshBadges() {
+        if (sessionBadge) {
+          sessionBadge.textContent = `${state.nome} • ${state.classe}${state.isAdmin ? ' • ADM' : ''}`;
+        }
+        const pill = document.getElementById('admStatusPill');
+        if (pill) {
+          pill.textContent = state.isAdmin ? 'ADM ATIVO' : 'MODO ALUNO';
+          pill.className = state.isAdmin
+            ? 'text-[11px] font-mono px-2.5 py-1 rounded-full bg-amber-400/20 text-amber-200 border border-amber-300/40'
+            : 'text-[11px] font-mono px-2.5 py-1 rounded-full bg-slate-900 text-slate-400 border border-slate-700';
+        }
+        const lockBadge = document.getElementById('sagaLockBadge');
+        if (lockBadge) {
+          lockBadge.textContent = state.sagaLocked ? 'S.A.G.A. BLOQUEADO' : 'S.A.G.A. LIBERADO';
+          lockBadge.className = state.sagaLocked
+            ? 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40'
+            : 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30';
+        }
       }
 
-      function openGate() {
+      document.getElementById('btnOpenGate')?.addEventListener('click', () => {
         gateModal?.classList.remove('hidden');
         gateModal?.setAttribute('data-hidden', 'false');
-      }
-
-      function closeGate() {
+      });
+      document.getElementById('btnCloseGate')?.addEventListener('click', () => {
         gateModal?.classList.add('hidden');
         gateModal?.setAttribute('data-hidden', 'true');
-      }
-
-      document.getElementById('btnOpenGate')?.addEventListener('click', openGate);
-      document.getElementById('btnCloseGate')?.addEventListener('click', closeGate);
-      document.getElementById('btnCancelGate')?.addEventListener('click', closeGate);
+      });
+      document.getElementById('btnCancelGate')?.addEventListener('click', () => {
+        gateModal?.classList.add('hidden');
+        gateModal?.setAttribute('data-hidden', 'true');
+      });
 
       document.getElementById('studentGateForm')?.addEventListener('submit', (e) => {
         e.preventDefault();
         state.nome = (document.getElementById('stuNameInput')?.value || '').trim() || 'Sófocles';
         state.email = (document.getElementById('stuEmailInput')?.value || '').trim();
         state.classe = document.getElementById('stuClassSelect')?.value || '7.ª Classe';
-        refreshSessionBadge();
+        refreshBadges();
         updateChatHeader();
         renderChat();
-        closeGate();
+        gateModal?.classList.add('hidden');
+        gateModal?.setAttribute('data-hidden', 'true');
       });
 
-      // Modal ADM no rodapé
+      // --- ACESSO ADM SECRETO NO RODAPÉ ---
       const adminModal = document.getElementById('adminSecretModal');
       const adminFeedback = document.getElementById('adminAuthFeedback');
 
@@ -606,26 +823,26 @@
 
       document.getElementById('adminAuthForm')?.addEventListener('submit', (e) => {
         e.preventDefault();
-        const val = (document.getElementById('adminCodeInput')?.value || '').trim();
-        // Aceita chave não nula validada por digest interno
-        if (val.length >= 4 && digestKey(val) !== '0') {
+        const typed = (document.getElementById('adminCodeInput')?.value || '').trim();
+        if (secretDigest(typed) === ADM_TARGET_DIGEST) {
           state.isAdmin = true;
-          refreshSessionBadge();
+          refreshBadges();
+          logSentinel('Acesso ADM validado com sucesso.');
           if (adminFeedback) {
-            adminFeedback.textContent = 'Modo ADM ativado nesta sessão.';
+            adminFeedback.textContent = 'Acesso ADM concedido.';
             adminFeedback.className = 'text-xs text-emerald-400 min-h-[16px]';
           }
           setTimeout(() => {
             adminModal?.classList.add('hidden');
             adminModal?.setAttribute('data-hidden', 'true');
-          }, 500);
+          }, 450);
         } else if (adminFeedback) {
           adminFeedback.textContent = 'Chave inválida.';
           adminFeedback.className = 'text-xs text-rose-400 min-h-[16px]';
         }
       });
 
-      // Abas
+      // --- NAVEGAÇÃO ENTRE ABAS ---
       const tabButtons = document.querySelectorAll('.tab-btn');
       const panels = document.querySelectorAll('.module-panel');
 
@@ -647,81 +864,209 @@
 
       tabButtons.forEach((b) => b.addEventListener('click', () => selectTab(b.dataset.tab)));
 
-      // S.A.G.A. + Voz Masculina e Feminina
+      // --- IA INFILTRADA ---
+      function logSentinel(msg) {
+        const feed = document.getElementById('sentinelFeed');
+        if (!feed) return;
+        const div = document.createElement('div');
+        div.className = 'text-emerald-300';
+        div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        feed.appendChild(div);
+        feed.scrollTop = feed.scrollHeight;
+      }
+
+      // --- CHECK-UP EM PORTUGUÊS NO MODO ADM ---
+      async function runAdmCheckupInPortuguese(liveSummary) {
+        const box = document.getElementById('admCheckupBox');
+        if (!box) return;
+        const online = navigator.onLine ? 'Ligado à internet' : 'Sem ligação detetada no navegador';
+        const lines = [
+          `Estado da rede: ${online}.`,
+          `Núcleo S.A.G.A.: ${state.sagaLocked ? 'Bloqueado pelo ADM' : 'Operacional e livre'}.`,
+          `Perfil atual: ${state.isAdmin ? 'Administrador (poder total ativo)' : 'Estudante'}.`,
+          `Pesquisa em tempo real: ${liveSummary || 'Pronta para consultar fontes abertas ao vivo'}.`,
+        ];
+        if (state.isAdmin) {
+          box.innerHTML = lines.map((l) => `<div>• ${l}</div>`).join('');
+        } else {
+          box.innerHTML = `<div>Check-up disponível em português no modo ADM (rede: ${online}).</div>`;
+        }
+      }
+
+      // --- PESQUISA REALTIME NA INTERNET ---
+      async function searchRealtimeWeb(query) {
+        if (!navigator.onLine) {
+          return { ok: false, info: 'Sem ligação de internet ativa no dispositivo no momento.' };
+        }
+        try {
+          const url = `https://pt.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&utf8=&format=json&origin=*`;
+          const resp = await fetch(url);
+          if (!resp.ok) throw new Error('HTTP ' + resp.status);
+          const data = await resp.json();
+          const hit = data?.query?.search?.[0];
+          if (hit) {
+            const snippet = String(hit.snippet || '').replace(/<[^>]*>/g, '');
+            return {
+              ok: true,
+              info: `Fonte ao vivo (${hit.title}): ${snippet}`,
+            };
+          }
+          return { ok: true, info: 'Ligação ativa, mas sem artigo direto correspondente.' };
+        } catch {
+          return { ok: false, info: 'Não foi possível concluir a consulta externa agora.' };
+        }
+      }
+
+      // --- S.A.G.A. (ESTRELA SALTITANTE + HISTÓRIAS + NEGÓCIOS + PSICÓLOGO + REALTIME) ---
       const sagaFeed = document.getElementById('sagaFeed');
+      const thinkingBar = document.getElementById('sagaThinkingBar');
+      const thinkingStar = document.getElementById('sagaThinkingStar');
+      const thinkingStatus = document.getElementById('sagaThinkingStatus');
       const voiceSelect = document.getElementById('voiceGenderSelect');
 
       voiceSelect?.addEventListener('change', () => {
         state.voiceGender = voiceSelect.value;
+        speakSaga(state.voiceGender === 'male' ? 'Voz masculina ativada.' : 'Voz feminina ativada.');
       });
 
-      function speakText(text) {
-        if (!('speechSynthesis' in window)) return;
-        window.speechSynthesis.cancel();
-        const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = 'pt-PT';
-        const voices = window.speechSynthesis.getVoices() || [];
-        const ptVoices = voices.filter((v) => v.lang.toLowerCase().startsWith('pt'));
-        const pool = ptVoices.length ? ptVoices : voices;
-
-        if (state.voiceGender === 'male') {
-          const maleMatch = pool.find((v) => /male|masculin|daniel|ricardo|antonio|jorge|paulo|tiago/i.test(v.name));
-          utter.voice = maleMatch || pool[0] || null;
-          utter.pitch = 0.82;
-          utter.rate = 0.98;
-        } else {
-          const femaleMatch = pool.find((v) => /female|feminin|maria|ines|inês|catarina|ana|clara|lucia|lúcia/i.test(v.name));
-          utter.voice = femaleMatch || pool[1] || pool[0] || null;
-          utter.pitch = 1.15;
-          utter.rate = 1.02;
-        }
-
-        window.speechSynthesis.speak(utter);
+      function setSagaThinking(active, statusText) {
+        if (!thinkingBar || !thinkingStar) return;
+        thinkingBar.classList.toggle('hidden', !active);
+        thinkingBar.classList.toggle('flex', active);
+        thinkingBar.setAttribute('data-hidden', String(!active));
+        thinkingStar.classList.toggle('star-thinking', active);
+        if (statusText && thinkingStatus) thinkingStatus.textContent = statusText;
       }
 
-      function appendSagaMsg(sender, text, isUser = false) {
+      function appendSagaBubble(author, text, isUser = false) {
         if (!sagaFeed) return;
-        const div = document.createElement('div');
-        div.className = isUser
+        const d = document.createElement('div');
+        d.className = isUser
           ? 'p-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-sm text-slate-100 ml-auto max-w-[92%]'
-          : 'p-3.5 rounded-2xl bg-sapphire/80 border border-slate-700/80 text-sm text-slate-100 leading-relaxed';
-        div.innerHTML = `<div class="text-[11px] font-mono text-sky-400 mb-1">${sender}</div>${text}`;
-        sagaFeed.appendChild(div);
+          : 'p-3.5 rounded-2xl bg-sapphire/80 border border-slate-700/80 text-sm text-slate-100 leading-relaxed whitespace-pre-line';
+        d.innerHTML = `<div class="text-[11px] font-mono text-sky-400 mb-1">${author}</div>${text}`;
+        sagaFeed.appendChild(d);
         sagaFeed.scrollTop = sagaFeed.scrollHeight;
+      }
+
+      function buildSagaCreativeReply(prompt, webInfo) {
+        const p = prompt.toLowerCase();
+        const customNote = state.customDirective ? `\n[Diretriz ativa do ADM]: ${state.customDirective}` : '';
+
+        if (p.includes('história') || p.includes('historia') || p.includes('matemát') || p.includes('matemat') || p.includes('biolog')) {
+          return (
+            `Bora nessa, ${state.nome}! Imagina uma missão no sul de Angola, perto da Huíla e do Namibe: tu e a tua equipa montaram um posto de água e energia limpa para uma comunidade.\n` +
+            `• Problema de Biologia: numa amostra de água do rio, cada 1 mL tinha 120 microrganismos antes da filtragem e a filtragem reduziu 75% deles. Quantos sobram por mL?\n` +
+            `• Problema de Matemática: se cada filtro custa 2.500 Kz e precisas de 6 filtros, qual é o custo total? E se dividires entre 3 parceiros em partes iguais, quanto paga cada um?\n` +
+            `Tenta resolver aí e me mostra o teu raciocínio — sem pressa, eu te ajudo a chegar lá!` +
+            (webInfo ? `\n\n🌐 Tempo real: ${webInfo}` : '') +
+            customNote
+          );
+        }
+
+        if (p.includes('angola') || p.includes('país') || p.includes('pais') || p.includes('mundo')) {
+          return (
+            `Olha o panorama, ${state.nome}: tanto em Angola quanto noutros países, quem ganha espaço é quem entende o contexto real onde vive — logística, custo de vida, trabalho, tecnologia e adaptação.\n` +
+            `Compara sempre como uma mesma ideia funciona no Lubango ou em Luanda e como funciona fora: o que muda no preço, no transporte, no hábito das pessoas e na necessidade real?\n` +
+            `Se quiseres, escolhe um país ou tema e a gente compara ponto por ponto.` +
+            (webInfo ? `\n\n🌐 Tempo real: ${webInfo}` : '') +
+            customNote
+          );
+        }
+
+        if (p.includes('empresa') || p.includes('negócio') || p.includes('negocio') || p.includes('criar') || p.includes('gerir')) {
+          return (
+            `Pra criar e gerir uma empresa de verdade sem quebrar no segundo mês, ${state.nome}, segue esta ordem prática:\n` +
+            `1) Problema real: o que o cliente paga pra resolver hoje?\n` +
+            `2) Custo e margem: calcula custo fixo, custo variável e quanto sobra limpo por venda — nunca confunda faturamento com lucro.\n` +
+            `3) Caixa e rotina: separa dinheiro pessoal do dinheiro do negócio, anota cada entrada/saída e ouve o cliente toda semana.\n` +
+            `Qual tipo de negócio tu tens em mente criar?` +
+            (webInfo ? `\n\n🌐 Tempo real: ${webInfo}` : '') +
+            customNote
+          );
+        }
+
+        if (p.includes('psic') || p.includes('cabeça') || p.includes('cabeca') || p.includes('cansad') || p.includes('triste') || p.includes('press')) {
+          return (
+            `Ei, ${state.nome}... tô te ouvindo aqui, de verdade. Quando a cabeça tá pesada, a gente tende a cobrar de si o impossível de uma vez só.\n` +
+            `Respira fundo, solta os ombros e me diz: o que tá doendo mais agora é cobrança de fora, cansaço físico, dúvida do futuro ou alguém que te magoou? Fala aberto — aqui é espaço seguro.` +
+            customNote
+          );
+        }
+
+        return (
+          `Tô contigo, ${state.nome} (${state.classe})! Sobre "${prompt}": vamos olhar direto pro ponto principal, sem enrolação e com clareza.\n` +
+          `Me diz como tu queres atacar isso agora: passo a passo, com exemplo prático ou num papo franco?` +
+          (webInfo ? `\n\n🌐 Tempo real: ${webInfo}` : '') +
+          customNote
+        );
+      }
+
+      async function handleSagaPrompt(text) {
+        if (state.sagaLocked && !state.isAdmin) {
+          appendSagaBubble('S.A.G.A.', 'O núcleo S.A.G.A. foi temporariamente bloqueado pelo ADM.', false);
+          return;
+        }
+        unlockAudioEngine();
+        appendSagaBubble(state.nome, text, true);
+        setSagaThinking(true, 'Estrela S.A.G.A. saltando: a pensar e a consultar a internet...');
+
+        const web = await searchRealtimeWeb(text);
+        const reply = buildSagaCreativeReply(text, web.ok ? web.info : '');
+
+        await new Promise((r) => setTimeout(r, 650));
+        setSagaThinking(false);
+
+        state.lastSagaText = reply;
+        appendSagaBubble('S.A.G.A.', reply, false);
+        await runAdmCheckupInPortuguese(web.info);
+        logSentinel(`S.A.G.A. respondeu na ${state.classe} (${web.ok ? 'com dados online' : 'modo local'}).`);
+        speakSaga(reply);
       }
 
       document.getElementById('sagaForm')?.addEventListener('submit', (e) => {
         e.preventDefault();
         const inp = document.getElementById('sagaInput');
-        const q = (inp?.value || '').trim();
-        if (!q) return;
-        appendSagaMsg(state.nome, q, true);
-        inp.value = '';
-        const reply = `Na ${state.classe}, sobre "${q}": vamos com calma. Diz-me o que já percebeste até aqui e qual parte está a pedir mais atenção.`;
-        state.lastSagaText = reply;
-        appendSagaMsg('S.A.G.A.', reply, false);
+        const val = (inp?.value || '').trim();
+        if (!val) return;
+        if (inp) inp.value = '';
+        handleSagaPrompt(val);
+      });
+
+      document.querySelectorAll('.saga-preset-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const kind = btn.dataset.sagaPreset;
+          const map = {
+            'story-math-bio': 'Cria uma história divertida com problemas de matemática e biologia.',
+            'angola-world': 'Explica a realidade de Angola e compara com outros países.',
+            'business-guide': 'Como criar e gerir uma empresa do zero com segurança.',
+            'psych-talk': 'Estou com a cabeça pesada, conversa comigo como psicólogo e parceiro.',
+          };
+          handleSagaPrompt(map[kind] || 'Ajuda-me a estudar hoje.');
+        });
       });
 
       document.getElementById('btnSpeakSaga')?.addEventListener('click', () => {
-        speakText(state.lastSagaText);
+        unlockAudioEngine();
+        speakSaga(state.lastSagaText);
       });
 
       document.getElementById('btnClearSaga')?.addEventListener('click', () => {
         if (sagaFeed) {
           sagaFeed.innerHTML = '';
-          const msg = `Conversa limpa, ${state.nome}. Recomeçamos quando quiseres.`;
+          const msg = `Conversa limpa, ${state.nome}. Bora recomeçar com energia boa!`;
           state.lastSagaText = msg;
-          appendSagaMsg('S.A.G.A.', msg, false);
+          appendSagaBubble('S.A.G.A.', msg, false);
         }
       });
 
-      // Academy 10 questões
+      // --- ÁUREA ACADEMY (10 QUESTÕES) ---
       const academyContainer = document.getElementById('academyQuestionsContainer');
       const academyBadge = document.getElementById('academyScoreBadge');
       const qs = [
         { q: 'Qual é o valor de 7 × 8?', opts: ['54', '56', '64'], ans: '56' },
         { q: 'Quanto é 1/2 + 1/4?', opts: ['3/4', '2/6', '1/6'], ans: '3/4' },
-        { q: 'Qual é a capital da Huíla?', opts: ['Lubango', 'Namibe', 'Huambo'], ans: 'Lubango' },
+        { q: 'Qual é a capital da província da Huíla?', opts: ['Lubango', 'Namibe', 'Huambo'], ans: 'Lubango' },
         { q: 'Na equação x + 9 = 20, x vale:', opts: ['11', '29', '9'], ans: '11' },
         { q: 'Unidade base de massa no SI:', opts: ['Quilograma (kg)', 'Grama (g)', 'Litro (L)'], ans: 'Quilograma (kg)' },
         { q: 'Soma dos ângulos internos de um triângulo:', opts: ['180°', '90°', '270°'], ans: '180°' },
@@ -777,12 +1122,12 @@
       document.getElementById('btnResetAcademy')?.addEventListener('click', renderAcademy);
       renderAcademy();
 
-      // Estudo Definitivo & Lado 0
+      // --- ESTUDO DEFINITIVO & LADO 0 ---
       const studyBox = document.getElementById('studyDefinitiveBox');
       document.querySelectorAll('.study-topic-btn').forEach((btn) => {
         btn.addEventListener('click', () => {
           if (!studyBox) return;
-          studyBox.innerHTML = `<p class="font-bold text-sky-300 mb-1">${btn.dataset.topic}</p><p class="text-sm text-slate-200">Resolve este ponto com calma: escreve primeiro os dados do enunciado, escolhe a relação adequada e confere o resultado final.</p>`;
+          studyBox.innerHTML = `<p class="font-bold text-sky-300 mb-1">${btn.dataset.topic}</p><p class="text-sm text-slate-200">Escreve os dados, identifica o conceito central e resolve por etapas sem pular contas.</p>`;
         });
       });
 
@@ -824,7 +1169,7 @@
       }
       nextLado0();
 
-      // Chat por classe, DMs, fotos (11.ª+) e voz
+      // --- CHAT POR CLASSE, DMs, FOTOS (11.ª+), VOZ & LIMPEZA ---
       const chatBox = document.getElementById('chatMessagesBox');
       const chatMode = document.getElementById('chatModeSelect');
       const dmTarget = document.getElementById('chatDmTargetInput');
@@ -849,7 +1194,7 @@
         const arr = state.classChats[state.classe] || [];
         chatBox.innerHTML = '';
         if (!arr.length) {
-          chatBox.innerHTML = `<div class="text-xs text-slate-400">Sem mensagens nesta turma ainda.</div>`;
+          chatBox.innerHTML = `<div class="text-xs text-slate-400">Chat limpo ou sem mensagens nesta turma.</div>`;
           return;
         }
         arr.forEach((m) => {
@@ -867,6 +1212,12 @@
           chatBox.appendChild(d);
         });
         chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function clearCurrentClassChat(actorLabel) {
+        state.classChats[state.classe] = [];
+        renderChat();
+        logSentinel(`Chat da ${state.classe} limpo por ${actorLabel}.`);
       }
 
       function pushChatItem({ text, img = null }) {
@@ -891,6 +1242,10 @@
         if (!t) return;
         pushChatItem({ text: t });
         inp.value = '';
+      });
+
+      document.getElementById('btnClearClassChat')?.addEventListener('click', () => {
+        clearCurrentClassChat(state.nome);
       });
 
       document.getElementById('chatPhotoInput')?.addEventListener('change', (e) => {
@@ -931,29 +1286,92 @@
         }
       });
 
-      // Manager & IA Infiltrada
-      document.getElementById('btnManagerCalc')?.addEventListener('click', () => {
-        const raw = (document.getElementById('managerCalcInput')?.value || '').trim();
-        const out = document.getElementById('managerCalcResult');
-        const clean = raw.replace(/[^0-9+\-*/().\s]/g, '');
-        if (!clean || !out) return;
-        try {
-          const val = Function(`"use strict"; return (${clean})`)();
-          out.textContent = `Resultado: ${Number.isFinite(val) ? val : 'Inválido'}`;
-        } catch {
-          out.textContent = 'Resultado: Inválido';
+      // --- LANÇAMENTO DE AVALIAÇÕES + MÉDIA AUTOMÁTICA + PODERES ADM ---
+      function refreshGradesUI() {
+        const listBox = document.getElementById('gradesListBox');
+        const avgBanner = document.getElementById('gradesAverageBanner');
+        if (!listBox || !avgBanner) return;
+
+        if (!state.grades.length) {
+          listBox.innerHTML = `<div class="text-slate-500">Nenhuma avaliação lançada ainda.</div>`;
+          avgBanner.textContent = 'Média Geral: — (0 avaliações)';
+          return;
         }
+
+        const sum = state.grades.reduce((acc, g) => acc + g.nota, 0);
+        const avg = (sum / state.grades.length).toFixed(2);
+        avgBanner.textContent = `Média Geral: ${avg} / 20 (${state.grades.length} aval.)`;
+
+        listBox.innerHTML = state.grades
+          .map(
+            (g, i) =>
+              `<div class="flex items-center justify-between px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800"><span>#${i + 1} <strong>${g.aluno}</strong> • ${g.disciplina}</span><span class="font-mono text-sky-300">${g.nota.toFixed(1)}</span></div>`
+          )
+          .join('');
+      }
+
+      document.getElementById('gradeLaunchForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!state.isAdmin) {
+          alert('Ativa o acesso ADM no rodapé para lançar avaliações.');
+          return;
+        }
+        const aluno = (document.getElementById('gradeStudentInput')?.value || '').trim();
+        const disciplina = (document.getElementById('gradeSubjectInput')?.value || '').trim();
+        const nota = parseFloat(document.getElementById('gradeValueInput')?.value || '');
+        if (!aluno || !disciplina || Number.isNaN(nota)) return;
+
+        state.grades.push({ aluno, disciplina, nota });
+        refreshGradesUI();
+        logSentinel(`Nota ${nota.toFixed(1)} lançada para ${aluno} (${disciplina}).`);
+        e.target.reset();
+      });
+
+      document.getElementById('btnToggleSagaLock')?.addEventListener('click', () => {
+        if (!state.isAdmin) {
+          alert('Apenas o ADM pode bloquear ou liberar o S.A.G.A.');
+          return;
+        }
+        state.sagaLocked = !state.sagaLocked;
+        refreshBadges();
+        runAdmCheckupInPortuguese('Estado do núcleo S.A.G.A. atualizado pelo ADM');
+        logSentinel(state.sagaLocked ? 'S.A.G.A. bloqueado pelo ADM.' : 'S.A.G.A. liberado pelo ADM.');
+      });
+
+      document.getElementById('btnAdmClearChat')?.addEventListener('click', () => {
+        if (!state.isAdmin) {
+          alert('Apenas o ADM pode executar limpeza geral do chat.');
+          return;
+        }
+        clearCurrentClassChat('ADM');
+      });
+
+      document.getElementById('btnRunAdmCheckup')?.addEventListener('click', () => {
+        runAdmCheckupInPortuguese('Verificação manual em português concluída');
+      });
+
+      document.getElementById('btnApplyAdmPatch')?.addEventListener('click', () => {
+        if (!state.isAdmin) {
+          alert('Apenas o ADM pode aplicar diretrizes diretas ao núcleo S.A.G.A.');
+          return;
+        }
+        const inp = document.getElementById('admPatchInput');
+        const cmd = (inp?.value || '').trim();
+        if (!cmd) return;
+        state.customDirective = cmd;
+        if (inp) inp.value = '';
+        appendSagaBubble('S.A.G.A. (NÚCLEO)', `Diretriz recebida do ADM e aplicada ao núcleo sem quebrar o sistema: "${cmd}".`, false);
+        logSentinel(`Diretriz ADM aplicada ao S.A.G.A.: ${cmd}`);
+        runAdmCheckupInPortuguese(`Diretriz ativa: ${cmd}`);
       });
 
       document.getElementById('btnSentinelScan')?.addEventListener('click', () => {
-        const feed = document.getElementById('sentinelFeed');
-        if (!feed) return;
-        const line = document.createElement('div');
-        line.className = 'text-emerald-300';
-        line.textContent = `[${new Date().toLocaleTimeString()}] OK • Classe: ${state.classe}`;
-        feed.appendChild(line);
-        feed.scrollTop = feed.scrollHeight;
+        logSentinel(`Varredura OK • Classe: ${state.classe} • ADM: ${state.isAdmin ? 'SIM' : 'NÃO'} • Notas: ${state.grades.length}`);
       });
+
+      refreshBadges();
+      refreshGradesUI();
+      runAdmCheckupInPortuguese('Sistema pronto');
     })();
   </script>
 </body>
