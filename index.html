@@ -1,14 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="pt" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>EXorg MT — Sistema Áurea • S.A.G.A. Núcleo | Madre Trindade</title>
+  <title>EXorg MT — Sistema Áurea • Complexo Escolar Privado Madre Trindade</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -20,10 +19,10 @@
             mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
-            abyss: '#030712',
-            sapphire: '#09162e',
-            aurea: '#d4af37',
-            aureaBright: '#f6dc7c',
+            abyss: '#040811',
+            slateCard: '#0a1220',
+            steel: '#132036',
+            accentBlue: '#38bdf8',
           },
         },
       },
@@ -31,1347 +30,1289 @@
   </script>
   <style>
     * { box-sizing: border-box; }
-
     html, body {
       margin: 0;
       padding: 0;
       min-height: 100vh;
-      background: radial-gradient(circle at 20% 10%, #091836 0%, #040917 58%, #02050d 100%);
-      color: #f1f5f9;
+      background: linear-gradient(180deg, #060d1a 0%, #03070f 100%);
+      color: #e2e8f0;
       font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
       overflow-x: hidden;
       -webkit-tap-highlight-color: transparent;
     }
-
-    #watermarkEmblem,
     #cosmosCanvas {
       position: fixed;
       inset: 0;
-      pointer-events: none !important;
-      user-select: none;
-    }
-
-    #watermarkEmblem {
       z-index: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      opacity: 0.035;
-      transform: rotate(-10deg);
-    }
-
-    #cosmosCanvas {
-      z-index: 1;
+      pointer-events: none !important;
       width: 100vw;
       height: 100vh;
     }
-
     #aureaAppShell {
       position: relative;
       z-index: 10;
       pointer-events: auto;
     }
-
-    .hidden,
-    [data-hidden="true"] {
+    .hidden, [data-hidden="true"] {
       display: none !important;
       pointer-events: none !important;
       visibility: hidden !important;
     }
-
     button, a, [role="button"], input, select, textarea, label[for] {
       touch-action: manipulation;
       cursor: pointer;
     }
-
-    .panel-surface {
-      background: rgba(8, 18, 38, 0.86);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(148, 163, 184, 0.2);
+    .pro-card {
+      background: rgba(10, 18, 32, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
     }
-
-    .star-gold {
+    .star-mark {
       color: #f6dc7c;
-      text-shadow: 0 0 18px rgba(212, 175, 55, 0.75);
+      text-shadow: 0 0 14px rgba(212, 175, 55, 0.45);
     }
-
-    @keyframes floatStar {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-4px) scale(1.06); }
+    @keyframes starHop {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-7px) scale(1.12); }
     }
-
-    @keyframes starHopThinking {
-      0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
-      25% { transform: translateY(-11px) rotate(-12deg) scale(1.14); }
-      50% { transform: translateY(-3px) rotate(8deg) scale(1.04); }
-      75% { transform: translateY(-13px) rotate(14deg) scale(1.16); }
-    }
-
-    @keyframes pulseRing {
-      0% { transform: scale(0.85); opacity: 0.8; }
-      100% { transform: scale(1.65); opacity: 0; }
-    }
-
-    .float-star { animation: floatStar 3.2s ease-in-out infinite; }
-    .star-thinking { animation: starHopThinking 0.72s ease-in-out infinite; }
-    .pulse-ring { animation: pulseRing 1.4s ease-out infinite; }
-
+    .star-hopping { animation: starHop 0.65s ease-in-out infinite; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #040917; }
-    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.3); border-radius: 999px; }
+    ::-webkit-scrollbar-track { background: #040811; }
+    ::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.45); border-radius: 999px; }
   </style>
 </head>
-<body class="bg-abyss text-slate-100 antialiased">
-
-  <div id="watermarkEmblem" aria-hidden="true">
-    <div class="font-display text-6xl md:text-8xl font-bold tracking-[0.25em] text-slate-200">EXORG MT</div>
-    <div class="font-mono text-xs md:text-base tracking-[0.45em] text-slate-400 mt-1">MADRE TRINDADE • S.A.G.A.</div>
-  </div>
+<body class="bg-abyss text-slate-200 antialiased">
 
   <canvas id="cosmosCanvas" aria-hidden="true"></canvas>
 
-  <!-- Animação de Entrada Encorpada do S.A.G.A. / Sistema Áurea -->
-  <div id="cinemaIntroOverlay" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-[#02050d]/95 px-5 py-8">
-    <div class="max-w-xl w-full panel-surface rounded-3xl p-7 md:p-8 text-center space-y-5 border border-sky-400/30">
-      <div class="relative w-20 h-20 mx-auto flex items-center justify-center">
-        <span class="absolute inset-0 rounded-full border border-amber-300/50 pulse-ring"></span>
-        <div class="w-20 h-20 rounded-2xl bg-sapphire border border-aurea/60 flex items-center justify-center float-star">
-          <span class="font-display text-4xl star-gold">✦</span>
-        </div>
-      </div>
-
-      <div class="space-y-1">
-        <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-sky-400">Lubango • Angola • Núcleo S.A.G.A.</p>
-        <h1 class="font-display text-4xl md:text-5xl font-bold text-white">EXorg MT — Sistema Áurea</h1>
-        <p class="text-xs md:text-sm text-slate-300">
-          Complexo Escolar Privado Madre Trindade — 7.ª à 13.ª Classe &amp; CEJ • Estudo, Histórias, Gestão &amp; Psicologia.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-3 gap-2 text-[11px] font-mono">
-        <div id="introMod1" class="p-2 rounded-xl bg-slate-950/90 border border-slate-800 text-slate-400">S.A.G.A. VIVO</div>
-        <div id="introMod2" class="p-2 rounded-xl bg-slate-950/90 border border-slate-800 text-slate-400">WEB REALTIME</div>
-        <div id="introMod3" class="p-2 rounded-xl bg-slate-950/90 border border-slate-800 text-slate-400">IA INFILTRADA</div>
-      </div>
-
-      <div>
-        <div class="flex items-center justify-between text-[11px] font-mono text-slate-300 mb-1.5">
-          <span id="introStageLabel">A despertar o núcleo S.A.G.A...</span>
-          <span id="introCountdown">10.0s</span>
-        </div>
-        <div class="w-full h-2 rounded-full bg-slate-900 overflow-hidden">
-          <div id="introProgressBar" class="h-full w-0 bg-gradient-to-r from-sky-500 to-amber-300 transition-all duration-100"></div>
-        </div>
-      </div>
-
-      <div class="flex flex-wrap justify-center gap-3 pt-1">
-        <button type="button" id="btnEnterNow" class="px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition">
-          Entrar Agora no S.A.G.A.
-        </button>
-        <button type="button" id="btnSkipIntro" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs transition">
-          Saltar
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal de Conta e Classe -->
-  <div id="studentGateModal" class="hidden fixed inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-    <div class="w-full max-w-md panel-surface rounded-3xl p-6">
-      <div class="flex items-start justify-between gap-3 mb-4">
+  <!-- Modal de Login Académico (E-mail, Classe, Turma A-C, Curso 2.º Ciclo CFB / CEJ / CH) -->
+  <div id="loginModal" class="hidden fixed inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <div class="w-full max-w-lg pro-card rounded-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div>
-          <span class="font-mono text-[11px] uppercase tracking-widest text-sky-400">Conta Local</span>
-          <h2 class="font-display text-3xl font-bold text-white">Identificação &amp; Classe</h2>
-          <p class="text-xs text-slate-400">Dados guardados localmente neste navegador (sem servidor próprio).</p>
+          <span class="font-mono text-[11px] uppercase tracking-widest text-sky-400">Credencial Académica</span>
+          <h2 class="font-display text-3xl font-bold text-white">Acesso do Estudante</h2>
         </div>
-        <button type="button" id="btnCloseGate" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300">✕</button>
+        <button type="button" id="btnCloseLogin" class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300">✕</button>
       </div>
 
-      <form id="studentGateForm" class="space-y-4">
-        <div>
-          <label for="stuNameInput" class="block text-xs font-semibold text-slate-300 mb-1">Nome</label>
-          <input id="stuNameInput" type="text" required placeholder="Ex.: Sófocles" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
+      <form id="loginForm" class="space-y-3.5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="loginNameInput" class="block text-xs font-semibold text-slate-300 mb-1">Nome Completo</label>
+            <input id="loginNameInput" type="text" required placeholder="Ex.: Sófocles" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
+          </div>
+          <div>
+            <label for="loginEmailInput" class="block text-xs font-semibold text-slate-300 mb-1">E-mail Institucional / Pessoal</label>
+            <input id="loginEmailInput" type="email" required placeholder="aluno@madretrindade.ao" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
+          </div>
         </div>
-        <div>
-          <label for="stuEmailInput" class="block text-xs font-semibold text-slate-300 mb-1">E-mail</label>
-          <input id="stuEmailInput" type="email" required placeholder="musashim309@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label for="loginClassSelect" class="block text-xs font-semibold text-slate-300 mb-1">Classe</label>
+            <select id="loginClassSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white">
+              <option value="7.ª Classe">7.ª Classe</option>
+              <option value="8.ª Classe">8.ª Classe</option>
+              <option value="9.ª Classe">9.ª Classe</option>
+              <option value="10.ª Classe">10.ª Classe</option>
+              <option value="11.ª Classe">11.ª Classe</option>
+              <option value="12.ª Classe">12.ª Classe</option>
+              <option value="13.ª Classe">13.ª Classe</option>
+            </select>
+          </div>
+          <div>
+            <label for="loginSectionSelect" class="block text-xs font-semibold text-slate-300 mb-1">Turma (A–C)</label>
+            <select id="loginSectionSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white">
+              <option value="Turma A">Turma A</option>
+              <option value="Turma B">Turma B</option>
+              <option value="Turma C">Turma C</option>
+            </select>
+          </div>
+          <div>
+            <label for="loginTrackSelect" class="block text-xs font-semibold text-slate-300 mb-1">2.º Ciclo / Curso</label>
+            <select id="loginTrackSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white">
+              <option value="CFB">CFB (Ciências Físicas e Biológicas)</option>
+              <option value="CEJ">CEJ (Ciências Económicas e Jurídicas)</option>
+              <option value="CH">CH (Ciências Humanas)</option>
+              <option value="Geral (1.º Ciclo)">Geral (1.º Ciclo — 7.ª a 9.ª)</option>
+            </select>
+          </div>
         </div>
-        <div>
-          <label for="stuClassSelect" class="block text-xs font-semibold text-slate-300 mb-1">Classe / Curso</label>
-          <select id="stuClassSelect" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white">
-            <option value="7.ª Classe">7.ª Classe</option>
-            <option value="8.ª Classe">8.ª Classe</option>
-            <option value="9.ª Classe">9.ª Classe</option>
-            <option value="10.ª Classe">10.ª Classe</option>
-            <option value="11.ª Classe">11.ª Classe (Fotos Ativas)</option>
-            <option value="12.ª Classe">12.ª Classe (Fotos Ativas)</option>
-            <option value="13.ª Classe">13.ª Classe (Fotos Ativas)</option>
-            <option value="CEJ — Contabilidade & Gestão">CEJ — Contabilidade &amp; Gestão</option>
-          </select>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <div>
+            <label for="profileColorSelect" class="block text-xs font-semibold text-slate-300 mb-1">Cor das Mensagens do Usuário</label>
+            <select id="profileColorSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white">
+              <option value="steelBlue">Azul Aço (#1e3a5f)</option>
+              <option value="slateGraphite">Grafite Escuro (#1e293b)</option>
+              <option value="forestDark">Verde Pinheiro (#132a24)</option>
+              <option value="bronzeEarth">Castanho Sóbrio (#2c2118)</option>
+            </select>
+          </div>
+          <div>
+            <label for="profileAvatarInput" class="block text-xs font-semibold text-slate-300 mb-1">Foto de Perfil</label>
+            <input id="profileAvatarInput" type="file" accept="image/*" class="w-full text-xs text-slate-300 file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-slate-800 file:text-slate-100 hover:file:bg-slate-700" />
+          </div>
         </div>
+
         <div class="flex justify-end gap-2 pt-2">
-          <button type="button" id="btnCancelGate" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-300">
-            Cancelar
-          </button>
-          <button type="submit" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">
-            Guardar Sessão
-          </button>
+          <button type="button" id="btnCancelLogin" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-300">Cancelar</button>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Entrar no Sistema</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Modal Reservado de ADM (Chave Secreta no Rodapé) -->
-  <div id="adminSecretModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
-    <div class="w-full max-w-sm panel-surface rounded-3xl p-6 space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 class="font-display text-2xl font-bold text-white">Acesso ADM</h3>
-        <button type="button" id="btnCloseAdminModal" class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300">✕</button>
+  <!-- Modal de Autenticação Hierárquica (Códigos jamais expostos) -->
+  <div id="hierarchyModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
+    <div class="w-full max-w-sm pro-card rounded-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+        <h3 class="font-display text-2xl font-bold text-white">Acesso Restrito</h3>
+        <button type="button" id="btnCloseHierarchy" class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300">✕</button>
       </div>
-      <form id="adminAuthForm" class="space-y-3">
+      <form id="hierarchyForm" class="space-y-3">
         <div>
-          <label for="adminCodeInput" class="block text-xs text-slate-300 mb-1">Chave Reservada</label>
-          <input id="adminCodeInput" type="password" required autocomplete="off" placeholder="Introduz a chave secreta" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm font-mono text-white" />
+          <label for="hierarchyKeyInput" class="block text-xs text-slate-300 mb-1">Chave de Autorização</label>
+          <input id="hierarchyKeyInput" type="password" required autocomplete="off" placeholder="Introduz a chave" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm font-mono text-white" />
         </div>
-        <p id="adminAuthFeedback" class="text-xs text-slate-400 min-h-[16px]"></p>
-        <button type="submit" class="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">
-          Entrar como ADM
-        </button>
+        <p id="hierarchyFeedback" class="text-xs text-slate-400 min-h-[16px]"></p>
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Validar Acesso</button>
       </form>
     </div>
   </div>
 
   <div id="aureaAppShell" class="min-h-screen flex flex-col justify-between pb-10">
-    <header class="sticky top-0 z-30 panel-surface border-b border-slate-800/90">
-      <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-3">
+    <!-- Cabeçalho Profissional -->
+    <header class="sticky top-0 z-30 pro-card border-b border-slate-800/90">
+      <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-3">
-          <div id="headerStarBadge" class="w-11 h-11 rounded-2xl bg-sapphire border border-aurea/50 flex items-center justify-center font-display text-2xl font-bold float-star">
-            <span class="star-gold">✦</span>
+          <div class="w-10 h-10 rounded-xl bg-steel border border-slate-700 flex items-center justify-center">
+            <span class="font-display text-2xl star-mark">✦</span>
           </div>
           <div>
             <div class="flex items-center gap-2 flex-wrap">
               <span class="font-display text-xl md:text-2xl font-bold tracking-wide text-white">EXorg MT — Sistema Áurea</span>
-              <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-900 text-sky-300 border border-slate-700">7.ª–13.ª • CEJ</span>
+              <span id="networkStatusPill" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">REDE ATIVA</span>
             </div>
-            <p class="text-xs text-slate-400">Complexo Escolar Privado Madre Trindade • Lubango</p>
+            <p class="text-xs text-slate-400">Complexo Escolar Privado Madre Trindade</p>
           </div>
         </div>
 
         <div class="flex items-center gap-2 flex-wrap">
-          <span id="sessionBadge" class="text-xs px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-200">
-            Sófocles • 7.ª Classe
+          <img id="headerAvatarImg" src="" alt="" class="hidden w-8 h-8 rounded-full object-cover border border-slate-600" />
+          <span id="userContextBadge" class="text-xs px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-200">
+            Sófocles • 7.ª Classe • Turma A • Geral
           </span>
-          <button type="button" id="btnOpenGate" class="px-3.5 py-1.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/40 text-sky-300 text-xs font-semibold transition">
-            Conta / Classe
-          </button>
-          <button type="button" id="btnReplayIntro" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs transition">
-            Intro
+          <button type="button" id="btnOpenLogin" class="px-3.5 py-1.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/40 text-sky-300 text-xs font-semibold transition">
+            Login / Perfil
           </button>
         </div>
       </div>
 
-      <nav aria-label="Módulos" class="max-w-6xl mx-auto px-4 pb-3 flex items-center gap-2 overflow-x-auto" id="moduleTabs">
-        <button type="button" data-tab="saga" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-500 text-slate-950 whitespace-nowrap transition">
-          S.A.G.A. Núcleo
-        </button>
-        <button type="button" data-tab="academy" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">
-          Áurea Academy
-        </button>
-        <button type="button" data-tab="study" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">
-          Estudo Definitivo &amp; Lado 0
-        </button>
-        <button type="button" data-tab="chat" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">
-          Turma, DMs &amp; Voz
-        </button>
-        <button type="button" data-tab="manager" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">
-          Manager &amp; IA Infiltrada
-        </button>
+      <!-- Navegação de Módulos -->
+      <nav aria-label="Módulos principais" class="max-w-6xl mx-auto px-4 pb-3 flex items-center gap-2 overflow-x-auto" id="mainNavTabs">
+        <button type="button" data-tab="saga" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-500 text-slate-950 whitespace-nowrap transition">S.A.G.A.</button>
+        <button type="button" data-tab="exam" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">Avaliação Cronometrada</button>
+        <button type="button" data-tab="chat" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">Chat da Turma &amp; DMs</button>
+        <button type="button" data-tab="cej" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">CEJ &amp; Saúde Mental</button>
+        <button type="button" data-tab="governance" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">Governança &amp; IA Infiltrada</button>
       </nav>
     </header>
 
     <main class="max-w-6xl w-full mx-auto px-4 py-6 space-y-6 flex-1">
 
-      <!-- NÚCLEO S.A.G.A. -->
-      <section id="panel-saga" class="module-panel space-y-5">
-        <div class="panel-surface rounded-3xl p-5 md:p-7 space-y-4">
-          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <!-- 1. NÚCLEO S.A.G.A. + FALLBACK AUTOMÁTICO DE CALCULADORA QUANDO SEM REDE -->
+      <section id="panel-saga" class="module-sec space-y-5">
+        <div class="pro-card rounded-2xl p-5 md:p-6 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
             <div class="flex items-center gap-3">
-              <div id="sagaThinkingStar" class="w-12 h-12 rounded-2xl bg-sapphire border border-aurea/60 flex items-center justify-center font-display text-3xl shrink-0">
-                <span class="star-gold">✦</span>
+              <div id="sagaStarIndicator" class="w-11 h-11 rounded-xl bg-steel border border-slate-700 flex items-center justify-center">
+                <span class="font-display text-2xl star-mark">✦</span>
               </div>
               <div>
                 <div class="flex items-center gap-2 flex-wrap">
-                  <span class="font-mono text-[11px] uppercase tracking-widest text-sky-400">Núcleo Central • Pai, Mentor &amp; Psicólogo</span>
-                  <span id="sagaLockBadge" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                    S.A.G.A. LIBERADO
-                  </span>
+                  <span class="font-mono text-[11px] uppercase tracking-wider text-sky-400">Núcleo S.A.G.A.</span>
+                  <span id="sagaAccessStateBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">OPERACIONAL</span>
                 </div>
-                <h2 class="font-display text-3xl md:text-4xl font-bold text-white">S.A.G.A.</h2>
-                <p class="text-xs md:text-sm text-slate-300">
-                  Histórias com problemas reais de matemática, biologia, Angola e mundo, gestão de empresas, apoio emocional e pesquisa web ao vivo.
-                </p>
+                <h2 class="font-display text-3xl font-bold text-white">S.A.G.A.</h2>
               </div>
             </div>
 
             <div class="flex items-center gap-2 flex-wrap">
-              <select id="voiceGenderSelect" class="px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-slate-200">
+              <select id="sagaVoiceModeSelect" class="px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-slate-200">
                 <option value="male">Voz Masculina</option>
                 <option value="female">Voz Feminina</option>
               </select>
-              <button type="button" id="btnSpeakSaga" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-sky-300 transition">
-                🔊 Ouvir Voz
-              </button>
-              <button type="button" id="btnClearSaga" class="px-3 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 text-xs text-slate-400 transition">
-                Limpar
-              </button>
+              <button type="button" id="btnListenSaga" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-sky-300">Ouvir Voz</button>
+              <button type="button" id="btnClearSagaHistory" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-400">Limpar</button>
             </div>
           </div>
 
-          <!-- Atalhos criativos do S.A.G.A. -->
-          <div class="flex flex-wrap gap-2">
-            <button type="button" data-saga-preset="story-math-bio" class="saga-preset-btn px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 transition">
-              História com Matemática &amp; Biologia
-            </button>
-            <button type="button" data-saga-preset="angola-world" class="saga-preset-btn px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 transition">
-              Realidade de Angola &amp; Outros Países
-            </button>
-            <button type="button" data-saga-preset="business-guide" class="saga-preset-btn px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 transition">
-              Como Criar &amp; Gerir Empresa
-            </button>
-            <button type="button" data-saga-preset="psych-talk" class="saga-preset-btn px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 transition">
-              Conversa de Psicólogo / Cabeça Pesada
-            </button>
-          </div>
-
-          <div id="sagaThinkingBar" class="hidden items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-sapphire/60 border border-aurea/35 text-xs font-mono text-aureaBright">
-            <span class="text-lg star-thinking">✦</span>
-            <span id="sagaThinkingStatus">S.A.G.A. a pensar e a consultar dados em tempo real...</span>
-          </div>
-
-          <div id="sagaFeed" class="space-y-3 max-h-96 overflow-y-auto p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
-            <div class="p-3.5 rounded-2xl bg-sapphire/80 border border-slate-700/80 text-sm text-slate-100 leading-relaxed">
-              <div class="text-[11px] font-mono text-sky-400 mb-1">S.A.G.A. • NÚCLEO ATIVO</div>
-              Salve, Sófocles! Eu sou o S.A.G.A. — tô aqui como aquele parceiro, pai e conselheiro que puxa por ti sem te deixar cair. Quer história que esconde problema de matemática ou biologia? Quer saber como montar e gerir um negócio? Quer botar pra fora o que tá apertando na cabeça? Ou quer pesquisar algo ao vivo na internet? Manda ver!
+          <div id="sagaStream" class="space-y-3 max-h-96 overflow-y-auto p-4 rounded-xl bg-slate-950/85 border border-slate-800">
+            <div class="p-3.5 rounded-xl bg-[#101c31] border border-sky-500/25 text-sm text-slate-100 leading-relaxed">
+              <div class="text-[11px] font-mono text-sky-400 mb-1">S.A.G.A.</div>
+              Pronto para trabalhar contigo, Sófocles. Pode ser estudo de CFB, CEJ ou CH, criação e gestão de empresa, histórias com problemas reais ou apoio emocional. Se a rede cair, assumo direto como calculadora simples, científica e financeira.
             </div>
           </div>
 
-          <form id="sagaForm" class="flex flex-col sm:flex-row gap-2.5">
-            <input id="sagaInput" type="text" placeholder="Pergunta qualquer coisa, pede história, negócio, desabafo ou pesquisa em tempo real..." class="flex-1 px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
-            <button type="submit" id="btnSendSaga" class="px-6 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm transition">
-              Enviar
-            </button>
+          <form id="sagaPromptForm" class="flex flex-col sm:flex-row gap-2.5">
+            <input id="sagaPromptInput" type="text" placeholder="Escreve a tua dúvida, tema de estudo, gestão ou conta..." class="flex-1 px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
+            <button type="submit" class="px-6 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm transition">Enviar</button>
           </form>
         </div>
-      </section>
 
-      <!-- ÁUREA ACADEMY -->
-      <section id="panel-academy" class="module-panel hidden space-y-5">
-        <div class="panel-surface rounded-3xl p-5 md:p-7 space-y-5">
-          <div class="flex flex-wrap items-center justify-between gap-3">
+        <!-- Calculadora Simples, Científica e Financeira (ativa sempre e automática sem rede) -->
+        <div id="offlineCalculatorCard" class="pro-card rounded-2xl p-5 md:p-6 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
             <div>
-              <h2 class="font-display text-3xl md:text-4xl font-bold text-white">Áurea Academy (10 Questões)</h2>
-              <p class="text-xs md:text-sm text-slate-300">Treino diário de 7.ª à 13.ª classe e CEJ.</p>
+              <h3 class="font-display text-2xl font-bold text-white">Calculadora Simples, Científica &amp; Financeira</h3>
+              <p id="calcNetworkNote" class="text-xs text-slate-400">Disponível a qualquer momento e ativada automaticamente pelo S.A.G.A. quando a rede falha.</p>
             </div>
-            <div class="flex items-center gap-2.5">
-              <span id="academyScoreBadge" class="px-3.5 py-1.5 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-sky-300">
-                Pontuação: 0 / 10
-              </span>
-              <button type="button" id="btnResetAcademy" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-white transition">
-                Reiniciar
-              </button>
-            </div>
-          </div>
-          <div id="academyQuestionsContainer" class="space-y-3.5"></div>
-        </div>
-      </section>
-
-      <!-- ESTUDO DEFINITIVO & LADO 0 -->
-      <section id="panel-study" class="module-panel hidden space-y-5">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <div class="panel-surface rounded-3xl p-6 space-y-4">
-            <h3 class="font-display text-3xl font-bold text-white">Estudo Definitivo</h3>
-            <p class="text-xs text-slate-300">Escolhe um tema para treinar passo a passo.</p>
-            <div class="flex flex-wrap gap-2">
-              <button type="button" data-topic="Matemática & Geometria" class="study-topic-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-sky-500 hover:text-slate-950 border border-slate-700 text-xs font-semibold transition">
-                Matemática &amp; Geometria
-              </button>
-              <button type="button" data-topic="Biologia, Física & Química" class="study-topic-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-sky-500 hover:text-slate-950 border border-slate-700 text-xs font-semibold transition">
-                Biologia, Física &amp; Química
-              </button>
-              <button type="button" data-topic="Criação & Gestão de Empresa" class="study-topic-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-sky-500 hover:text-slate-950 border border-slate-700 text-xs font-semibold transition">
-                Criação &amp; Gestão de Empresa
-              </button>
-            </div>
-            <div id="studyDefinitiveBox" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 text-sm text-slate-200 min-h-[130px]">
-              Seleciona um tema acima para ver um exercício.
+            <div class="flex gap-1.5">
+              <button type="button" data-calc-mode="sci" class="calc-mode-btn px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 text-xs font-bold">Simples / Científica</button>
+              <button type="button" data-calc-mode="fin" class="calc-mode-btn px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 border border-slate-700 text-xs font-semibold">Financeira</button>
             </div>
           </div>
 
-          <div class="panel-surface rounded-3xl p-6 space-y-4">
-            <div class="flex items-center justify-between gap-2 flex-wrap">
-              <h3 class="font-display text-3xl font-bold text-white">Lado 0</h3>
-              <span id="lado0Stats" class="font-mono text-xs text-sky-300">Acertos: 0 | Ritmo: 0%</span>
+          <div id="calcSciPanel" class="space-y-3">
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input id="calcExprInput" type="text" placeholder="Ex.: (18 * 0.6) + (14 * 0.4) ou sqrt(144) + sin(30) ou 2^5" class="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm font-mono text-white" />
+              <button type="button" id="btnEvalSci" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Calcular</button>
             </div>
-            <p class="text-xs text-slate-300">Treino rápido com acompanhamento de ritmo.</p>
-            <div id="lado0Question" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 text-base font-bold text-white"></div>
-            <div id="lado0Choices" class="grid grid-cols-2 gap-2.5"></div>
-            <p id="lado0Feedback" class="text-xs font-mono text-slate-400 min-h-[18px]"></p>
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <button type="button" data-fn="sqrt(" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">sqrt()</button>
+              <button type="button" data-fn="sin(" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">sin(°)</button>
+              <button type="button" data-fn="cos(" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">cos(°)</button>
+              <button type="button" data-fn="tan(" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">tan(°)</button>
+              <button type="button" data-fn="log10(" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">log10()</button>
+              <button type="button" data-fn="ln(" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">ln()</button>
+              <button type="button" data-fn="^" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">x^y</button>
+            </div>
+            <div id="calcSciOutput" class="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-sm text-sky-300">Resultado: —</div>
+          </div>
+
+          <div id="calcFinPanel" class="hidden space-y-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div>
+                <label for="finCapitalInput" class="block text-[11px] text-slate-400 mb-1">Capital Inicial (C)</label>
+                <input id="finCapitalInput" type="number" step="any" placeholder="100000" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
+              </div>
+              <div>
+                <label for="finRateInput" class="block text-[11px] text-slate-400 mb-1">Taxa por Período (%)</label>
+                <input id="finRateInput" type="number" step="any" placeholder="5" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
+              </div>
+              <div>
+                <label for="finPeriodsInput" class="block text-[11px] text-slate-400 mb-1">Períodos (n)</label>
+                <input id="finPeriodsInput" type="number" step="1" placeholder="12" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
+              </div>
+            </div>
+            <button type="button" id="btnEvalFin" class="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Calcular Juro Simples &amp; Composto</button>
+            <div id="calcFinOutput" class="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-sky-300 space-y-1">
+              <div>Juro Simples / Composto: aguarda valores.</div>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- TURMA, DMs & VOZ -->
-      <section id="panel-chat" class="module-panel hidden space-y-5">
-        <div class="panel-surface rounded-3xl p-5 md:p-7 space-y-4">
-          <div class="flex flex-wrap items-center justify-between gap-3">
+      <!-- 2. AVALIAÇÃO CRONOMETRADA (APENAS AGENTE DIRECTIVO LANÇA; AUSÊNCIA 2 MIN = FECHA + 0 + BLOQUEIA S.A.G.A.) -->
+      <section id="panel-exam" class="module-sec hidden space-y-5">
+        <div class="pro-card rounded-2xl p-5 md:p-6 space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
             <div>
-              <h2 class="font-display text-3xl md:text-4xl font-bold text-white">Turma, DMs &amp; Voz</h2>
-              <p id="chatClassSubtitle" class="text-xs text-slate-300"></p>
+              <h2 class="font-display text-3xl font-bold text-white">Avaliação Oficial</h2>
+              <p class="text-xs text-slate-400">Lançamento exclusivo do Agente Directivo. Ausência de 2 minutos encerra com nota 0,0 e bloqueia o S.A.G.A.</p>
+            </div>
+            <span id="examClockDisplay" class="font-mono text-sm px-3.5 py-1.5 rounded-xl bg-slate-950 border border-slate-700 text-sky-300">
+              Tempo: —
+            </span>
+          </div>
+
+          <!-- Formulário exclusivo do Agente Directivo -->
+          <form id="directiveExamForm" class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono uppercase text-sky-400">Lançamento de Avaliação (Exclusivo Agente Directivo)</span>
+              <span id="directiveOnlyTag" class="text-[11px] font-mono text-slate-400">Requer perfil Agente Directivo</span>
+            </div>
+            <input id="examTitleInput" type="text" required placeholder="Título da avaliação (ex.: Prova de Contabilidade Geral)" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+            <input id="examQuestionInput" type="text" required placeholder="Enunciado da questão para resposta objetiva" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <input id="examExpectedAnswerInput" type="text" required placeholder="Resposta esperada / chave" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+              <input id="examDurationMinutesInput" type="number" min="1" max="180" value="15" required placeholder="Duração (minutos)" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-white" />
+            </div>
+            <button type="submit" class="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Lançar Avaliação</button>
+          </form>
+
+          <!-- Área de realização do aluno -->
+          <div id="activeExamContainer" class="p-4 rounded-xl bg-slate-950/90 border border-slate-800 space-y-3">
+            <p class="text-xs text-slate-400">Nenhuma avaliação ativa no momento.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. CHAT DA TURMA, DMs, CORES DISTINTAS, FOTOS (11.ª+) & MONITORIZAÇÃO DE CONTEÚDO -->
+      <section id="panel-chat" class="module-sec hidden space-y-5">
+        <div class="pro-card rounded-2xl p-5 md:p-6 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
+            <div>
+              <h2 class="font-display text-3xl font-bold text-white">Chat da Turma &amp; Mensagens Diretas</h2>
+              <p id="chatScopeSummary" class="text-xs text-slate-400"></p>
             </div>
             <div class="flex items-center gap-2 flex-wrap">
-              <select id="chatModeSelect" class="px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white">
+              <select id="chatChannelSelect" class="px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white">
                 <option value="TURMA">Canal da Turma</option>
                 <option value="DM">DM Privada</option>
               </select>
-              <button type="button" id="btnToggleVoice" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-sky-300 transition">
-                🎙️ Gravar Voz
+              <button type="button" id="btnTogglePhotoGate11" class="hidden px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-sky-500/40 text-xs font-semibold text-sky-300">
+                Liberar Fotos &lt;11.ª: OFF
               </button>
-              <button type="button" id="btnClearClassChat" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-rose-500/40 text-xs font-semibold text-rose-300 transition">
+              <button type="button" id="btnClearChatBtn" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-300">
                 Limpar Chat
               </button>
             </div>
           </div>
 
-          <div id="chatMessagesBox" class="space-y-2.5 max-h-80 overflow-y-auto p-4 rounded-2xl bg-slate-950/80 border border-slate-800"></div>
+          <div id="chatStreamBox" class="space-y-2.5 max-h-96 overflow-y-auto p-4 rounded-xl bg-slate-950/85 border border-slate-800"></div>
 
-          <form id="chatForm" class="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center">
-            <input id="chatDmTargetInput" type="text" placeholder="Para quem é a DM?" class="hidden sm:w-44 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white" />
-            <input id="chatTextInput" type="text" placeholder="Escreve uma mensagem..." class="flex-1 px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
-            <label for="chatPhotoInput" class="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 text-center transition">
-              📷 Foto (11.ª+)
+          <form id="chatMessageForm" class="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center">
+            <input id="chatDmRecipientInput" type="text" placeholder="Destinatário da DM" class="hidden sm:w-44 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white" />
+            <input id="chatComposerInput" type="text" placeholder="Escreve a tua mensagem..." class="flex-1 px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
+            <label for="chatImageUpload" class="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 text-center">
+              Foto (11.ª+)
             </label>
-            <input id="chatPhotoInput" type="file" accept="image/*" class="hidden" />
-            <button type="submit" class="px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm transition">
-              Enviar
-            </button>
+            <input id="chatImageUpload" type="file" accept="image/*" class="hidden" />
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm">Enviar</button>
           </form>
         </div>
       </section>
 
-      <!-- MANAGER, PODER ADM & IA INFILTRADA -->
-      <section id="panel-manager" class="module-panel hidden space-y-5">
+      <!-- 4. CEJ (GRÁFICOS DE GESTÃO EMPRESARIAL) & SAÚDE MENTAL -->
+      <section id="panel-cej" class="module-sec hidden space-y-5">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <div class="panel-surface rounded-3xl p-6 space-y-4">
-            <div class="flex items-center justify-between gap-2 flex-wrap">
-              <h3 class="font-display text-3xl font-bold text-white">Áurea Manager &amp; Notas</h3>
-              <span id="admStatusPill" class="text-[11px] font-mono px-2.5 py-1 rounded-full bg-slate-900 text-slate-400 border border-slate-700">
-                MODO ALUNO
-              </span>
+          <!-- Gráficos Básicos para CEJ / Gerência de Empresa -->
+          <div class="pro-card rounded-2xl p-6 space-y-4">
+            <h3 class="font-display text-3xl font-bold text-white">CEJ — Indicadores &amp; Gráficos Empresariais</h3>
+            <p class="text-xs text-slate-400">Simulação de receitas, custos e margem líquida para análise empresarial no curso CEJ.</p>
+            <div class="grid grid-cols-3 gap-2">
+              <div>
+                <label for="cejRevInput" class="block text-[11px] text-slate-400 mb-1">Receita</label>
+                <input id="cejRevInput" type="number" value="450000" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
+              </div>
+              <div>
+                <label for="cejCostInput" class="block text-[11px] text-slate-400 mb-1">Custos</label>
+                <input id="cejCostInput" type="number" value="285000" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
+              </div>
+              <div>
+                <label for="cejTaxInput" class="block text-[11px] text-slate-400 mb-1">Impostos</label>
+                <input id="cejTaxInput" type="number" value="45000" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
+              </div>
+            </div>
+            <button type="button" id="btnRenderCejChart" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Atualizar Gráfico</button>
+            <canvas id="cejBusinessChart" width="520" height="210" class="w-full rounded-xl bg-slate-950 border border-slate-800"></canvas>
+            <div id="cejKpiSummary" class="text-xs font-mono text-sky-300"></div>
+          </div>
+
+          <!-- Cálculo de Percentagem da Saúde Mental -->
+          <div class="pro-card rounded-2xl p-6 space-y-4">
+            <h3 class="font-display text-3xl font-bold text-white">Indicador de Saúde Mental (%)</h3>
+            <p class="text-xs text-slate-400">Avalia o equilíbrio entre sono, carga de estudo, pressão e tranquilidade diária.</p>
+            <div class="space-y-3 text-xs">
+              <div>
+                <div class="flex justify-between mb-1"><span>Qualidade do Sono &amp; Descanso</span><span id="mhSleepVal" class="font-mono text-sky-300">70%</span></div>
+                <input id="mhSleepRange" type="range" min="0" max="100" value="70" class="w-full" />
+              </div>
+              <div>
+                <div class="flex justify-between mb-1"><span>Tranquilidade Emocional</span><span id="mhCalmVal" class="font-mono text-sky-300">65%</span></div>
+                <input id="mhCalmRange" type="range" min="0" max="100" value="65" class="w-full" />
+              </div>
+              <div>
+                <div class="flex justify-between mb-1"><span>Alívio de Pressão Académica (100 = sem sobrecarga)</span><span id="mhLoadVal" class="font-mono text-sky-300">60%</span></div>
+                <input id="mhLoadRange" type="range" min="0" max="100" value="60" class="w-full" />
+              </div>
+            </div>
+            <button type="button" id="btnCalcMentalHealth" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Calcular Percentagem</button>
+            <div id="mentalHealthResultBox" class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+              <div class="font-mono text-lg text-sky-300" id="mentalHealthPctText">Percentagem: 65%</div>
+              <p class="text-xs text-slate-400" id="mentalHealthAdviceText">Ritmo moderado. Mantém pausas regulares.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. GOVERNANÇA (ADM / AGENTE DIRECTIVO), APROVEITAMENTO, ALERTAS & IA INFILTRADA SILENCIOSA -->
+      <section id="panel-governance" class="module-sec hidden space-y-5">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div class="pro-card rounded-2xl p-6 space-y-4">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <h3 class="font-display text-3xl font-bold text-white">Painel de Comando &amp; Aproveitamento</h3>
+              <span id="activeRoleBadge" class="font-mono text-xs px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-300">Perfil: Estudante</span>
             </div>
 
-            <!-- Lançamento de Avaliações + Média Automática -->
-            <form id="gradeLaunchForm" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3">
-              <div class="text-xs font-mono text-sky-400 uppercase">Lançamento de Avaliação &amp; Média Automática</div>
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                <input id="gradeStudentInput" type="text" required placeholder="Nome do aluno" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
-                <input id="gradeSubjectInput" type="text" required placeholder="Disciplina (ex.: Mat)" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
-                <input id="gradeValueInput" type="number" step="0.1" min="0" max="20" required placeholder="Nota (0–20)" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-white" />
-              </div>
-              <div class="flex items-center justify-between gap-2 flex-wrap">
-                <button type="submit" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition">
-                  Lançar Nota
-                </button>
-                <span id="gradesAverageBanner" class="text-xs font-mono text-emerald-300">
-                  Média Geral: — (0 avaliações)
-                </span>
-              </div>
-              <div id="gradesListBox" class="space-y-1.5 max-h-36 overflow-y-auto text-xs text-slate-200 pt-1"></div>
-            </form>
-
-            <!-- Comando Direto do ADM para o Núcleo S.A.G.A. -->
-            <div id="admCommandPanel" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
-              <div class="text-xs font-mono text-amber-300 uppercase">Comando de Atualização / Controlo S.A.G.A.</div>
-              <div class="flex flex-wrap gap-2">
-                <button type="button" id="btnToggleSagaLock" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-amber-300 transition">
-                  🔒 Bloquear / Liberar S.A.G.A.
-                </button>
-                <button type="button" id="btnAdmClearChat" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-rose-300 transition">
-                  🧹 Limpar Chat da Turma
-                </button>
-                <button type="button" id="btnRunAdmCheckup" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-sky-300 transition">
-                  📡 Check-up Rede &amp; S.A.G.A.
-                </button>
-              </div>
+            <!-- Cálculo e envio automático de aproveitamento escolar para o sistema directivo -->
+            <div class="p-4 rounded-xl bg-slate-950/85 border border-slate-800 space-y-2.5">
+              <div class="text-xs font-mono uppercase text-sky-400">Aproveitamento Escolar → Sistema Directivo</div>
               <div class="flex gap-2">
-                <input id="admPatchInput" type="text" placeholder="Instrução direta para o S.A.G.A. aplicar na sessão..." class="flex-1 px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
-                <button type="button" id="btnApplyAdmPatch" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition">
-                  Aplicar
+                <input id="gradeEntryInput" type="number" step="0.1" min="0" max="20" placeholder="Nota (0–20)" class="w-32 px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-white" />
+                <button type="button" id="btnAddGradeAndSync" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">
+                  Registar &amp; Enviar à Direção
                 </button>
               </div>
-              <div id="admCheckupBox" class="p-3 rounded-xl bg-black/60 border border-slate-800 font-mono text-[11px] text-slate-300 space-y-1">
-                <div>Check-up em português: aguarda execução ou resposta em tempo real do S.A.G.A.</div>
+              <div id="directiveGradesLog" class="text-xs font-mono text-slate-300 space-y-1 max-h-36 overflow-y-auto">
+                <div>Aguardar lançamentos de aproveitamento.</div>
               </div>
+            </div>
+
+            <!-- Avisos / Mensagens Técnicas (ADM 2013 / ADM 2012 / Agente Directivo 1841) -->
+            <div id="techAdminBox" class="p-4 rounded-xl bg-slate-950/85 border border-slate-800 space-y-2.5">
+              <div class="text-xs font-mono uppercase text-amber-300">Avisos &amp; Controlo Operacional</div>
+              <div class="flex gap-2">
+                <input id="noticeInput" type="text" placeholder="Escrever aviso ou diretriz técnica..." class="flex-1 px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+                <button type="button" id="btnPublishNotice" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-semibold text-white">Publicar</button>
+              </div>
+              <div id="noticesFeed" class="text-xs text-slate-300 space-y-1 max-h-28 overflow-y-auto"></div>
             </div>
           </div>
 
-          <div class="panel-surface rounded-3xl p-6 space-y-4">
-            <div class="flex items-center justify-between gap-2">
-              <h3 class="font-display text-3xl font-bold text-white">IA Infiltrada</h3>
-              <span class="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-[11px] font-mono text-emerald-300">
-                ATIVA
-              </span>
-            </div>
-            <p class="text-xs text-slate-300">
-              Vigília contínua sobre o núcleo S.A.G.A., médias lançadas, mensagens da turma e estado da internet.
+          <!-- Alertas de Conduta (DM Sexual / Álcool e Drogas fora de estudo) & IA Infiltrada Silenciosa -->
+          <div class="pro-card rounded-2xl p-6 space-y-4">
+            <h3 class="font-display text-3xl font-bold text-white">Monitorização &amp; IA Infiltrada</h3>
+            <p class="text-xs text-slate-400">
+              Registos de ocorrências (DMs com teor sexual, álcool/drogas fora de contexto académico) e observação silenciosa das IAs infiltradas.
             </p>
-            <div id="sentinelFeed" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 font-mono text-xs text-slate-300 space-y-1.5 max-h-64 overflow-y-auto">
-              <div>[OK] Camadas interativas livres de bloqueio.</div>
-              <div>[OK] Núcleo S.A.G.A., média automática e chat por classe ativos.</div>
+
+            <div class="p-4 rounded-xl bg-slate-950/85 border border-slate-800 space-y-1.5">
+              <div class="text-xs font-mono uppercase text-rose-300">Alertas de Conduta &amp; DM</div>
+              <div id="conductAlertsBox" class="text-xs font-mono text-slate-300 space-y-1 max-h-32 overflow-y-auto">
+                <div>Sem alertas registados nesta sessão.</div>
+              </div>
             </div>
-            <button type="button" id="btnSentinelScan" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-sky-300 transition">
-              Executar Varredura IA Infiltrada
-            </button>
+
+            <div class="p-4 rounded-xl bg-slate-950/85 border border-slate-800 space-y-1.5">
+              <div class="text-xs font-mono uppercase text-slate-400">IA Infiltrada (Modo Silencioso)</div>
+              <div id="silentSentinelBox" class="text-xs font-mono text-slate-400 space-y-1 max-h-36 overflow-y-auto">
+                <div>Observação silenciosa ativa.</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
     </main>
 
-    <!-- Rodapé com acesso reservado ADM -->
+    <!-- Rodapé com acesso reservado no fundo -->
     <footer class="max-w-6xl w-full mx-auto px-4 pt-8 pb-4 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-      <span>EXorg MT — Sistema Áurea • Complexo Escolar Privado Madre Trindade (Lubango)</span>
-      <button type="button" id="btnFooterAdmin" class="px-3 py-1.5 rounded-lg bg-slate-950 hover:bg-slate-900 border border-slate-800 text-[11px] font-mono text-slate-400 hover:text-slate-200 transition">
-        ADM
+      <span>EXorg MT — Sistema Áurea • Complexo Escolar Privado Madre Trindade</span>
+      <button type="button" id="btnFooterRestricted" class="px-3.5 py-1.5 rounded-lg bg-slate-950 hover:bg-slate-900 border border-slate-800 text-[11px] font-mono text-slate-400 hover:text-white transition">
+        Acesso ADM / Directivo
       </button>
     </footer>
   </div>
 
   <script>
     (function () {
-      // Validação secreta (não imprime código no DOM)
-      function secretDigest(v) {
-        let h = 0x811c9dc5;
-        for (let i = 0; i < v.length; i++) {
-          h ^= v.charCodeAt(i);
-          h = Math.imul(h, 0x01000193);
+      // Validação por digest sem expor códigos em lugar algum
+      function digestSecret(s) {
+        let h = 2166136261;
+        for (let i = 0; i < s.length; i++) {
+          h ^= s.charCodeAt(i);
+          h = Math.imul(h, 16777619);
         }
         return (h >>> 0).toString(16);
       }
-      const ADM_TARGET_DIGEST = secretDigest('2013');
+
+      const ROLE_DIGESTS = {
+        DIRECTIVE: digestSecret('1841'),
+        ADMIN_2013: digestSecret('2013'),
+        ADMIN_2012: digestSecret('2012'),
+      };
+
+      const USER_COLOR_MAP = {
+        steelBlue: { bg: 'bg-[#172d4a]', border: 'border-sky-500/30', label: 'Azul Aço' },
+        slateGraphite: { bg: 'bg-[#1c2432]', border: 'border-slate-600/40', label: 'Grafite Escuro' },
+        forestDark: { bg: 'bg-[#122621]', border: 'border-emerald-600/30', label: 'Verde Pinheiro' },
+        bronzeEarth: { bg: 'bg-[#261d16]', border: 'border-amber-700/30', label: 'Castanho Sóbrio' },
+      };
 
       const state = {
         nome: 'Sófocles',
         email: '',
         classe: '7.ª Classe',
-        isAdmin: false,
-        sagaLocked: false,
-        customDirective: '',
-        voiceGender: 'male',
-        audioUnlocked: false,
-        lastSagaText: 'Salve, Sófocles! Tô aqui como parceiro, pai e conselheiro pra gente estudar, criar histórias, falar de negócios, desabafar e buscar respostas reais.',
-        score: 0,
-        lado0Hits: 0,
-        lado0Total: 0,
-        voiceActive: false,
-        mediaRecorder: null,
+        turma: 'Turma A',
+        curso: 'Geral (1.º Ciclo)',
+        msgColor: 'steelBlue',
+        avatarDataUrl: '',
+        role: 'STUDENT', // 'STUDENT' | 'ADMIN_2012' | 'ADMIN_2013' | 'DIRECTIVE'
+        photoUnlockedBelow11: false,
+        sagaBlockedByExam: false,
+        lastSagaText: 'Pronto para trabalhar contigo.',
+        voiceMode: 'male',
+        exam: null, // { title, question, expected, endsAt, awaySince, status }
         grades: [],
-        classChats: {
-          '7.ª Classe': [],
-          '8.ª Classe': [],
-          '9.ª Classe': [],
-          '10.ª Classe': [],
-          '11.ª Classe': [],
-          '12.ª Classe': [],
-          '13.ª Classe': [],
-          'CEJ — Contabilidade & Gestão': [],
-        },
+        notices: ['Sistema Áurea em operação profissional no Complexo Escolar Privado Madre Trindade.'],
+        conductAlerts: [],
+        silentLogs: [],
+        chatsByScope: {},
       };
 
-      // --- DESBLOQUEIO DE ÁUDIO & VOZ MASCULINA / FEMININA ---
-      function unlockAudioEngine() {
-        state.audioUnlocked = true;
-        if ('speechSynthesis' in window) {
-          window.speechSynthesis.getVoices();
-        }
-      }
-      window.addEventListener('pointerdown', unlockAudioEngine, { once: true, passive: true });
-      window.addEventListener('keydown', unlockAudioEngine, { once: true, passive: true });
-
-      if ('speechSynthesis' in window && typeof window.speechSynthesis.onvoiceschanged !== 'undefined') {
-        window.speechSynthesis.onvoiceschanged = () => {
-          window.speechSynthesis.getVoices();
-        };
+      function scopeKey() {
+        return `${state.classe}__${state.turma}__${state.curso}`;
       }
 
-      function playFallbackTone(isMale) {
-        try {
-          const AudioCtx = window.AudioContext || window.webkitAudioContext;
-          if (!AudioCtx) return;
-          const actx = new AudioCtx();
-          const osc = actx.createOscillator();
-          const gain = actx.createGain();
-          osc.type = isMale ? 'triangle' : 'sine';
-          osc.frequency.setValueAtTime(isMale ? 190 : 340, actx.currentTime);
-          gain.gain.setValueAtTime(0.04, actx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + 0.18);
-          osc.connect(gain);
-          gain.connect(actx.destination);
-          osc.start();
-          osc.stop(actx.currentTime + 0.19);
-        } catch {}
+      function isDirective() {
+        return state.role === 'DIRECTIVE';
       }
 
-      function speakSaga(rawText) {
-        const clean = String(rawText || '').replace(/<[^>]*>/g, '').replace(/\*\*/g, '').trim();
-        if (!clean) return;
-        const isMale = state.voiceGender === 'male';
+      function isTechAdmin() {
+        return state.role === 'ADMIN_2013' || state.role === 'ADMIN_2012' || state.role === 'DIRECTIVE';
+      }
 
-        if (!('speechSynthesis' in window)) {
-          playFallbackTone(isMale);
-          return;
-        }
-
-        try {
-          window.speechSynthesis.cancel();
-          const utter = new SpeechSynthesisUtterance(clean);
-          utter.lang = 'pt-PT';
-          const voices = window.speechSynthesis.getVoices() || [];
-          const ptVoices = voices.filter((v) => /pt/i.test(v.lang));
-          const list = ptVoices.length ? ptVoices : voices;
-
-          if (isMale) {
-            const mVoice = list.find((v) => /male|masculin|daniel|ricardo|antonio|antónio|jorge|paulo|tiago|felipe|bruno/i.test(v.name));
-            utter.voice = mVoice || list[0] || null;
-            utter.pitch = 0.78;
-            utter.rate = 1.0;
-          } else {
-            const fVoice = list.find((v) => /female|feminin|maria|ines|inês|catarina|ana|clara|lucia|lúcia|camila|vitoria|vitória/i.test(v.name));
-            utter.voice = fVoice || list[list.length - 1] || null;
-            utter.pitch = 1.22;
-            utter.rate = 1.04;
-          }
-
-          utter.onerror = () => playFallbackTone(isMale);
-          window.speechSynthesis.speak(utter);
-          if (voices.length === 0) {
-            playFallbackTone(isMale);
-          }
-        } catch {
-          playFallbackTone(isMale);
+      function recordSilent(action) {
+        const entry = `[${new Date().toLocaleTimeString()}] ${action}`;
+        state.silentLogs.push(entry);
+        const el = document.getElementById('silentSentinelBox');
+        if (el) {
+          el.innerHTML = state.silentLogs.slice(-25).map((x) => `<div>${x}</div>`).join('');
+          el.scrollTop = el.scrollHeight;
         }
       }
 
-      // --- CÉU ESTRELADO ---
+      function recordConductAlert(detail) {
+        const entry = `[${new Date().toLocaleTimeString()}] ${detail}`;
+        state.conductAlerts.push(entry);
+        const el = document.getElementById('conductAlertsBox');
+        if (el) {
+          el.innerHTML = state.conductAlerts.slice(-25).map((x) => `<div class="text-rose-300">${x}</div>`).join('');
+          el.scrollTop = el.scrollHeight;
+        }
+      }
+
+      // --- FUNDO DISCRETO ---
       const canvas = document.getElementById('cosmosCanvas');
       const ctx = canvas ? canvas.getContext('2d') : null;
-      let stars = [];
+      let pts = [];
 
-      function initCosmos() {
+      function resizePts() {
         if (!canvas || !ctx) return;
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
         canvas.width = Math.floor(window.innerWidth * dpr);
         canvas.height = Math.floor(window.innerHeight * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const n = Math.min(115, Math.floor((window.innerWidth * window.innerHeight) / 11500));
-        stars = Array.from({ length: n }, () => ({
+        const count = Math.min(70, Math.floor((window.innerWidth * window.innerHeight) / 18000));
+        pts = Array.from({ length: count }, () => ({
           x: Math.random() * window.innerWidth,
           y: Math.random() * window.innerHeight,
-          r: Math.random() * 1.4 + 0.35,
-          a: Math.random() * 0.65 + 0.2,
-          v: (Math.random() - 0.5) * 0.14,
+          r: Math.random() * 1.1 + 0.3,
+          a: Math.random() * 0.35 + 0.1,
+          vx: (Math.random() - 0.5) * 0.08,
         }));
       }
 
-      function drawCosmos() {
+      function tickPts() {
         if (!canvas || !ctx) return;
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        for (const s of stars) {
-          s.x += s.v;
-          if (s.x < 0) s.x = window.innerWidth;
-          if (s.x > window.innerWidth) s.x = 0;
+        for (const p of pts) {
+          p.x += p.vx;
+          if (p.x < 0) p.x = window.innerWidth;
+          if (p.x > window.innerWidth) p.x = 0;
           ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(186, 230, 253, ${s.a})`;
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(148, 163, 184, ${p.a})`;
           ctx.fill();
         }
-        requestAnimationFrame(drawCosmos);
+        requestAnimationFrame(tickPts);
       }
 
-      window.addEventListener('resize', initCosmos);
-      initCosmos();
-      drawCosmos();
+      window.addEventListener('resize', resizePts);
+      resizePts();
+      tickPts();
 
-      // --- ANIMAÇÃO DE ENTRADA ---
-      const introOverlay = document.getElementById('cinemaIntroOverlay');
-      const introBar = document.getElementById('introProgressBar');
-      const introCountdown = document.getElementById('introCountdown');
-      const introStageLabel = document.getElementById('introStageLabel');
-      let introTimer = null;
-
-      function closeIntro() {
-        if (introTimer) { clearInterval(introTimer); introTimer = null; }
-        if (introOverlay) {
-          introOverlay.classList.add('hidden');
-          introOverlay.setAttribute('data-hidden', 'true');
-        }
-      }
-
-      function startIntro() {
-        if (!introOverlay) return;
-        closeIntro();
-        introOverlay.classList.remove('hidden');
-        introOverlay.setAttribute('data-hidden', 'false');
-        const total = 10000;
-        let elapsed = 0;
-        const m1 = document.getElementById('introMod1');
-        const m2 = document.getElementById('introMod2');
-        const m3 = document.getElementById('introMod3');
-
-        introTimer = setInterval(() => {
-          elapsed += 100;
-          const pct = Math.min(100, (elapsed / total) * 100);
-          if (introBar) introBar.style.width = `${pct}%`;
-          if (introCountdown) introCountdown.textContent = `${Math.max(0, (total - elapsed) / 1000).toFixed(1)}s`;
-
-          if (pct >= 25 && m1) m1.className = 'p-2 rounded-xl bg-sky-500/20 border border-sky-400/50 text-sky-300';
-          if (pct >= 55 && m2) m2.className = 'p-2 rounded-xl bg-amber-400/20 border border-amber-300/50 text-amber-200';
-          if (pct >= 80 && m3) m3.className = 'p-2 rounded-xl bg-emerald-500/20 border border-emerald-400/50 text-emerald-300';
-
-          if (introStageLabel) {
-            if (pct < 35) introStageLabel.textContent = 'A despertar o núcleo S.A.G.A...';
-            else if (pct < 70) introStageLabel.textContent = 'A ligar canais de pesquisa em tempo real...';
-            else introStageLabel.textContent = 'A ativar IA Infiltrada & gestão de notas...';
-          }
-          if (elapsed >= total) closeIntro();
-        }, 100);
-      }
-
-      document.getElementById('btnEnterNow')?.addEventListener('click', () => {
-        unlockAudioEngine();
-        closeIntro();
-      });
-      document.getElementById('btnSkipIntro')?.addEventListener('click', closeIntro);
-      document.getElementById('btnReplayIntro')?.addEventListener('click', startIntro);
-
-      // --- CONTA / CLASSE ---
-      const gateModal = document.getElementById('studentGateModal');
-      const sessionBadge = document.getElementById('sessionBadge');
-
-      function refreshBadges() {
-        if (sessionBadge) {
-          sessionBadge.textContent = `${state.nome} • ${state.classe}${state.isAdmin ? ' • ADM' : ''}`;
-        }
-        const pill = document.getElementById('admStatusPill');
-        if (pill) {
-          pill.textContent = state.isAdmin ? 'ADM ATIVO' : 'MODO ALUNO';
-          pill.className = state.isAdmin
-            ? 'text-[11px] font-mono px-2.5 py-1 rounded-full bg-amber-400/20 text-amber-200 border border-amber-300/40'
-            : 'text-[11px] font-mono px-2.5 py-1 rounded-full bg-slate-900 text-slate-400 border border-slate-700';
-        }
-        const lockBadge = document.getElementById('sagaLockBadge');
-        if (lockBadge) {
-          lockBadge.textContent = state.sagaLocked ? 'S.A.G.A. BLOQUEADO' : 'S.A.G.A. LIBERADO';
-          lockBadge.className = state.sagaLocked
-            ? 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40'
-            : 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30';
-        }
-      }
-
-      document.getElementById('btnOpenGate')?.addEventListener('click', () => {
-        gateModal?.classList.remove('hidden');
-        gateModal?.setAttribute('data-hidden', 'false');
-      });
-      document.getElementById('btnCloseGate')?.addEventListener('click', () => {
-        gateModal?.classList.add('hidden');
-        gateModal?.setAttribute('data-hidden', 'true');
-      });
-      document.getElementById('btnCancelGate')?.addEventListener('click', () => {
-        gateModal?.classList.add('hidden');
-        gateModal?.setAttribute('data-hidden', 'true');
-      });
-
-      document.getElementById('studentGateForm')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        state.nome = (document.getElementById('stuNameInput')?.value || '').trim() || 'Sófocles';
-        state.email = (document.getElementById('stuEmailInput')?.value || '').trim();
-        state.classe = document.getElementById('stuClassSelect')?.value || '7.ª Classe';
-        refreshBadges();
-        updateChatHeader();
-        renderChat();
-        gateModal?.classList.add('hidden');
-        gateModal?.setAttribute('data-hidden', 'true');
-      });
-
-      // --- ACESSO ADM SECRETO NO RODAPÉ ---
-      const adminModal = document.getElementById('adminSecretModal');
-      const adminFeedback = document.getElementById('adminAuthFeedback');
-
-      document.getElementById('btnFooterAdmin')?.addEventListener('click', () => {
-        if (adminFeedback) adminFeedback.textContent = '';
-        const inp = document.getElementById('adminCodeInput');
-        if (inp) inp.value = '';
-        adminModal?.classList.remove('hidden');
-        adminModal?.setAttribute('data-hidden', 'false');
-      });
-
-      document.getElementById('btnCloseAdminModal')?.addEventListener('click', () => {
-        adminModal?.classList.add('hidden');
-        adminModal?.setAttribute('data-hidden', 'true');
-      });
-
-      document.getElementById('adminAuthForm')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const typed = (document.getElementById('adminCodeInput')?.value || '').trim();
-        if (secretDigest(typed) === ADM_TARGET_DIGEST) {
-          state.isAdmin = true;
-          refreshBadges();
-          logSentinel('Acesso ADM validado com sucesso.');
-          if (adminFeedback) {
-            adminFeedback.textContent = 'Acesso ADM concedido.';
-            adminFeedback.className = 'text-xs text-emerald-400 min-h-[16px]';
-          }
-          setTimeout(() => {
-            adminModal?.classList.add('hidden');
-            adminModal?.setAttribute('data-hidden', 'true');
-          }, 450);
-        } else if (adminFeedback) {
-          adminFeedback.textContent = 'Chave inválida.';
-          adminFeedback.className = 'text-xs text-rose-400 min-h-[16px]';
-        }
-      });
-
-      // --- NAVEGAÇÃO ENTRE ABAS ---
-      const tabButtons = document.querySelectorAll('.tab-btn');
-      const panels = document.querySelectorAll('.module-panel');
-
-      function selectTab(tab) {
-        tabButtons.forEach((b) => {
-          const on = b.dataset.tab === tab;
-          b.classList.toggle('bg-sky-500', on);
-          b.classList.toggle('text-slate-950', on);
-          b.classList.toggle('font-bold', on);
-          b.classList.toggle('bg-slate-900', !on);
-          b.classList.toggle('text-slate-300', !on);
-        });
-        panels.forEach((p) => {
-          const match = p.id === `panel-${tab}`;
-          p.classList.toggle('hidden', !match);
-          p.setAttribute('data-hidden', String(!match));
-        });
-      }
-
-      tabButtons.forEach((b) => b.addEventListener('click', () => selectTab(b.dataset.tab)));
-
-      // --- IA INFILTRADA ---
-      function logSentinel(msg) {
-        const feed = document.getElementById('sentinelFeed');
-        if (!feed) return;
-        const div = document.createElement('div');
-        div.className = 'text-emerald-300';
-        div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
-        feed.appendChild(div);
-        feed.scrollTop = feed.scrollHeight;
-      }
-
-      // --- CHECK-UP EM PORTUGUÊS NO MODO ADM ---
-      async function runAdmCheckupInPortuguese(liveSummary) {
-        const box = document.getElementById('admCheckupBox');
-        if (!box) return;
-        const online = navigator.onLine ? 'Ligado à internet' : 'Sem ligação detetada no navegador';
-        const lines = [
-          `Estado da rede: ${online}.`,
-          `Núcleo S.A.G.A.: ${state.sagaLocked ? 'Bloqueado pelo ADM' : 'Operacional e livre'}.`,
-          `Perfil atual: ${state.isAdmin ? 'Administrador (poder total ativo)' : 'Estudante'}.`,
-          `Pesquisa em tempo real: ${liveSummary || 'Pronta para consultar fontes abertas ao vivo'}.`,
-        ];
-        if (state.isAdmin) {
-          box.innerHTML = lines.map((l) => `<div>• ${l}</div>`).join('');
-        } else {
-          box.innerHTML = `<div>Check-up disponível em português no modo ADM (rede: ${online}).</div>`;
-        }
-      }
-
-      // --- PESQUISA REALTIME NA INTERNET ---
-      async function searchRealtimeWeb(query) {
-        if (!navigator.onLine) {
-          return { ok: false, info: 'Sem ligação de internet ativa no dispositivo no momento.' };
-        }
+      // --- VOZ MASCULINA / FEMININA ---
+      function speakPortuguese(text) {
+        const clean = String(text || '').replace(/<[^>]*>/g, '').trim();
+        if (!clean || !('speechSynthesis' in window)) return;
         try {
-          const url = `https://pt.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&utf8=&format=json&origin=*`;
-          const resp = await fetch(url);
-          if (!resp.ok) throw new Error('HTTP ' + resp.status);
-          const data = await resp.json();
-          const hit = data?.query?.search?.[0];
-          if (hit) {
-            const snippet = String(hit.snippet || '').replace(/<[^>]*>/g, '');
-            return {
-              ok: true,
-              info: `Fonte ao vivo (${hit.title}): ${snippet}`,
-            };
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(clean);
+          u.lang = 'pt-PT';
+          const voices = window.speechSynthesis.getVoices() || [];
+          const pt = voices.filter((v) => /pt/i.test(v.lang));
+          const list = pt.length ? pt : voices;
+          if (state.voiceMode === 'male') {
+            const m = list.find((v) => /male|masculin|daniel|ricardo|antonio|antónio|jorge|paulo|tiago/i.test(v.name));
+            u.voice = m || list[0] || null;
+            u.pitch = 0.78;
+            u.rate = 0.98;
+          } else {
+            const f = list.find((v) => /female|feminin|maria|ines|inês|catarina|ana|clara|lucia|lúcia/i.test(v.name));
+            u.voice = f || list[list.length - 1] || null;
+            u.pitch = 1.18;
+            u.rate = 1.02;
           }
-          return { ok: true, info: 'Ligação ativa, mas sem artigo direto correspondente.' };
+          window.speechSynthesis.speak(u);
+        } catch {}
+      }
+
+      // --- CALCULADORA SIMPLES, CIENTÍFICA E FINANCEIRA ---
+      function evaluateScientific(exprRaw) {
+        let e = String(exprRaw || '').trim();
+        if (!e) return 'Introduz uma expressão.';
+        e = e.replace(/,/g, '.').replace(/\^/g, '**');
+        e = e.replace(/sqrt\(/gi, 'Math.sqrt(');
+        e = e.replace(/cbrt\(/gi, 'Math.cbrt(');
+        e = e.replace(/abs\(/gi, 'Math.abs(');
+        e = e.replace(/log10\(/gi, 'Math.log10(');
+        e = e.replace(/ln\(/gi, 'Math.log(');
+        e = e.replace(/pi\b/gi, 'Math.PI');
+        e = e.replace(/\be\b/g, 'Math.E');
+        e = e.replace(/sin\(([^)]+)\)/gi, (_, a) => `Math.sin((${a})*Math.PI/180)`);
+        e = e.replace(/cos\(([^)]+)\)/gi, (_, a) => `Math.cos((${a})*Math.PI/180)`);
+        e = e.replace(/tan\(([^)]+)\)/gi, (_, a) => `Math.tan((${a})*Math.PI/180)`);
+        const safe = e.replace(/[^0-9+\-*/().%\sMathPIElog10cbrtsqrtabswincotan]/g, '');
+        if (!safe) return 'Expressão inválida.';
+        try {
+          const val = Function(`"use strict"; return (${safe})`)();
+          if (typeof val !== 'number' || !Number.isFinite(val)) return 'Resultado indefinido.';
+          return Number.isInteger(val) ? String(val) : String(Number(val.toFixed(6)));
         } catch {
-          return { ok: false, info: 'Não foi possível concluir a consulta externa agora.' };
+          return 'Erro na expressão.';
         }
       }
 
-      // --- S.A.G.A. (ESTRELA SALTITANTE + HISTÓRIAS + NEGÓCIOS + PSICÓLOGO + REALTIME) ---
-      const sagaFeed = document.getElementById('sagaFeed');
-      const thinkingBar = document.getElementById('sagaThinkingBar');
-      const thinkingStar = document.getElementById('sagaThinkingStar');
-      const thinkingStatus = document.getElementById('sagaThinkingStatus');
-      const voiceSelect = document.getElementById('voiceGenderSelect');
-
-      voiceSelect?.addEventListener('change', () => {
-        state.voiceGender = voiceSelect.value;
-        speakSaga(state.voiceGender === 'male' ? 'Voz masculina ativada.' : 'Voz feminina ativada.');
+      document.querySelectorAll('.calc-mode-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const mode = btn.dataset.calcMode;
+          document.querySelectorAll('.calc-mode-btn').forEach((b) => {
+            const active = b.dataset.calcMode === mode;
+            b.className = active
+              ? 'calc-mode-btn px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 text-xs font-bold'
+              : 'calc-mode-btn px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 border border-slate-700 text-xs font-semibold';
+          });
+          document.getElementById('calcSciPanel')?.classList.toggle('hidden', mode !== 'sci');
+          document.getElementById('calcFinPanel')?.classList.toggle('hidden', mode !== 'fin');
+        });
       });
 
-      function setSagaThinking(active, statusText) {
-        if (!thinkingBar || !thinkingStar) return;
-        thinkingBar.classList.toggle('hidden', !active);
-        thinkingBar.classList.toggle('flex', active);
-        thinkingBar.setAttribute('data-hidden', String(!active));
-        thinkingStar.classList.toggle('star-thinking', active);
-        if (statusText && thinkingStatus) thinkingStatus.textContent = statusText;
-      }
+      document.querySelectorAll('.calc-fn-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const inp = document.getElementById('calcExprInput');
+          if (!inp) return;
+          inp.value = (inp.value || '') + (btn.dataset.fn || '');
+          inp.focus();
+        });
+      });
 
-      function appendSagaBubble(author, text, isUser = false) {
-        if (!sagaFeed) return;
-        const d = document.createElement('div');
-        d.className = isUser
-          ? 'p-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-sm text-slate-100 ml-auto max-w-[92%]'
-          : 'p-3.5 rounded-2xl bg-sapphire/80 border border-slate-700/80 text-sm text-slate-100 leading-relaxed whitespace-pre-line';
-        d.innerHTML = `<div class="text-[11px] font-mono text-sky-400 mb-1">${author}</div>${text}`;
-        sagaFeed.appendChild(d);
-        sagaFeed.scrollTop = sagaFeed.scrollHeight;
-      }
+      document.getElementById('btnEvalSci')?.addEventListener('click', () => {
+        const raw = document.getElementById('calcExprInput')?.value || '';
+        const out = document.getElementById('calcSciOutput');
+        if (out) out.textContent = `Resultado: ${evaluateScientific(raw)}`;
+      });
 
-      function buildSagaCreativeReply(prompt, webInfo) {
-        const p = prompt.toLowerCase();
-        const customNote = state.customDirective ? `\n[Diretriz ativa do ADM]: ${state.customDirective}` : '';
-
-        if (p.includes('história') || p.includes('historia') || p.includes('matemát') || p.includes('matemat') || p.includes('biolog')) {
-          return (
-            `Bora nessa, ${state.nome}! Imagina uma missão no sul de Angola, perto da Huíla e do Namibe: tu e a tua equipa montaram um posto de água e energia limpa para uma comunidade.\n` +
-            `• Problema de Biologia: numa amostra de água do rio, cada 1 mL tinha 120 microrganismos antes da filtragem e a filtragem reduziu 75% deles. Quantos sobram por mL?\n` +
-            `• Problema de Matemática: se cada filtro custa 2.500 Kz e precisas de 6 filtros, qual é o custo total? E se dividires entre 3 parceiros em partes iguais, quanto paga cada um?\n` +
-            `Tenta resolver aí e me mostra o teu raciocínio — sem pressa, eu te ajudo a chegar lá!` +
-            (webInfo ? `\n\n🌐 Tempo real: ${webInfo}` : '') +
-            customNote
-          );
-        }
-
-        if (p.includes('angola') || p.includes('país') || p.includes('pais') || p.includes('mundo')) {
-          return (
-            `Olha o panorama, ${state.nome}: tanto em Angola quanto noutros países, quem ganha espaço é quem entende o contexto real onde vive — logística, custo de vida, trabalho, tecnologia e adaptação.\n` +
-            `Compara sempre como uma mesma ideia funciona no Lubango ou em Luanda e como funciona fora: o que muda no preço, no transporte, no hábito das pessoas e na necessidade real?\n` +
-            `Se quiseres, escolhe um país ou tema e a gente compara ponto por ponto.` +
-            (webInfo ? `\n\n🌐 Tempo real: ${webInfo}` : '') +
-            customNote
-          );
-        }
-
-        if (p.includes('empresa') || p.includes('negócio') || p.includes('negocio') || p.includes('criar') || p.includes('gerir')) {
-          return (
-            `Pra criar e gerir uma empresa de verdade sem quebrar no segundo mês, ${state.nome}, segue esta ordem prática:\n` +
-            `1) Problema real: o que o cliente paga pra resolver hoje?\n` +
-            `2) Custo e margem: calcula custo fixo, custo variável e quanto sobra limpo por venda — nunca confunda faturamento com lucro.\n` +
-            `3) Caixa e rotina: separa dinheiro pessoal do dinheiro do negócio, anota cada entrada/saída e ouve o cliente toda semana.\n` +
-            `Qual tipo de negócio tu tens em mente criar?` +
-            (webInfo ? `\n\n🌐 Tempo real: ${webInfo}` : '') +
-            customNote
-          );
-        }
-
-        if (p.includes('psic') || p.includes('cabeça') || p.includes('cabeca') || p.includes('cansad') || p.includes('triste') || p.includes('press')) {
-          return (
-            `Ei, ${state.nome}... tô te ouvindo aqui, de verdade. Quando a cabeça tá pesada, a gente tende a cobrar de si o impossível de uma vez só.\n` +
-            `Respira fundo, solta os ombros e me diz: o que tá doendo mais agora é cobrança de fora, cansaço físico, dúvida do futuro ou alguém que te magoou? Fala aberto — aqui é espaço seguro.` +
-            customNote
-          );
-        }
-
-        return (
-          `Tô contigo, ${state.nome} (${state.classe})! Sobre "${prompt}": vamos olhar direto pro ponto principal, sem enrolação e com clareza.\n` +
-          `Me diz como tu queres atacar isso agora: passo a passo, com exemplo prático ou num papo franco?` +
-          (webInfo ? `\n\n🌐 Tempo real: ${webInfo}` : '') +
-          customNote
-        );
-      }
-
-      async function handleSagaPrompt(text) {
-        if (state.sagaLocked && !state.isAdmin) {
-          appendSagaBubble('S.A.G.A.', 'O núcleo S.A.G.A. foi temporariamente bloqueado pelo ADM.', false);
+      document.getElementById('btnEvalFin')?.addEventListener('click', () => {
+        const c = parseFloat(document.getElementById('finCapitalInput')?.value || '0');
+        const i = parseFloat(document.getElementById('finRateInput')?.value || '0') / 100;
+        const n = parseFloat(document.getElementById('finPeriodsInput')?.value || '0');
+        const out = document.getElementById('calcFinOutput');
+        if (!out) return;
+        if ([c, i, n].some((v) => Number.isNaN(v) || n < 0)) {
+          out.innerHTML = '<div>Verifica os valores de capital, taxa e períodos.</div>';
           return;
         }
-        unlockAudioEngine();
-        appendSagaBubble(state.nome, text, true);
-        setSagaThinking(true, 'Estrela S.A.G.A. saltando: a pensar e a consultar a internet...');
+        const jSimples = c * i * n;
+        const mSimples = c + jSimples;
+        const mComposto = c * Math.pow(1 + i, n);
+        const jComposto = mComposto - c;
+        out.innerHTML = `
+          <div>Juro Simples: ${jSimples.toFixed(2)} | Montante Simples: ${mSimples.toFixed(2)}</div>
+          <div>Juro Composto: ${jComposto.toFixed(2)} | Montante Composto: ${mComposto.toFixed(2)}</div>
+        `;
+      });
 
-        const web = await searchRealtimeWeb(text);
-        const reply = buildSagaCreativeReply(text, web.ok ? web.info : '');
+      // --- ESTADO DE REDE E CONVERSÃO AUTOMÁTICA PARA CALCULADORA ---
+      function syncNetworkStatus() {
+        const online = navigator.onLine;
+        const pill = document.getElementById('networkStatusPill');
+        const note = document.getElementById('calcNetworkNote');
+        if (pill) {
+          pill.textContent = online ? 'REDE ATIVA' : 'SEM REDE • MODO CALCULADORA';
+          pill.className = online
+            ? 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
+            : 'text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-200 border border-amber-400/40';
+        }
+        if (note && !online) {
+          note.textContent = 'Ligação de rede indisponível: o S.A.G.A. opera diretamente com a calculadora simples, científica e financeira.';
+        }
+      }
 
-        await new Promise((r) => setTimeout(r, 650));
-        setSagaThinking(false);
+      window.addEventListener('online', syncNetworkStatus);
+      window.addEventListener('offline', () => {
+        syncNetworkStatus();
+        appendSagaMessage('S.A.G.A.', 'Sem ligação à rede detetada. Passei o foco para a calculadora simples, científica e financeira aqui em baixo.', false);
+      });
+      syncNetworkStatus();
 
+      // --- S.A.G.A. ---
+      const sagaStream = document.getElementById('sagaStream');
+      const sagaStar = document.getElementById('sagaStarIndicator');
+
+      function appendSagaMessage(sender, text, isUser = false) {
+        if (!sagaStream) return;
+        const cTheme = USER_COLOR_MAP[state.msgColor] || USER_COLOR_MAP.steelBlue;
+        const div = document.createElement('div');
+        div.className = isUser
+          ? `p-3.5 rounded-xl ${cTheme.bg} border ${cTheme.border} text-sm text-slate-100 ml-auto max-w-[92%]`
+          : 'p-3.5 rounded-xl bg-[#101c31] border border-sky-500/25 text-sm text-slate-100 leading-relaxed whitespace-pre-line';
+        div.innerHTML = `<div class="text-[11px] font-mono ${isUser ? 'text-slate-300' : 'text-sky-400'} mb-1">${sender}</div>${text}`;
+        sagaStream.appendChild(div);
+        sagaStream.scrollTop = sagaStream.scrollHeight;
+      }
+
+      async function handleSagaSubmit(rawText) {
+        if (state.sagaBlockedByExam && !isDirective()) {
+          appendSagaMessage('S.A.G.A.', 'O S.A.G.A. encontra-se bloqueado durante a avaliação em curso.', false);
+          return;
+        }
+        appendSagaMessage(state.nome, rawText, true);
+
+        if (!navigator.onLine) {
+          const calcAns = evaluateScientific(rawText);
+          const reply = calcAns !== 'Erro na expressão.' && calcAns !== 'Introduz uma expressão.'
+            ? `Sem rede ativa. Cálculo direto: ${calcAns}`
+            : 'Sem rede ativa. Usa a calculadora simples, científica ou financeira logo abaixo para contas e taxas.';
+          state.lastSagaText = reply;
+          appendSagaMessage('S.A.G.A.', reply, false);
+          document.getElementById('offlineCalculatorCard')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          return;
+        }
+
+        sagaStar?.classList.add('star-hopping');
+        await new Promise((r) => setTimeout(r, 420));
+        sagaStar?.classList.remove('star-hopping');
+
+        const reply = `Contexto atual: ${state.nome} (${state.classe} • ${state.turma} • ${state.curso}).\nSobre "${rawText}": vamos analisar objetivamente os passos principais, os conceitos envolvidos e a aplicação prática na tua área.`;
         state.lastSagaText = reply;
-        appendSagaBubble('S.A.G.A.', reply, false);
-        await runAdmCheckupInPortuguese(web.info);
-        logSentinel(`S.A.G.A. respondeu na ${state.classe} (${web.ok ? 'com dados online' : 'modo local'}).`);
-        speakSaga(reply);
+        appendSagaMessage('S.A.G.A.', reply, false);
+        recordSilent(`Consulta respondida no S.A.G.A. (${state.classe} / ${state.curso}).`);
+        speakPortuguese(reply);
       }
 
-      document.getElementById('sagaForm')?.addEventListener('submit', (e) => {
+      document.getElementById('sagaPromptForm')?.addEventListener('submit', (e) => {
         e.preventDefault();
-        const inp = document.getElementById('sagaInput');
-        const val = (inp?.value || '').trim();
-        if (!val) return;
+        const inp = document.getElementById('sagaPromptInput');
+        const txt = (inp?.value || '').trim();
+        if (!txt) return;
         if (inp) inp.value = '';
-        handleSagaPrompt(val);
+        handleSagaSubmit(txt);
       });
 
-      document.querySelectorAll('.saga-preset-btn').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const kind = btn.dataset.sagaPreset;
-          const map = {
-            'story-math-bio': 'Cria uma história divertida com problemas de matemática e biologia.',
-            'angola-world': 'Explica a realidade de Angola e compara com outros países.',
-            'business-guide': 'Como criar e gerir uma empresa do zero com segurança.',
-            'psych-talk': 'Estou com a cabeça pesada, conversa comigo como psicólogo e parceiro.',
-          };
-          handleSagaPrompt(map[kind] || 'Ajuda-me a estudar hoje.');
-        });
+      document.getElementById('sagaVoiceModeSelect')?.addEventListener('change', (e) => {
+        state.voiceMode = e.target.value;
       });
 
-      document.getElementById('btnSpeakSaga')?.addEventListener('click', () => {
-        unlockAudioEngine();
-        speakSaga(state.lastSagaText);
+      document.getElementById('btnListenSaga')?.addEventListener('click', () => {
+        speakPortuguese(state.lastSagaText);
       });
 
-      document.getElementById('btnClearSaga')?.addEventListener('click', () => {
-        if (sagaFeed) {
-          sagaFeed.innerHTML = '';
-          const msg = `Conversa limpa, ${state.nome}. Bora recomeçar com energia boa!`;
-          state.lastSagaText = msg;
-          appendSagaBubble('S.A.G.A.', msg, false);
+      document.getElementById('btnClearSagaHistory')?.addEventListener('click', () => {
+        if (sagaStream) sagaStream.innerHTML = '';
+        recordSilent('Histórico local do S.A.G.A. limpo.');
+      });
+
+      // --- LOGIN DO ALUNO (E-MAIL, CLASSE, TURMA A-C, CFB/CEJ/CH, COR, FOTO) ---
+      const loginModal = document.getElementById('loginModal');
+
+      function applyUserUI() {
+        const badge = document.getElementById('userContextBadge');
+        if (badge) badge.textContent = `${state.nome} • ${state.classe} • ${state.turma} • ${state.curso}`;
+        const av = document.getElementById('headerAvatarImg');
+        if (av) {
+          if (state.avatarDataUrl) {
+            av.src = state.avatarDataUrl;
+            av.alt = state.nome;
+            av.classList.remove('hidden');
+            av.setAttribute('data-hidden', 'false');
+          } else {
+            av.classList.add('hidden');
+            av.setAttribute('data-hidden', 'true');
+          }
         }
+        const scopeSum = document.getElementById('chatScopeSummary');
+        if (scopeSum) {
+          scopeSum.textContent = `Espaço: ${state.classe} • ${state.turma} • ${state.curso} | Fotos: ${canUploadChatPhoto() ? 'Liberadas' : 'A partir da 11.ª Classe'}`;
+        }
+        const photoBtn = document.getElementById('btnTogglePhotoGate11');
+        if (photoBtn) {
+          photoBtn.classList.toggle('hidden', !isTechAdmin());
+          photoBtn.setAttribute('data-hidden', String(!isTechAdmin()));
+          photoBtn.textContent = `Liberar Fotos <11.ª: ${state.photoUnlockedBelow11 ? 'ON' : 'OFF'}`;
+        }
+        const roleBadge = document.getElementById('activeRoleBadge');
+        const labels = {
+          STUDENT: 'Perfil: Estudante',
+          ADMIN_2012: 'Perfil: ADM Técnico',
+          ADMIN_2013: 'Perfil: ADM Sófocles (Técnico)',
+          DIRECTIVE: 'Perfil: Agente Directivo',
+        };
+        if (roleBadge) roleBadge.textContent = labels[state.role] || 'Perfil: Estudante';
+        const dirTag = document.getElementById('directiveOnlyTag');
+        if (dirTag) {
+          dirTag.textContent = isDirective() ? 'Autorizado: Agente Directivo' : 'Apenas Agente Directivo pode lançar';
+          dirTag.className = isDirective() ? 'text-[11px] font-mono text-emerald-400' : 'text-[11px] font-mono text-slate-400';
+        }
+        const lockBadge = document.getElementById('sagaAccessStateBadge');
+        if (lockBadge) {
+          lockBadge.textContent = state.sagaBlockedByExam ? 'BLOQUEADO (AVALIAÇÃO)' : 'OPERACIONAL';
+          lockBadge.className = state.sagaBlockedByExam
+            ? 'text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40'
+            : 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30';
+        }
+      }
+
+      document.getElementById('btnOpenLogin')?.addEventListener('click', () => {
+        loginModal?.classList.remove('hidden');
+        loginModal?.setAttribute('data-hidden', 'false');
+      });
+      document.getElementById('btnCloseLogin')?.addEventListener('click', () => {
+        loginModal?.classList.add('hidden');
+        loginModal?.setAttribute('data-hidden', 'true');
+      });
+      document.getElementById('btnCancelLogin')?.addEventListener('click', () => {
+        loginModal?.classList.add('hidden');
+        loginModal?.setAttribute('data-hidden', 'true');
       });
 
-      // --- ÁUREA ACADEMY (10 QUESTÕES) ---
-      const academyContainer = document.getElementById('academyQuestionsContainer');
-      const academyBadge = document.getElementById('academyScoreBadge');
-      const qs = [
-        { q: 'Qual é o valor de 7 × 8?', opts: ['54', '56', '64'], ans: '56' },
-        { q: 'Quanto é 1/2 + 1/4?', opts: ['3/4', '2/6', '1/6'], ans: '3/4' },
-        { q: 'Qual é a capital da província da Huíla?', opts: ['Lubango', 'Namibe', 'Huambo'], ans: 'Lubango' },
-        { q: 'Na equação x + 9 = 20, x vale:', opts: ['11', '29', '9'], ans: '11' },
-        { q: 'Unidade base de massa no SI:', opts: ['Quilograma (kg)', 'Grama (g)', 'Litro (L)'], ans: 'Quilograma (kg)' },
-        { q: 'Soma dos ângulos internos de um triângulo:', opts: ['180°', '90°', '270°'], ans: '180°' },
-        { q: '15% de 200 é igual a:', opts: ['30', '20', '45'], ans: '30' },
-        { q: 'Fórmula química da água:', opts: ['H₂O', 'CO₂', 'O₂'], ans: 'H₂O' },
-        { q: 'Em contabilidade, Ativo = Passivo + ...', opts: ['Capital Próprio', 'Prejuízo', 'Despesa'], ans: 'Capital Próprio' },
-        { q: 'Raiz quadrada de 81:', opts: ['9', '8', '19'], ans: '9' },
-      ];
-
-      function renderAcademy() {
-        if (!academyContainer) return;
-        state.score = 0;
-        if (academyBadge) academyBadge.textContent = 'Pontuação: 0 / 10';
-        academyContainer.innerHTML = '';
-        qs.forEach((item, i) => {
-          const card = document.createElement('div');
-          card.className = 'p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2';
-          card.innerHTML = `<p class="text-sm font-semibold text-white">${i + 1}. ${item.q}</p>`;
-          const row = document.createElement('div');
-          row.className = 'flex flex-wrap gap-2';
-          const fb = document.createElement('span');
-          fb.className = 'text-xs font-mono text-slate-400';
-
-          item.opts.forEach((opt) => {
-            const b = document.createElement('button');
-            b.type = 'button';
-            b.className = 'px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 transition';
-            b.textContent = opt;
-            b.addEventListener('click', () => {
-              if (card.dataset.done === '1') return;
-              card.dataset.done = '1';
-              if (opt === item.ans) {
-                state.score += 1;
-                b.className = 'px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold';
-                fb.className = 'text-xs font-mono text-emerald-400';
-                fb.textContent = 'Correto (+1)';
-              } else {
-                b.className = 'px-3 py-1.5 rounded-xl bg-rose-600 text-white text-xs font-bold';
-                fb.className = 'text-xs font-mono text-rose-400';
-                fb.textContent = `Certo: ${item.ans}`;
-              }
-              if (academyBadge) academyBadge.textContent = `Pontuação: ${state.score} / 10`;
-            });
-            row.appendChild(b);
-          });
-
-          card.appendChild(row);
-          card.appendChild(fb);
-          academyContainer.appendChild(card);
-        });
-      }
-
-      document.getElementById('btnResetAcademy')?.addEventListener('click', renderAcademy);
-      renderAcademy();
-
-      // --- ESTUDO DEFINITIVO & LADO 0 ---
-      const studyBox = document.getElementById('studyDefinitiveBox');
-      document.querySelectorAll('.study-topic-btn').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          if (!studyBox) return;
-          studyBox.innerHTML = `<p class="font-bold text-sky-300 mb-1">${btn.dataset.topic}</p><p class="text-sm text-slate-200">Escreve os dados, identifica o conceito central e resolve por etapas sem pular contas.</p>`;
-        });
+      document.getElementById('profileAvatarInput')?.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          state.avatarDataUrl = String(reader.result || '');
+          applyUserUI();
+        };
+        reader.readAsDataURL(file);
       });
 
-      const l0Items = [
-        { q: '12 × 5 + 10 = ?', opts: ['70', '60', '75', '65'], ans: '70' },
-        { q: '100 − 37 = ?', opts: ['63', '73', '53', '67'], ans: '63' },
-        { q: '6² + 4 = ?', opts: ['40', '16', '28', '36'], ans: '40' },
-      ];
-
-      function nextLado0() {
-        const qEl = document.getElementById('lado0Question');
-        const cEl = document.getElementById('lado0Choices');
-        const fEl = document.getElementById('lado0Feedback');
-        if (!qEl || !cEl) return;
-        const cur = l0Items[state.lado0Total % l0Items.length];
-        qEl.textContent = cur.q;
-        if (fEl) fEl.textContent = '';
-        cEl.innerHTML = '';
-        cur.opts.forEach((opt) => {
-          const b = document.createElement('button');
-          b.type = 'button';
-          b.className = 'py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-sky-500 hover:text-slate-950 border border-slate-700 text-sm font-semibold transition';
-          b.textContent = opt;
-          b.addEventListener('click', () => {
-            state.lado0Total += 1;
-            const ok = opt === cur.ans;
-            if (ok) state.lado0Hits += 1;
-            const pct = Math.round((state.lado0Hits / state.lado0Total) * 100);
-            const st = document.getElementById('lado0Stats');
-            if (st) st.textContent = `Acertos: ${state.lado0Hits} | Ritmo: ${pct}%`;
-            if (fEl) {
-              fEl.textContent = ok ? 'Certo!' : `Era ${cur.ans}`;
-              fEl.className = `text-xs font-mono ${ok ? 'text-emerald-400' : 'text-amber-300'}`;
-            }
-            setTimeout(nextLado0, 500);
-          });
-          cEl.appendChild(b);
-        });
-      }
-      nextLado0();
-
-      // --- CHAT POR CLASSE, DMs, FOTOS (11.ª+), VOZ & LIMPEZA ---
-      const chatBox = document.getElementById('chatMessagesBox');
-      const chatMode = document.getElementById('chatModeSelect');
-      const dmTarget = document.getElementById('chatDmTargetInput');
-      const chatSub = document.getElementById('chatClassSubtitle');
-
-      function photosEnabled() {
-        return ['11.ª Classe', '12.ª Classe', '13.ª Classe'].includes(state.classe);
-      }
-
-      function updateChatHeader() {
-        if (!chatSub) return;
-        const pTxt = photosEnabled() ? 'Fotos liberadas' : 'Fotos a partir da 11.ª Classe';
-        chatSub.innerHTML = `Turma: <strong class="text-sky-300">${state.classe}</strong> • ${pTxt}`;
-      }
-
-      chatMode?.addEventListener('change', () => {
-        dmTarget?.classList.toggle('hidden', chatMode.value !== 'DM');
+      document.getElementById('loginForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        state.nome = (document.getElementById('loginNameInput')?.value || '').trim() || 'Estudante';
+        state.email = (document.getElementById('loginEmailInput')?.value || '').trim();
+        state.classe = document.getElementById('loginClassSelect')?.value || '7.ª Classe';
+        state.turma = document.getElementById('loginSectionSelect')?.value || 'Turma A';
+        state.curso = document.getElementById('loginTrackSelect')?.value || 'CFB';
+        state.msgColor = document.getElementById('profileColorSelect')?.value || 'steelBlue';
+        applyUserUI();
+        renderChatMessages();
+        loginModal?.classList.add('hidden');
+        loginModal?.setAttribute('data-hidden', 'true');
+        recordSilent(`Login efetuado: ${state.nome} (${state.classe} ${state.turma} ${state.curso}).`);
       });
 
-      function renderChat() {
-        if (!chatBox) return;
-        const arr = state.classChats[state.classe] || [];
-        chatBox.innerHTML = '';
-        if (!arr.length) {
-          chatBox.innerHTML = `<div class="text-xs text-slate-400">Chat limpo ou sem mensagens nesta turma.</div>`;
+      // --- ACESSO ADM / AGENTE DIRECTIVO (SEM EXPOSIÇÃO DE CÓDIGOS) ---
+      const hierarchyModal = document.getElementById('hierarchyModal');
+      const hierarchyFeedback = document.getElementById('hierarchyFeedback');
+
+      document.getElementById('btnFooterRestricted')?.addEventListener('click', () => {
+        if (hierarchyFeedback) hierarchyFeedback.textContent = '';
+        const k = document.getElementById('hierarchyKeyInput');
+        if (k) k.value = '';
+        hierarchyModal?.classList.remove('hidden');
+        hierarchyModal?.setAttribute('data-hidden', 'false');
+      });
+
+      document.getElementById('btnCloseHierarchy')?.addEventListener('click', () => {
+        hierarchyModal?.classList.add('hidden');
+        hierarchyModal?.setAttribute('data-hidden', 'true');
+      });
+
+      document.getElementById('hierarchyForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const rawKey = (document.getElementById('hierarchyKeyInput')?.value || '').trim();
+        const d = digestSecret(rawKey);
+        if (d === ROLE_DIGESTS.DIRECTIVE) {
+          state.role = 'DIRECTIVE';
+        } else if (d === ROLE_DIGESTS.ADMIN_2013) {
+          state.role = 'ADMIN_2013';
+        } else if (d === ROLE_DIGESTS.ADMIN_2012) {
+          state.role = 'ADMIN_2012';
+        } else {
+          if (hierarchyFeedback) {
+            hierarchyFeedback.textContent = 'Credencial não reconhecida.';
+            hierarchyFeedback.className = 'text-xs text-rose-400 min-h-[16px]';
+          }
           return;
         }
-        arr.forEach((m) => {
-          const d = document.createElement('div');
-          d.className = 'p-3 rounded-2xl bg-slate-900 border border-slate-800 text-xs text-slate-100 space-y-1';
-          const extra = m.mode === 'DM' ? ` → DM: ${m.to || 'Colega'}` : '';
-          d.innerHTML = `<div class="font-semibold text-sky-300">${m.from}${extra}</div><div>${m.text}</div>`;
-          if (m.img) {
-            const img = document.createElement('img');
-            img.src = m.img;
-            img.alt = 'Foto';
-            img.className = 'max-h-40 rounded-xl mt-1 border border-slate-700';
-            d.appendChild(img);
-          }
-          chatBox.appendChild(d);
+        applyUserUI();
+        recordSilent(`Sessão elevada para ${state.role}.`);
+        hierarchyModal?.classList.add('hidden');
+        hierarchyModal?.setAttribute('data-hidden', 'true');
+      });
+
+      // --- NAVEGAÇÃO ---
+      document.querySelectorAll('.nav-tab').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const t = btn.dataset.tab;
+          document.querySelectorAll('.nav-tab').forEach((b) => {
+            const on = b.dataset.tab === t;
+            b.className = on
+              ? 'nav-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-500 text-slate-950 whitespace-nowrap transition'
+              : 'nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition';
+          });
+          document.querySelectorAll('.module-sec').forEach((sec) => {
+            const match = sec.id === `panel-${t}`;
+            sec.classList.toggle('hidden', !match);
+            sec.setAttribute('data-hidden', String(!match));
+          });
         });
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }
+      });
 
-      function clearCurrentClassChat(actorLabel) {
-        state.classChats[state.classe] = [];
-        renderChat();
-        logSentinel(`Chat da ${state.classe} limpo por ${actorLabel}.`);
-      }
-
-      function pushChatItem({ text, img = null }) {
-        if (!state.classChats[state.classe]) state.classChats[state.classe] = [];
-        state.classChats[state.classe].push({
-          from: state.nome,
-          mode: chatMode?.value || 'TURMA',
-          to: (dmTarget?.value || '').trim(),
-          text,
-          img,
+      // --- AVALIAÇÃO CRONOMETRADA & AUSÊNCIA DE 2 MINUTOS ---
+      function recordGradeAuto(aluno, disciplina, nota, motivo) {
+        state.grades.push({
+          aluno,
+          disciplina,
+          nota,
+          motivo,
+          classe: state.classe,
+          turma: state.turma,
+          curso: state.curso,
+          at: new Date().toLocaleTimeString(),
         });
-        renderChat();
+        const logBox = document.getElementById('directiveGradesLog');
+        if (logBox) {
+          const avg = (state.grades.reduce((s, item) => s + item.nota, 0) / state.grades.length).toFixed(2);
+          logBox.innerHTML =
+            `<div class="text-emerald-300 font-bold">Média Geral Enviada à Direção: ${avg} / 20 (${state.grades.length} reg.)</div>` +
+            state.grades
+              .slice(-10)
+              .map((g) => `<div>• ${g.aluno} [${g.classe} ${g.turma}]: ${g.nota.toFixed(1)} (${g.motivo})</div>`)
+              .join('');
+        }
       }
 
-      updateChatHeader();
-      renderChat();
+      function renderActiveExamView() {
+        const box = document.getElementById('activeExamContainer');
+        if (!box) return;
+        if (!state.exam) {
+          box.innerHTML = '<p class="text-xs text-slate-400">Nenhuma avaliação ativa no momento.</p>';
+          return;
+        }
+        if (state.exam.status === 'CLOSED_ZERO') {
+          box.innerHTML = `
+            <div class="p-3.5 rounded-xl bg-rose-950/50 border border-rose-500/40 text-xs text-rose-200 space-y-1">
+              <div class="font-bold font-mono">AVALIAÇÃO ENCERRADA — NOTA 0,0</div>
+              <div>Motivo: ${state.exam.closeReason || 'Encerrada.'}</div>
+              <div>Núcleo S.A.G.A. bloqueado durante o período da avaliação.</div>
+            </div>
+          `;
+          return;
+        }
+        if (state.exam.status === 'SUBMITTED') {
+          box.innerHTML = `<div class="text-xs text-emerald-300 font-mono">Avaliação submetida. S.A.G.A. liberado.</div>`;
+          return;
+        }
+        box.innerHTML = `
+          <div class="space-y-3">
+            <div class="text-sm font-bold text-white">${state.exam.title}</div>
+            <p class="text-xs text-slate-200">${state.exam.question}</p>
+            <input id="studentExamAnswerInput" type="text" placeholder="Escreve a tua resposta" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white" />
+            <button type="button" id="btnSubmitStudentExam" class="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Submeter Avaliação</button>
+          </div>
+        `;
+        document.getElementById('btnSubmitStudentExam')?.addEventListener('click', () => {
+          const ans = (document.getElementById('studentExamAnswerInput')?.value || '').trim();
+          const expected = (state.exam.expected || '').trim();
+          const score = ans && expected && ans.toLowerCase() === expected.toLowerCase() ? 20 : ans ? 12 : 0;
+          state.exam.status = 'SUBMITTED';
+          state.sagaBlockedByExam = false;
+          applyUserUI();
+          recordGradeAuto(state.nome, state.exam.title, score, 'Submissão dentro do prazo');
+          renderActiveExamView();
+        });
+      }
 
-      document.getElementById('chatForm')?.addEventListener('submit', (e) => {
+      document.getElementById('directiveExamForm')?.addEventListener('submit', (e) => {
         e.preventDefault();
-        const inp = document.getElementById('chatTextInput');
-        const t = (inp?.value || '').trim();
-        if (!t) return;
-        pushChatItem({ text: t });
-        inp.value = '';
+        if (!isDirective()) {
+          alert('Apenas o Agente Directivo pode lançar avaliações oficiais.');
+          return;
+        }
+        const title = (document.getElementById('examTitleInput')?.value || '').trim();
+        const question = (document.getElementById('examQuestionInput')?.value || '').trim();
+        const expected = (document.getElementById('examExpectedAnswerInput')?.value || '').trim();
+        const mins = Math.max(1, parseInt(document.getElementById('examDurationMinutesInput')?.value || '15', 10));
+        if (!title || !question) return;
+
+        state.exam = {
+          title,
+          question,
+          expected,
+          endsAt: Date.now() + mins * 60 * 1000,
+          awaySince: null,
+          status: 'ACTIVE',
+        };
+        state.sagaBlockedByExam = true;
+        applyUserUI();
+        renderActiveExamView();
+        recordSilent(`Avaliação "${title}" (${mins} min) lançada pelo Agente Directivo.`);
       });
 
-      document.getElementById('btnClearClassChat')?.addEventListener('click', () => {
-        clearCurrentClassChat(state.nome);
+      function closeExamWithZero(reason) {
+        if (!state.exam || state.exam.status !== 'ACTIVE') return;
+        state.exam.status = 'CLOSED_ZERO';
+        state.exam.closeReason = reason;
+        state.sagaBlockedByExam = false;
+        applyUserUI();
+        recordGradeAuto(state.nome, state.exam.title, 0, reason);
+        recordConductAlert(`Avaliação encerrada com nota 0,0 para ${state.nome}: ${reason}`);
+        renderActiveExamView();
+      }
+
+      function checkExamTimers() {
+        const clockEl = document.getElementById('examClockDisplay');
+        if (!state.exam || state.exam.status !== 'ACTIVE') {
+          if (clockEl) clockEl.textContent = 'Tempo: —';
+          return;
+        }
+        const now = Date.now();
+        if (state.exam.awaySince && now - state.exam.awaySince >= 120000) {
+          closeExamWithZero('Ausência igual ou superior a 2 minutos fora da aplicação/site.');
+          return;
+        }
+        const remSec = Math.max(0, Math.floor((state.exam.endsAt - now) / 1000));
+        const mm = String(Math.floor(remSec / 60)).padStart(2, '0');
+        const ss = String(remSec % 60).padStart(2, '0');
+        if (clockEl) clockEl.textContent = `Tempo: ${mm}:${ss}`;
+        if (remSec <= 0) {
+          closeExamWithZero('Tempo da avaliação esgotado.');
+        }
+      }
+
+      document.addEventListener('visibilitychange', () => {
+        if (!state.exam || state.exam.status !== 'ACTIVE') return;
+        if (document.hidden) {
+          state.exam.awaySince = Date.now();
+        } else if (state.exam.awaySince) {
+          const awayMs = Date.now() - state.exam.awaySince;
+          state.exam.awaySince = null;
+          if (awayMs >= 120000) {
+            closeExamWithZero('Ausência detetada de 2 minutos ou mais.');
+          }
+        }
       });
 
-      document.getElementById('chatPhotoInput')?.addEventListener('change', (e) => {
+      setInterval(checkExamTimers, 1000);
+
+      // --- CHAT POR TURMA, DMs, FOTOS (11.ª+) & DETEÇÃO DE CONTEÚDO ---
+      function canUploadChatPhoto() {
+        const clsNum = parseInt(state.classe, 10);
+        return (!Number.isNaN(clsNum) && clsNum >= 11) || state.photoUnlockedBelow11 || isTechAdmin();
+      }
+
+      function inspectChatContent(text, isDm) {
+        const low = text.toLowerCase();
+        const sexualHit = /\b(sexo|sexual|nude|porno|tesao|tesão|transar|safada|safado)\b/i.test(low);
+        const substanceHit = /\b(alcool|álcool|cerveja|vinho|whisky|vodka|cachaça|bebedeira|droga|drogas|maconha|erva|baseado|cocaina|cocaína|crack)\b/i.test(low);
+        const studyContext = /\b(estudo|escola|aula|prova|biologia|quimica|química|farmacologia|saude|saúde|pesquisa|trabalho|cej|cfb)\b/i.test(low);
+
+        if (isDm && sexualHit) {
+          recordConductAlert(`DM com teor sexual detetada de ${state.nome} (${state.classe} ${state.turma}).`);
+        }
+        if (substanceHit && !studyContext) {
+          recordConductAlert(`Menção a álcool/drogas fora de contexto de estudo por ${state.nome} (${state.classe} ${state.turma}).`);
+        }
+      }
+
+      function renderChatMessages() {
+        const box = document.getElementById('chatStreamBox');
+        if (!box) return;
+        const key = scopeKey();
+        const list = state.chatsByScope[key] || [];
+        if (!list.length) {
+          box.innerHTML = `<div class="text-xs text-slate-500">Nenhuma mensagem registada em ${state.classe} • ${state.turma} • ${state.curso}.</div>`;
+          return;
+        }
+        box.innerHTML = '';
+        list.forEach((m) => {
+          const theme = USER_COLOR_MAP[m.colorKey] || USER_COLOR_MAP.steelBlue;
+          const card = document.createElement('div');
+          card.className = `p-3 rounded-xl ${theme.bg} border ${theme.border} text-xs text-slate-100 space-y-1.5`;
+          const meta = m.mode === 'DM' ? ` • DM → ${m.recipient || 'Destinatário'}` : ` • ${m.turma}`;
+          card.innerHTML = `<div class="font-bold text-slate-200">${m.sender}<span class="font-normal text-slate-400">${meta}</span></div><div>${m.text}</div>`;
+          if (m.imageUrl) {
+            const img = document.createElement('img');
+            img.src = m.imageUrl;
+            img.alt = 'Imagem partilhada';
+            img.className = 'max-h-44 rounded-lg border border-slate-700 mt-1';
+            card.appendChild(img);
+          }
+          box.appendChild(card);
+        });
+        box.scrollTop = box.scrollHeight;
+      }
+
+      function addChatEntry({ text, imageUrl = null }) {
+        const key = scopeKey();
+        if (!state.chatsByScope[key]) state.chatsByScope[key] = [];
+        const mode = document.getElementById('chatChannelSelect')?.value || 'TURMA';
+        const recipient = (document.getElementById('chatDmRecipientInput')?.value || '').trim();
+        state.chatsByScope[key].push({
+          sender: state.nome,
+          turma: state.turma,
+          mode,
+          recipient,
+          colorKey: state.msgColor,
+          text,
+          imageUrl,
+        });
+        inspectChatContent(text, mode === 'DM');
+        renderChatMessages();
+      }
+
+      document.getElementById('chatChannelSelect')?.addEventListener('change', (e) => {
+        document.getElementById('chatDmRecipientInput')?.classList.toggle('hidden', e.target.value !== 'DM');
+      });
+
+      document.getElementById('btnTogglePhotoGate11')?.addEventListener('click', () => {
+        if (!isTechAdmin()) return;
+        state.photoUnlockedBelow11 = !state.photoUnlockedBelow11;
+        applyUserUI();
+        recordSilent(`Liberação de fotos abaixo da 11.ª classe: ${state.photoUnlockedBelow11 ? 'ATIVADA' : 'DESATIVADA'}.`);
+      });
+
+      document.getElementById('btnClearChatBtn')?.addEventListener('click', () => {
+        state.chatsByScope[scopeKey()] = [];
+        renderChatMessages();
+        recordSilent(`Chat limpo em ${scopeKey()}.`);
+      });
+
+      document.getElementById('chatMessageForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const inp = document.getElementById('chatComposerInput');
+        const txt = (inp?.value || '').trim();
+        if (!txt) return;
+        addChatEntry({ text: txt });
+        if (inp) inp.value = '';
+      });
+
+      document.getElementById('chatImageUpload')?.addEventListener('change', (e) => {
         const f = e.target.files && e.target.files[0];
         if (!f) return;
-        if (!photosEnabled()) {
-          pushChatItem({ text: 'Envio de foto bloqueado: disponível a partir da 11.ª Classe.' });
+        if (!canUploadChatPhoto()) {
+          alert('Envio de fotos disponível a partir da 11.ª classe.');
           e.target.value = '';
           return;
         }
-        const r = new FileReader();
-        r.onload = () => pushChatItem({ text: `Foto: ${f.name}`, img: r.result });
-        r.readAsDataURL(f);
+        const reader = new FileReader();
+        reader.onload = () => addChatEntry({ text: `Imagem: ${f.name}`, imageUrl: String(reader.result || '') });
+        reader.readAsDataURL(f);
         e.target.value = '';
       });
 
-      document.getElementById('btnToggleVoice')?.addEventListener('click', async () => {
-        const b = document.getElementById('btnToggleVoice');
-        if (!state.voiceActive) {
-          try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            state.mediaRecorder = new MediaRecorder(stream);
-            state.mediaRecorder.start();
-            state.voiceActive = true;
-            if (b) b.textContent = '⏹️ Parar Voz';
-            pushChatItem({ text: '🎙️ Gravação de voz iniciada.' });
-          } catch {
-            pushChatItem({ text: '🎙️ Microfone indisponível ou sem permissão.' });
-          }
-        } else {
-          try {
-            state.mediaRecorder?.stop();
-            state.mediaRecorder?.stream?.getTracks().forEach((tr) => tr.stop());
-          } catch {}
-          state.voiceActive = false;
-          if (b) b.textContent = '🎙️ Gravar Voz';
-          pushChatItem({ text: '🎙️ Gravação de voz encerrada.' });
-        }
-      });
+      // --- CEJ (GRÁFICOS EMPRESARIAIS) & SAÚDE MENTAL ---
+      function drawCejChart() {
+        const cnv = document.getElementById('cejBusinessChart');
+        const kpi = document.getElementById('cejKpiSummary');
+        if (!cnv) return;
+        const cCtx = cnv.getContext('2d');
+        if (!cCtx) return;
 
-      // --- LANÇAMENTO DE AVALIAÇÕES + MÉDIA AUTOMÁTICA + PODERES ADM ---
-      function refreshGradesUI() {
-        const listBox = document.getElementById('gradesListBox');
-        const avgBanner = document.getElementById('gradesAverageBanner');
-        if (!listBox || !avgBanner) return;
+        const rev = Math.max(0, parseFloat(document.getElementById('cejRevInput')?.value || '0'));
+        const cost = Math.max(0, parseFloat(document.getElementById('cejCostInput')?.value || '0'));
+        const tax = Math.max(0, parseFloat(document.getElementById('cejTaxInput')?.value || '0'));
+        const net = rev - cost - tax;
 
-        if (!state.grades.length) {
-          listBox.innerHTML = `<div class="text-slate-500">Nenhuma avaliação lançada ainda.</div>`;
-          avgBanner.textContent = 'Média Geral: — (0 avaliações)';
-          return;
-        }
+        cCtx.clearRect(0, 0, cnv.width, cnv.height);
+        const bars = [
+          { label: 'Receita', val: rev, color: '#38bdf8' },
+          { label: 'Custos', val: cost, color: '#f59e0b' },
+          { label: 'Impostos', val: tax, color: '#94a3b8' },
+          { label: 'Resultado Líq.', val: Math.max(0, net), color: net >= 0 ? '#10b981' : '#f43f5e' },
+        ];
+        const maxVal = Math.max(1, ...bars.map((b) => b.val));
 
-        const sum = state.grades.reduce((acc, g) => acc + g.nota, 0);
-        const avg = (sum / state.grades.length).toFixed(2);
-        avgBanner.textContent = `Média Geral: ${avg} / 20 (${state.grades.length} aval.)`;
+        bars.forEach((b, idx) => {
+          const x = 45 + idx * 120;
+          const barH = Math.max(6, Math.round((b.val / maxVal) * 125));
+          const y = 165 - barH;
+          cCtx.fillStyle = b.color;
+          cCtx.fillRect(x, y, 64, barH);
+          cCtx.fillStyle = '#cbd5e1';
+          cCtx.font = '11px "Plus Jakarta Sans", sans-serif';
+          cCtx.fillText(b.label, x, 186);
+        });
 
-        listBox.innerHTML = state.grades
-          .map(
-            (g, i) =>
-              `<div class="flex items-center justify-between px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800"><span>#${i + 1} <strong>${g.aluno}</strong> • ${g.disciplina}</span><span class="font-mono text-sky-300">${g.nota.toFixed(1)}</span></div>`
-          )
-          .join('');
+        const marginPct = rev > 0 ? ((net / rev) * 100).toFixed(1) : '0.0';
+        if (kpi) kpi.textContent = `Resultado Líquido: ${net.toFixed(2)} | Margem Líquida: ${marginPct}%`;
       }
 
-      document.getElementById('gradeLaunchForm')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (!state.isAdmin) {
-          alert('Ativa o acesso ADM no rodapé para lançar avaliações.');
-          return;
-        }
-        const aluno = (document.getElementById('gradeStudentInput')?.value || '').trim();
-        const disciplina = (document.getElementById('gradeSubjectInput')?.value || '').trim();
-        const nota = parseFloat(document.getElementById('gradeValueInput')?.value || '');
-        if (!aluno || !disciplina || Number.isNaN(nota)) return;
+      document.getElementById('btnRenderCejChart')?.addEventListener('click', drawCejChart);
+      drawCejChart();
 
-        state.grades.push({ aluno, disciplina, nota });
-        refreshGradesUI();
-        logSentinel(`Nota ${nota.toFixed(1)} lançada para ${aluno} (${disciplina}).`);
-        e.target.reset();
+      ['mhSleepRange', 'mhCalmRange', 'mhLoadRange'].forEach((id) => {
+        document.getElementById(id)?.addEventListener('input', () => {
+          const s = document.getElementById('mhSleepRange')?.value || '70';
+          const c = document.getElementById('mhCalmRange')?.value || '65';
+          const l = document.getElementById('mhLoadRange')?.value || '60';
+          const sv = document.getElementById('mhSleepVal');
+          const cv = document.getElementById('mhCalmVal');
+          const lv = document.getElementById('mhLoadVal');
+          if (sv) sv.textContent = `${s}%`;
+          if (cv) cv.textContent = `${c}%`;
+          if (lv) lv.textContent = `${l}%`;
+        });
       });
 
-      document.getElementById('btnToggleSagaLock')?.addEventListener('click', () => {
-        if (!state.isAdmin) {
-          alert('Apenas o ADM pode bloquear ou liberar o S.A.G.A.');
-          return;
+      document.getElementById('btnCalcMentalHealth')?.addEventListener('click', () => {
+        const s = parseFloat(document.getElementById('mhSleepRange')?.value || '70');
+        const c = parseFloat(document.getElementById('mhCalmRange')?.value || '65');
+        const l = parseFloat(document.getElementById('mhLoadRange')?.value || '60');
+        const pct = Math.round((s + c + l) / 3);
+        const pctEl = document.getElementById('mentalHealthPctText');
+        const advEl = document.getElementById('mentalHealthAdviceText');
+        if (pctEl) pctEl.textContent = `Percentagem: ${pct}%`;
+        if (advEl) {
+          advEl.textContent =
+            pct >= 75
+              ? 'Indicador favorável de equilíbrio mental e disponibilidade para estudo.'
+              : pct >= 50
+              ? 'Indicador moderado. Recomenda-se pausas planeadas e revisão leve.'
+              : 'Indicador baixo. Reduz a carga imediata, prioriza descanso e conversa com o S.A.G.A.';
         }
-        state.sagaLocked = !state.sagaLocked;
-        refreshBadges();
-        runAdmCheckupInPortuguese('Estado do núcleo S.A.G.A. atualizado pelo ADM');
-        logSentinel(state.sagaLocked ? 'S.A.G.A. bloqueado pelo ADM.' : 'S.A.G.A. liberado pelo ADM.');
       });
 
-      document.getElementById('btnAdmClearChat')?.addEventListener('click', () => {
-        if (!state.isAdmin) {
-          alert('Apenas o ADM pode executar limpeza geral do chat.');
-          return;
-        }
-        clearCurrentClassChat('ADM');
-      });
-
-      document.getElementById('btnRunAdmCheckup')?.addEventListener('click', () => {
-        runAdmCheckupInPortuguese('Verificação manual em português concluída');
-      });
-
-      document.getElementById('btnApplyAdmPatch')?.addEventListener('click', () => {
-        if (!state.isAdmin) {
-          alert('Apenas o ADM pode aplicar diretrizes diretas ao núcleo S.A.G.A.');
-          return;
-        }
-        const inp = document.getElementById('admPatchInput');
-        const cmd = (inp?.value || '').trim();
-        if (!cmd) return;
-        state.customDirective = cmd;
+      // --- APROVEITAMENTO & AVISOS ---
+      document.getElementById('btnAddGradeAndSync')?.addEventListener('click', () => {
+        const val = parseFloat(document.getElementById('gradeEntryInput')?.value || '');
+        if (Number.isNaN(val) || val < 0 || val > 20) return;
+        recordGradeAuto(state.nome, state.curso, val, 'Aproveitamento registado');
+        const inp = document.getElementById('gradeEntryInput');
         if (inp) inp.value = '';
-        appendSagaBubble('S.A.G.A. (NÚCLEO)', `Diretriz recebida do ADM e aplicada ao núcleo sem quebrar o sistema: "${cmd}".`, false);
-        logSentinel(`Diretriz ADM aplicada ao S.A.G.A.: ${cmd}`);
-        runAdmCheckupInPortuguese(`Diretriz ativa: ${cmd}`);
       });
 
-      document.getElementById('btnSentinelScan')?.addEventListener('click', () => {
-        logSentinel(`Varredura OK • Classe: ${state.classe} • ADM: ${state.isAdmin ? 'SIM' : 'NÃO'} • Notas: ${state.grades.length}`);
+      function renderNotices() {
+        const feed = document.getElementById('noticesFeed');
+        if (!feed) return;
+        feed.innerHTML = state.notices.slice(-10).map((n) => `<div class="p-2 rounded bg-slate-900 border border-slate-800">${n}</div>`).join('');
+      }
+
+      document.getElementById('btnPublishNotice')?.addEventListener('click', () => {
+        if (!isTechAdmin()) {
+          alert('Apenas ADM ou Agente Directivo pode publicar avisos.');
+          return;
+        }
+        const inp = document.getElementById('noticeInput');
+        const txt = (inp?.value || '').trim();
+        if (!txt) return;
+        state.notices.push(`[${state.role}] ${txt}`);
+        if (inp) inp.value = '';
+        renderNotices();
+        recordSilent(`Aviso publicado por ${state.role}.`);
       });
 
-      refreshBadges();
-      refreshGradesUI();
-      runAdmCheckupInPortuguese('Sistema pronto');
+      applyUserUI();
+      renderChatMessages();
+      renderActiveExamView();
+      renderNotices();
+      recordSilent('Sistema Áurea inicializado em modo profissional.');
     })();
   </script>
 </body>
