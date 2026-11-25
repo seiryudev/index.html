@@ -1,1665 +1,1382 @@
-
 <!DOCTYPE html>
-<html lang="pt" class="dark">
+<html lang="pt-AO" class="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>EXorg MT — Sistema Áurea • Complexo Escolar Privado Madre Trindade</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema Áurea — Projeto EXorg MT</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: {
-            display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
-          },
           colors: {
-            abyss: '#040811',
-            slateCard: '#0a1220',
-            steel: '#132036',
-            accentBlue: '#38bdf8',
+            grafite: '#0d1015',
+            ardosia: '#141922',
+            painel: '#1b222e',
+            borda: '#2a3446',
+            aurea: '#e5a93c',
+            aureaSuave: '#f3c669',
+            aureaEscuro: '#9e6b14'
           },
-        },
-      },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+          }
+        }
+      }
     };
   </script>
   <style>
-    * { box-sizing: border-box; }
-    html, body {
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      background: linear-gradient(180deg, #060d1a 0%, #03070f 100%);
-      color: #e2e8f0;
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    /* Estilo escuro confortável para leitura noturna e detalhes visuais do Sistema Áurea */
+    :root {
+      color-scheme: dark;
+    }
+
+    body {
+      background-color: #0d1015;
+      color: #e6ecf5;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       overflow-x: hidden;
-      -webkit-tap-highlight-color: transparent;
     }
-    #cosmosCanvas {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none !important;
-      width: 100vw;
-      height: 100vh;
+
+    /* Barra de rolagem discreta para leitura noturna */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
     }
-    #aureaAppShell {
-      position: relative;
-      z-index: 10;
-      pointer-events: auto;
+    ::-webkit-scrollbar-track {
+      background: #11161f;
     }
-    .hidden, [data-hidden="true"] {
-      display: none !important;
-      pointer-events: none !important;
-      visibility: hidden !important;
+    ::-webkit-scrollbar-thumb {
+      background: #2b3648;
+      border-radius: 9999px;
     }
-    button, a, [role="button"], input, select, textarea, label[for] {
-      touch-action: manipulation;
-      cursor: pointer;
+    ::-webkit-scrollbar-thumb:hover {
+      background: #e5a93c;
     }
-    .pro-card {
-      background: rgba(10, 18, 32, 0.92);
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+
+    /* Brilho dourado suave para elementos ativos */
+    .aurea-glow {
+      box-shadow: 0 0 0 1px rgba(229, 169, 60, 0.35), 0 10px 25px -10px rgba(229, 169, 60, 0.25);
     }
-    .how-to-box {
-      background: rgba(4, 8, 17, 0.88);
-      border: 1px solid rgba(56, 189, 248, 0.22);
-      border-radius: 0.75rem;
-      padding: 0.75rem 0.9rem;
+
+    .nav-btn.active {
+      background: linear-gradient(90deg, rgba(229, 169, 60, 0.18) 0%, rgba(229, 169, 60, 0.04) 100%);
+      border-left: 3px solid #e5a93c;
+      color: #f3c669;
     }
-    .star-mark {
-      color: #f6dc7c;
-      text-shadow: 0 0 14px rgba(212, 175, 55, 0.45);
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    @keyframes starHop {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-7px) scale(1.12); }
+    .fade-in {
+      animation: fadeIn 0.22s ease-out forwards;
     }
-    .star-hopping { animation: starHop 0.65s ease-in-out infinite; }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #040811; }
-    ::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.45); border-radius: 999px; }
   </style>
 </head>
-<body class="bg-abyss text-slate-200 antialiased">
+<body class="min-h-screen flex flex-col bg-grafite text-slate-100 selection:bg-aurea/30 selection:text-aureaSuave">
 
-  <canvas id="cosmosCanvas" aria-hidden="true"></canvas>
+  <!-- Barra de Notificação / Mensagem (substitui alert/confirm) -->
+  <div id="toastBanner" class="fixed bottom-4 right-4 z-50 hidden max-w-sm rounded-xl border border-aurea/40 bg-painel/95 px-4 py-3 text-sm text-slate-100 shadow-2xl backdrop-blur">
+    <div class="flex items-start gap-3">
+      <span class="mt-0.5 inline-block h-2.5 w-2.5 shrink-0 rounded-full bg-aurea"></span>
+      <p id="toastMessage" class="leading-snug"></p>
+    </div>
+  </div>
 
-  <!-- Modal de Login Académico -->
-  <div id="loginModal" class="hidden fixed inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-    <div class="w-full max-w-xl pro-card rounded-2xl p-6 space-y-4 max-h-[92vh] overflow-y-auto">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-        <div>
-          <span class="font-mono text-[11px] uppercase tracking-widest text-sky-400">Credencial Académica</span>
-          <h2 class="font-display text-3xl font-bold text-white">Acesso &amp; Preferências do Estudante</h2>
+  <!-- Cabeçalho Superior -->
+  <header class="sticky top-0 z-30 border-b border-borda bg-ardosia/95 backdrop-blur">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3">
+      <!-- Marca EXorg MT / Áurea -->
+      <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-aurea/40 bg-gradient-to-br from-aurea/25 to-amber-950/40 text-aureaSuave font-bold text-lg shadow">
+          Á
         </div>
-        <button type="button" id="btnCloseLogin" class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300">✕</button>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-base font-bold tracking-tight text-white">Sistema Áurea</span>
+            <span class="rounded-md border border-aurea/30 bg-aurea/10 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-aureaSuave">
+              EXorg MT
+            </span>
+          </div>
+          <p class="text-xs text-slate-400">Ambiente Escolar Isolado • 7.ª à 12.ª Classe (Angola)</p>
+        </div>
       </div>
 
-      <form id="loginForm" class="space-y-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label for="loginNameInput" class="block text-xs font-semibold text-slate-300 mb-1">Nome Completo</label>
-            <input id="loginNameInput" type="text" required placeholder="Ex.: Sófocles" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
-          </div>
-          <div>
-            <label for="loginEmailInput" class="block text-xs font-semibold text-slate-300 mb-1">E-mail Institucional / Pessoal</label>
-            <input id="loginEmailInput" type="email" required placeholder="aluno@madretrindade.ao" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
-          </div>
+      <!-- Indicador do Ambiente Ativo e Botão para Trocar Classe/Curso -->
+      <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+        <div id="activeContextBadge" class="flex items-center gap-2 rounded-xl border border-borda bg-painel px-3 py-1.5 text-xs">
+          <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+          <span id="contextText" class="font-medium text-slate-200">10.ª Classe • CEJ</span>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <button
+          id="openContextModalBtn"
+          type="button"
+          class="cursor-pointer rounded-xl border border-aurea/40 bg-aurea/15 px-3.5 py-2 text-xs font-semibold text-aureaSuave transition hover:bg-aurea/25 active:scale-[0.99]"
+        >
+          Trocar Classe / Curso
+        </button>
+
+        <button
+          id="mobileNavToggle"
+          type="button"
+          class="cursor-pointer rounded-xl border border-borda bg-painel px-3 py-2 text-xs font-semibold text-slate-200 lg:hidden hover:border-aurea/40"
+          aria-label="Abrir menu de módulos"
+        >
+          Módulos
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Corpo Principal com Navegação Lateral e Área de Trabalho -->
+  <div class="mx-auto flex w-full max-w-7xl flex-1 flex-col lg:flex-row">
+    <!-- Navegação Lateral dos Módulos -->
+    <aside id="sidebarNav" class="hidden w-full shrink-0 border-b border-borda bg-ardosia/70 p-3 lg:block lg:w-72 lg:border-b-0 lg:border-r lg:p-4">
+      <div class="mb-3 rounded-xl border border-borda/80 bg-painel/70 p-3">
+        <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Espaço Isolado Ativo</p>
+        <p id="sidebarClassTitle" class="mt-1 text-sm font-bold text-aureaSuave">10.ª Classe</p>
+        <p id="sidebarCourseTitle" class="text-xs text-slate-300">Ciências Económicas e Jurídicas (CEJ)</p>
+        <p id="sidebarIsolationNote" class="mt-2 text-[11px] leading-relaxed text-slate-400">
+          Apenas turmas, conteúdos e exercícios desta classe estão visíveis.
+        </p>
+      </div>
+
+      <nav class="space-y-1" aria-label="Módulos do Sistema Áurea">
+        <button type="button" data-module="academy" class="nav-btn active flex w-full cursor-pointer items-center justify-between rounded-xl px-3.5 py-2.5 text-left text-sm font-medium text-slate-200 transition hover:bg-painel">
+          <span>Áurea Academy</span>
+          <span class="rounded bg-aurea/15 px-2 py-0.5 text-[11px] text-aureaSuave">10 Quest.</span>
+        </button>
+
+        <button type="button" data-module="definitivo" class="nav-btn flex w-full cursor-pointer items-center justify-between rounded-xl px-3.5 py-2.5 text-left text-sm font-medium text-slate-200 transition hover:bg-painel">
+          <span>Estudo Definitivo</span>
+          <span class="rounded bg-slate-800 px-2 py-0.5 text-[11px] text-slate-300">Provas</span>
+        </button>
+
+        <button type="button" data-module="lado0" class="nav-btn flex w-full cursor-pointer items-center justify-between rounded-xl px-3.5 py-2.5 text-left text-sm font-medium text-slate-200 transition hover:bg-painel">
+          <span>Lado 0</span>
+          <span class="rounded bg-slate-800 px-2 py-0.5 text-[11px] text-slate-300">Pausa Leve</span>
+        </button>
+
+        <button type="button" data-module="chatTurma" class="nav-btn flex w-full cursor-pointer items-center justify-between rounded-xl px-3.5 py-2.5 text-left text-sm font-medium text-slate-200 transition hover:bg-painel">
+          <span>Chat da Turma</span>
+          <span id="turmaBadgeCount" class="rounded bg-slate-800 px-2 py-0.5 text-[11px] text-slate-300">Classe</span>
+        </button>
+
+        <button type="button" data-module="saga" class="nav-btn flex w-full cursor-pointer items-center justify-between rounded-xl px-3.5 py-2.5 text-left text-sm font-medium text-slate-200 transition hover:bg-painel">
+          <span>Chat S.A.G.A.</span>
+          <span class="rounded bg-aurea/15 px-2 py-0.5 text-[11px] text-aureaSuave">IA Tutor</span>
+        </button>
+
+        <button type="button" data-module="manager" class="nav-btn flex w-full cursor-pointer items-center justify-between rounded-xl px-3.5 py-2.5 text-left text-sm font-medium text-slate-200 transition hover:bg-painel">
+          <span>Áurea Manager</span>
+          <span class="rounded bg-slate-800 px-2 py-0.5 text-[11px] text-slate-300">10.ª CEJ</span>
+        </button>
+
+        <button type="button" data-module="admin" class="nav-btn flex w-full cursor-pointer items-center justify-between rounded-xl px-3.5 py-2.5 text-left text-sm font-medium text-slate-200 transition hover:bg-painel">
+          <span>Painel de Administração</span>
+          <span class="rounded bg-slate-800 px-2 py-0.5 text-[11px] text-slate-300">Gestão</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Área Principal Dinâmica dos Módulos -->
+    <main id="moduleWorkspace" class="min-w-0 flex-1 p-4 sm:p-6">
+      <!-- Conteúdo renderizado via JavaScript -->
+    </main>
+  </div>
+
+  <!-- Rodapé Simples -->
+  <footer class="border-t border-borda bg-ardosia/80 px-4 py-3 text-center text-xs text-slate-400">
+    Projeto <strong class="text-slate-200">EXorg MT</strong> — <strong class="text-aureaSuave">Sistema Áurea</strong> • Pré-visualização interativa para estudantes em Angola (7.ª à 12.ª classe).
+  </footer>
+
+  <!-- Modal de Seleção / Isolamento de Classe e Curso -->
+  <div id="contextModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
+    <div class="fade-in w-full max-w-lg rounded-2xl border border-aurea/35 bg-ardosia p-5 shadow-2xl sm:p-6">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-aureaSuave">Isolamento de Ambiente</span>
+          <h2 class="mt-0.5 text-lg font-bold text-white">Selecionar Classe e Curso</h2>
+          <p class="mt-1 text-xs text-slate-400">
+            O Sistema Áurea separa os conteúdos, exercícios e conversas para que vejas apenas o que pertence à tua classe.
+          </p>
+        </div>
+        <button id="closeContextModalBtn" type="button" class="cursor-pointer rounded-lg border border-borda bg-painel px-2.5 py-1 text-xs text-slate-300 hover:text-white">
+          Fechar
+        </button>
+      </div>
+
+      <form id="contextForm" class="mt-5 space-y-4">
+        <div>
+          <label for="studentNameInput" class="mb-1.5 block text-xs font-semibold text-slate-300">Nome do Estudante (opcional)</label>
+          <input
+            id="studentNameInput"
+            type="text"
+            placeholder="Ex.: Sófocles ou Estudante Áurea"
+            class="w-full rounded-xl border border-borda bg-painel px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-aurea focus:outline-none"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label for="loginClassSelect" class="block text-xs font-semibold text-slate-300 mb-1">Classe</label>
-            <select id="loginClassSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white">
+            <label for="classSelect" class="mb-1.5 block text-xs font-semibold text-slate-300">Classe (7.ª à 12.ª)</label>
+            <select id="classSelect" class="w-full rounded-xl border border-borda bg-painel px-3.5 py-2.5 text-sm text-white focus:border-aurea focus:outline-none">
               <option value="7.ª Classe">7.ª Classe</option>
               <option value="8.ª Classe">8.ª Classe</option>
               <option value="9.ª Classe">9.ª Classe</option>
               <option value="10.ª Classe">10.ª Classe</option>
               <option value="11.ª Classe">11.ª Classe</option>
               <option value="12.ª Classe">12.ª Classe</option>
-              <option value="13.ª Classe">13.ª Classe</option>
             </select>
           </div>
+
           <div>
-            <label for="loginSectionSelect" class="block text-xs font-semibold text-slate-300 mb-1">Turma (A–C)</label>
-            <select id="loginSectionSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white">
-              <option value="Turma A">Turma A</option>
-              <option value="Turma B">Turma B</option>
-              <option value="Turma C">Turma C</option>
-            </select>
-          </div>
-          <div>
-            <label for="loginTrackSelect" class="block text-xs font-semibold text-slate-300 mb-1">2.º Ciclo / Curso</label>
-            <select id="loginTrackSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white">
-              <option value="CFB">CFB (Ciências Físicas e Biológicas)</option>
-              <option value="CEJ">CEJ (Ciências Económicas e Jurídicas)</option>
-              <option value="CH">CH (Ciências Humanas)</option>
-              <option value="Geral (1.º Ciclo)">Geral (1.º Ciclo — 7.ª a 9.ª)</option>
+            <label for="courseSelect" class="mb-1.5 block text-xs font-semibold text-slate-300">Curso / Área</label>
+            <select id="courseSelect" class="w-full rounded-xl border border-borda bg-painel px-3.5 py-2.5 text-sm text-white focus:border-aurea focus:outline-none">
+              <!-- Opções preenchidas dinamicamente conforme a classe -->
             </select>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-          <div>
-            <label for="profileColorSelect" class="block text-xs font-semibold text-slate-300 mb-1">Cor das Mensagens do Usuário (20 Opções)</label>
-            <select id="profileColorSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white"></select>
-          </div>
-          <div>
-            <label for="profileAvatarInput" class="block text-xs font-semibold text-slate-300 mb-1">Foto de Perfil</label>
-            <input id="profileAvatarInput" type="file" accept="image/*" class="w-full text-xs text-slate-300 file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-slate-800 file:text-slate-100 hover:file:bg-slate-700" />
-          </div>
+        <div class="rounded-xl border border-borda bg-painel/70 p-3 text-xs text-slate-300">
+          <strong class="text-aureaSuave">Nota de isolamento:</strong> Ao confirmar, o chat da turma, as 10 questões diárias e os exercícios mudam automaticamente para o contexto escolhido.
         </div>
 
-        <div id="colorSwatchesPreview" class="grid grid-cols-5 sm:grid-cols-10 gap-1.5 pt-1"></div>
-
-        <div class="flex justify-end gap-2 pt-2">
-          <button type="button" id="btnCancelLogin" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-300">Cancelar</button>
-          <button type="submit" class="px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Guardar &amp; Entrar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal de Autenticação Restrita -->
-  <div id="hierarchyModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
-    <div class="w-full max-w-sm pro-card rounded-2xl p-6 space-y-4">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
-        <h3 class="font-display text-2xl font-bold text-white">Acesso Restrito</h3>
-        <button type="button" id="btnCloseHierarchy" class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300">✕</button>
-      </div>
-      <form id="hierarchyForm" class="space-y-3">
-        <div>
-          <label for="hierarchyKeyInput" class="block text-xs text-slate-300 mb-1">Chave de Autorização</label>
-          <input id="hierarchyKeyInput" type="password" required autocomplete="off" placeholder="Introduz a chave" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm font-mono text-white" />
-        </div>
-        <p id="hierarchyFeedback" class="text-xs text-slate-400 min-h-[16px]"></p>
-        <button type="submit" class="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Validar Acesso</button>
-      </form>
-    </div>
-  </div>
-
-  <div id="aureaAppShell" class="min-h-screen flex flex-col justify-between pb-10">
-    <header class="sticky top-0 z-30 pro-card border-b border-slate-800/90">
-      <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-steel border border-slate-700 flex items-center justify-center">
-            <span class="font-display text-2xl star-mark">✦</span>
-          </div>
-          <div>
-            <div class="flex items-center gap-2 flex-wrap">
-              <span class="font-display text-xl md:text-2xl font-bold tracking-wide text-white">EXorg MT — Sistema Áurea</span>
-              <span id="networkStatusPill" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">REDE ATIVA</span>
-              <span id="sagaBridgeStatusPill" class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">S.A.G.A. PENDENTE</span>
-            </div>
-            <p class="text-xs text-slate-400">Complexo Escolar Privado Madre Trindade</p>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-2 flex-wrap">
-          <img id="headerAvatarImg" src="" alt="" class="hidden w-8 h-8 rounded-full object-cover border border-slate-600" />
-          <span id="userContextBadge" class="text-xs px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-200">
-            Sófocles • 7.ª Classe • Turma A • Geral (1.º Ciclo)
-          </span>
-          <button type="button" id="btnOpenLogin" class="px-3.5 py-1.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/40 text-sky-300 text-xs font-semibold transition">
-            Login / Perfil
+        <div class="flex justify-end gap-2 pt-1">
+          <button type="submit" class="w-full cursor-pointer rounded-xl bg-aurea px-4 py-2.5 text-sm font-bold text-grafite transition hover:bg-aureaSuave sm:w-auto">
+            Aplicar e Isolar Ambiente
           </button>
         </div>
-      </div>
-
-      <!-- Navegação principal: abas restritas ocultas por padrão para alunos -->
-      <nav aria-label="Módulos principais" class="max-w-6xl mx-auto px-4 pb-3 flex items-center gap-2 overflow-x-auto" id="mainNavTabs">
-        <button type="button" data-tab="saga" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-500 text-slate-950 whitespace-nowrap transition">S.A.G.A.</button>
-        <button type="button" data-tab="chat" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">Chat da Turma &amp; DMs</button>
-        <button type="button" data-tab="cej" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">CEJ, Saúde Mental &amp; Bem-Estar</button>
-        <button type="button" data-tab="exam" data-restricted-tab="exam" class="nav-tab hidden px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">Avaliação Cronometrada</button>
-        <button type="button" data-tab="governance" data-restricted-tab="governance" class="nav-tab hidden px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">Governança &amp; IA Infiltrada</button>
-      </nav>
-    </header>
-
-    <main class="max-w-6xl w-full mx-auto px-4 py-6 space-y-6 flex-1">
-
-      <!-- 1. NÚCLEO S.A.G.A. + OPÇÃO NOVA "ESTUDAR COISAS NOVAS" (COM SELO NEW) + CALCULADORA LIGADA -->
-      <section id="panel-saga" class="module-sec space-y-5">
-        <div class="pro-card rounded-2xl p-5 md:p-6 space-y-4">
-          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
-            <div class="flex items-center gap-3">
-              <div id="sagaStarIndicator" class="w-11 h-11 rounded-xl bg-steel border border-slate-700 flex items-center justify-center">
-                <span class="font-display text-2xl star-mark">✦</span>
-              </div>
-              <div>
-                <div class="flex items-center gap-2 flex-wrap">
-                  <span class="font-mono text-[11px] uppercase tracking-wider text-sky-400">Núcleo S.A.G.A.</span>
-                  <span id="sagaAccessStateBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">OPERACIONAL</span>
-                </div>
-                <h2 class="font-display text-3xl font-bold text-white">S.A.G.A.</h2>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-2 flex-wrap">
-              <select id="sagaVoiceModeSelect" class="px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-slate-200">
-                <option value="male">Voz Masculina</option>
-                <option value="female">Voz Feminina</option>
-              </select>
-              <button type="button" id="btnListenSaga" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-sky-300">Ouvir Voz</button>
-              <button type="button" id="btnClearSagaHistory" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-400">Limpar</button>
-            </div>
-          </div>
-
-          <!-- Opção Nova: Estudar Coisas Novas com selo NEW em cima -->
-          <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-3">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div class="relative inline-block pt-4">
-                <span class="absolute top-0 left-0 px-2 py-0.5 rounded text-[10px] font-mono font-extrabold uppercase tracking-wider bg-amber-400 text-slate-950 shadow">
-                  NEW
-                </span>
-                <button type="button" id="btnStudyNewThings" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-sky-400/40 text-xs font-bold text-white transition">
-                  Estudar Coisas Novas
-                </button>
-              </div>
-              <span id="newStudyAvailabilityBadge" class="text-[11px] font-mono px-3 py-1.5 rounded-lg bg-slate-900 border border-amber-400/35 text-amber-300 self-start sm:self-center">
-                Disponível quando resolvermos o S.A.G.A.
-              </span>
-            </div>
-            <div class="how-to-box text-xs text-slate-400">
-              <strong class="text-slate-200">Como usar:</strong> este botão abre conteúdos e desafios novos fora do roteiro padrão. Já está visível aqui, mas só fica totalmente operacional quando concluirmos a ligação final do <strong class="text-sky-300">S.A.G.A.</strong>
-            </div>
-          </div>
-
-          <div id="sagaStream" class="space-y-3 max-h-96 overflow-y-auto p-4 rounded-xl bg-slate-950/85 border border-slate-800">
-            <div class="p-3.5 rounded-xl bg-[#0e192d] border border-sky-400/35 text-sm text-slate-100 leading-relaxed">
-              <div class="text-[11px] font-mono text-sky-400 mb-1">S.A.G.A. • Núcleo Inteligente</div>
-              Pronto para trabalhar contigo, Sófocles. Pode ser estudo de CFB, CEJ ou CH, criação e gestão de empresa, histórias com problemas reais ou apoio emocional. Se a rede cair, assumo direto como calculadora simples, científica e financeira.
-            </div>
-          </div>
-
-          <form id="sagaPromptForm" class="flex flex-col sm:flex-row gap-2.5">
-            <input id="sagaPromptInput" type="text" placeholder="Escreve a tua dúvida, tema de estudo, gestão ou conta..." class="flex-1 px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
-            <button type="submit" class="px-6 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm transition">Enviar</button>
-          </form>
-        </div>
-
-        <!-- Calculadora Simples, Científica e Financeira (contacta diretamente com CEJ e Gráficos) -->
-        <div id="offlineCalculatorCard" class="pro-card rounded-2xl p-5 md:p-6 space-y-4">
-          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
-            <div>
-              <h3 class="font-display text-2xl font-bold text-white">Calculadora Simples, Científica &amp; Financeira</h3>
-              <p id="calcNetworkNote" class="text-xs text-slate-400">
-                Ativada automaticamente quando a rede falha e ligada às missões e gráficos do CEJ.
-              </p>
-            </div>
-            <div class="flex gap-1.5 flex-wrap">
-              <button type="button" data-calc-mode="sci" class="calc-mode-btn px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 text-xs font-bold">Simples / Científica</button>
-              <button type="button" data-calc-mode="fin" class="calc-mode-btn px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 border border-slate-700 text-xs font-semibold">Financeira</button>
-            </div>
-          </div>
-
-          <div class="how-to-box text-xs text-slate-400">
-            <strong class="text-slate-200">Como usar:</strong> faz contas simples, científicas (<code class="font-mono text-sky-300">sqrt(144)</code>, <code class="font-mono text-sky-300">sin(30)</code>, <code class="font-mono text-sky-300">log10(1000)</code>) ou financeiras (juro simples/composto) e envia o valor calculado direto para as <strong>Missões CEJ</strong> ou para <strong>Gerar Gráficos</strong>.
-          </div>
-
-          <div id="calcSciPanel" class="space-y-3">
-            <div class="flex flex-col sm:flex-row gap-2">
-              <input id="calcExprInput" type="text" placeholder="Ex.: (18 * 0.6) + (14 * 0.4) ou sqrt(144) + sin(30) ou 2^5" class="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm font-mono text-white" />
-              <button type="button" id="btnEvalSci" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Calcular</button>
-            </div>
-            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
-              <button type="button" data-fn="sqrt(" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">sqrt()</button>
-              <button type="button" data-fn="sin(" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">sin(°)</button>
-              <button type="button" data-fn="cos(" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">cos(°)</button>
-              <button type="button" data-fn="tan(" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">tan(°)</button>
-              <button type="button" data-fn="log10(" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">log10()</button>
-              <button type="button" data-fn="ln(" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">ln()</button>
-              <button type="button" data-fn="^" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">x^y</button>
-            </div>
-            <div class="flex flex-wrap items-center justify-between gap-2 p-3 rounded-xl bg-slate-950 border border-slate-800">
-              <div id="calcSciOutput" class="font-mono text-sm text-sky-300">Resultado: —</div>
-              <div class="flex gap-2 flex-wrap">
-                <button type="button" id="btnCalcToMission" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-[11px] font-semibold text-amber-300">Enviar p/ Missão CEJ</button>
-                <button type="button" id="btnCalcToChart" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-[11px] font-semibold text-emerald-300">Enviar p/ Gráfico CEJ</button>
-              </div>
-            </div>
-          </div>
-
-          <div id="calcFinPanel" class="hidden space-y-3">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              <div>
-                <label for="finCapitalInput" class="block text-[11px] text-slate-400 mb-1">Capital Inicial (C)</label>
-                <input id="finCapitalInput" type="number" step="any" placeholder="100000" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
-              </div>
-              <div>
-                <label for="finRateInput" class="block text-[11px] text-slate-400 mb-1">Taxa por Período (%)</label>
-                <input id="finRateInput" type="number" step="any" placeholder="5" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
-              </div>
-              <div>
-                <label for="finPeriodsInput" class="block text-[11px] text-slate-400 mb-1">Períodos (n)</label>
-                <input id="finPeriodsInput" type="number" step="1" placeholder="12" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
-              </div>
-            </div>
-            <div class="flex flex-wrap gap-2">
-              <button type="button" id="btnEvalFin" class="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Calcular Juro Simples &amp; Composto</button>
-              <button type="button" id="btnSendFinToCej" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-semibold text-sky-300">Enviar Montante p/ CEJ</button>
-            </div>
-            <div id="calcFinOutput" class="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-sky-300 space-y-1">
-              <div>Juro Simples / Composto: aguarda valores.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 2. CHAT DA TURMA & DMs (20 CORES DISTINTAS DO S.A.G.A.) -->
-      <section id="panel-chat" class="module-sec hidden space-y-5">
-        <div class="pro-card rounded-2xl p-5 md:p-6 space-y-4">
-          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
-            <div>
-              <h2 class="font-display text-3xl font-bold text-white">Chat da Turma &amp; Mensagens Diretas</h2>
-              <p id="chatScopeSummary" class="text-xs text-slate-400"></p>
-            </div>
-            <div class="flex items-center gap-2 flex-wrap">
-              <select id="chatChannelSelect" class="px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white">
-                <option value="TURMA">Canal da Turma</option>
-                <option value="DM">DM Privada</option>
-              </select>
-              <button type="button" id="btnTogglePhotoGate11" class="hidden px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-sky-500/40 text-xs font-semibold text-sky-300">
-                Liberar Fotos &lt;11.ª: OFF
-              </button>
-              <button type="button" id="btnClearChatBtn" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-300">
-                Limpar Chat
-              </button>
-            </div>
-          </div>
-
-          <div class="how-to-box text-xs text-slate-400">
-            <strong class="text-slate-200">Como usar:</strong> seleciona <strong class="text-slate-200">Canal da Turma</strong> ou <strong class="text-slate-200">DM Privada</strong>. Cada utilizador pode escolher entre 20 cores distintas (como Dourado Queimado, Roxo Real, Violeta Imperial, Cobalto Real ou Esmeralda Escuro), sempre separadas do visual do S.A.G.A.
-          </div>
-
-          <div id="chatStreamBox" class="space-y-2.5 max-h-96 overflow-y-auto p-4 rounded-xl bg-slate-950/85 border border-slate-800"></div>
-
-          <form id="chatMessageForm" class="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center">
-            <input id="chatDmRecipientInput" type="text" placeholder="Destinatário da DM" class="hidden sm:w-44 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white" />
-            <input id="chatComposerInput" type="text" placeholder="Escreve a tua mensagem..." class="flex-1 px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white" />
-            <label for="chatImageUpload" class="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 text-center">
-              Foto (11.ª+)
-            </label>
-            <input id="chatImageUpload" type="file" accept="image/*" class="hidden" />
-            <button type="submit" class="px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm">Enviar</button>
-          </form>
-        </div>
-      </section>
-
-      <!-- 3. CEJ (MISSÕES SEPARADAS DE GERAR GRÁFICOS), SAÚDE MENTAL SEPARADA DE BEM-ESTAR -->
-      <section id="panel-cej" class="module-sec hidden space-y-6">
-
-        <!-- Bloco A: Missões CEJ (separado) + Gerar Gráficos (separado, alimentado pelas missões + calculadora) -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <!-- Botão e Bloco de Missões CEJ -->
-          <div class="pro-card rounded-2xl p-6 space-y-4">
-            <div class="flex items-center justify-between gap-2 flex-wrap">
-              <h3 class="font-display text-3xl font-bold text-white">Missões CEJ</h3>
-              <button type="button" id="btnRunCejMission" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">
-                Concluir Missão CEJ
-              </button>
-            </div>
-
-            <div class="how-to-box text-xs text-slate-400">
-              <strong class="text-slate-200">Como usar:</strong> escolhe uma missão empresarial do CEJ e o valor apurado (ou trazido da calculadora). Ao clicar em <strong class="text-sky-300">Concluir Missão CEJ</strong>, o resultado soma-se aos indicadores e envia os dados para <strong>Gerar Gráficos</strong>.
-            </div>
-
-            <div class="space-y-3">
-              <div>
-                <label for="cejMissionSelect" class="block text-xs font-semibold text-slate-300 mb-1">Missão Prática (Gerência de Empresa)</label>
-                <select id="cejMissionSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white">
-                  <option value="Fluxo de Caixa Mensal">Fluxo de Caixa Mensal (Receita Operacional)</option>
-                  <option value="Controlo de Custos Diretos">Controlo de Custos Diretos &amp; Fornecedores</option>
-                  <option value="Provisão Fiscal & Tributos">Provisão Fiscal &amp; Tributos</option>
-                  <option value="Margem de Expansão CEJ">Margem de Expansão &amp; Capital de Giro</option>
-                </select>
-              </div>
-              <div>
-                <label for="cejMissionValueInput" class="block text-xs font-semibold text-slate-300 mb-1">Valor da Missão (Kz / Unidade)</label>
-                <input id="cejMissionValueInput" type="number" step="any" value="120000" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
-              </div>
-            </div>
-
-            <div id="cejMissionHistoryBox" class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 space-y-1 max-h-36 overflow-y-auto">
-              <div>Nenhuma missão CEJ concluída ainda.</div>
-            </div>
-          </div>
-
-          <!-- Botão e Bloco Separado: Gerar Gráficos (vinculado às Missões CEJ e à Calculadora) -->
-          <div class="pro-card rounded-2xl p-6 space-y-4">
-            <div class="flex items-center justify-between gap-2 flex-wrap">
-              <h3 class="font-display text-3xl font-bold text-white">Gerar Gráficos</h3>
-              <div class="flex items-center gap-2">
-                <select id="cejChartStyleSelect" class="px-2.5 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-slate-200">
-                  <option value="bar">Barras Comparativas</option>
-                  <option value="line">Linha de Evolução</option>
-                </select>
-                <button type="button" id="btnGenerateCejChart" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs">
-                  Gerar Gráficos
-                </button>
-              </div>
-            </div>
-
-            <div class="how-to-box text-xs text-slate-400">
-              <strong class="text-slate-200">Como usar:</strong> este bloco recebe os resultados das <strong>Missões CEJ</strong> e da <strong>Calculadora</strong>. Escolhe o estilo do gráfico e clica em <strong class="text-emerald-300">Gerar Gráficos</strong> para atualizar a análise de receitas, custos, impostos e resultado líquido.
-            </div>
-
-            <div class="grid grid-cols-3 gap-2">
-              <div>
-                <label for="cejRevInput" class="block text-[11px] text-slate-400 mb-1">Receita / Missões</label>
-                <input id="cejRevInput" type="number" value="450000" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
-              </div>
-              <div>
-                <label for="cejCostInput" class="block text-[11px] text-slate-400 mb-1">Custos</label>
-                <input id="cejCostInput" type="number" value="285000" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
-              </div>
-              <div>
-                <label for="cejTaxInput" class="block text-[11px] text-slate-400 mb-1">Impostos</label>
-                <input id="cejTaxInput" type="number" value="45000" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
-              </div>
-            </div>
-
-            <canvas id="cejBusinessChart" width="520" height="205" class="w-full rounded-xl bg-slate-950 border border-slate-800"></canvas>
-            <div id="cejKpiSummary" class="text-xs font-mono text-sky-300"></div>
-          </div>
-        </div>
-
-        <!-- Bloco B: Saúde Mental (separada) e Bem-Estar (separado), cada um com botão próprio e quadrado "Como usar" -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <!-- Saúde Mental (Botão próprio + Quadrado Como usar) -->
-          <div class="pro-card rounded-2xl p-6 space-y-4">
-            <div class="flex items-center justify-between gap-2 flex-wrap">
-              <h3 class="font-display text-3xl font-bold text-white">Saúde Mental</h3>
-              <button type="button" id="btnCalcMentalHealth" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">
-                Calcular Saúde Mental
-              </button>
-            </div>
-
-            <div class="how-to-box text-xs text-slate-400">
-              <strong class="text-slate-200">Como usar:</strong> ajusta os três indicadores abaixo (sono, tranquilidade e alívio de pressão) e clica em <strong class="text-sky-300">Calcular Saúde Mental</strong> para ver a percentagem atual e a orientação de ritmo.
-            </div>
-
-            <div class="space-y-3 text-xs">
-              <div>
-                <div class="flex justify-between mb-1"><span>Sono &amp; Descanso</span><span id="mhSleepVal" class="font-mono text-sky-300">70%</span></div>
-                <input id="mhSleepRange" type="range" min="0" max="100" value="70" class="w-full" />
-              </div>
-              <div>
-                <div class="flex justify-between mb-1"><span>Tranquilidade Emocional</span><span id="mhCalmVal" class="font-mono text-sky-300">65%</span></div>
-                <input id="mhCalmRange" type="range" min="0" max="100" value="65" class="w-full" />
-              </div>
-              <div>
-                <div class="flex justify-between mb-1"><span>Alívio de Pressão Académica</span><span id="mhLoadVal" class="font-mono text-sky-300">60%</span></div>
-                <input id="mhLoadRange" type="range" min="0" max="100" value="60" class="w-full" />
-              </div>
-            </div>
-
-            <div id="mentalHealthResultBox" class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-              <div class="font-mono text-lg text-sky-300" id="mentalHealthPctText">Saúde Mental: 65%</div>
-              <p class="text-xs text-slate-400" id="mentalHealthAdviceText">Ritmo moderado. Mantém pausas regulares.</p>
-            </div>
-          </div>
-
-          <!-- Bem-Estar (Botão próprio separado + Quadrado Como usar) -->
-          <div class="pro-card rounded-2xl p-6 space-y-4">
-            <div class="flex items-center justify-between gap-2 flex-wrap">
-              <h3 class="font-display text-3xl font-bold text-white">Bem-Estar</h3>
-              <button type="button" id="btnRegisterWellbeing" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs">
-                Registar Bem-Estar
-              </button>
-            </div>
-
-            <div class="how-to-box text-xs text-slate-400">
-              <strong class="text-slate-200">Como usar:</strong> este módulo é separado da Saúde Mental. Escolhe uma rotina prática de recuperação diária, escreve uma nota se quiseres e clica em <strong class="text-amber-300">Registar Bem-Estar</strong> para manter o histórico.
-            </div>
-
-            <div class="space-y-3">
-              <div>
-                <label for="wellbeingRoutineSelect" class="block text-xs font-semibold text-slate-300 mb-1">Rotina de Recuperação</label>
-                <select id="wellbeingRoutineSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white">
-                  <option value="Pausa de Ecrã (15 min)">Pausa de Ecrã (15 min)</option>
-                  <option value="Hidratação & Alongamento">Hidratação &amp; Alongamento</option>
-                  <option value="Respiração & Foco Calmo">Respiração &amp; Foco Calmo</option>
-                  <option value="Caminhada Leve ao Ar Livre">Caminhada Leve ao Ar Livre</option>
-                </select>
-              </div>
-              <div>
-                <label for="wellbeingNoteInput" class="block text-xs font-semibold text-slate-300 mb-1">Observação Pessoal</label>
-                <input id="wellbeingNoteInput" type="text" placeholder="Ex.: Terminei os exercícios e vou descansar 15 min" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white" />
-              </div>
-            </div>
-
-            <div id="wellbeingLogBox" class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 space-y-1 max-h-36 overflow-y-auto">
-              <div>Nenhum registo de bem-estar ainda.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 4. AVALIAÇÃO CRONOMETRADA (RESTRITA) -->
-      <section id="panel-exam" data-restricted-panel="exam" class="module-sec hidden space-y-5">
-        <div class="pro-card rounded-2xl p-5 md:p-6 space-y-5">
-          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
-            <div>
-              <h2 class="font-display text-3xl font-bold text-white">Avaliação Oficial</h2>
-              <p class="text-xs text-slate-400">Lançamento exclusivo do Agente Directivo. Ausência de 2 minutos encerra com nota 0,0 e bloqueia o S.A.G.A.</p>
-            </div>
-            <span id="examClockDisplay" class="font-mono text-sm px-3.5 py-1.5 rounded-xl bg-slate-950 border border-slate-700 text-sky-300">
-              Tempo: —
-            </span>
-          </div>
-
-          <form id="directiveExamForm" class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-mono uppercase text-sky-400">Lançamento de Avaliação (Exclusivo Agente Directivo)</span>
-              <span id="directiveOnlyTag" class="text-[11px] font-mono text-slate-400">Requer perfil Agente Directivo</span>
-            </div>
-            <input id="examTitleInput" type="text" required placeholder="Título da avaliação (ex.: Prova de Contabilidade Geral)" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
-            <input id="examQuestionInput" type="text" required placeholder="Enunciado da questão para resposta objetiva" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <input id="examExpectedAnswerInput" type="text" required placeholder="Resposta esperada / chave" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
-              <input id="examDurationMinutesInput" type="number" min="1" max="180" value="15" required placeholder="Duração (minutos)" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-white" />
-            </div>
-            <button type="submit" class="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Lançar Avaliação</button>
-          </form>
-
-          <div id="activeExamContainer" class="p-4 rounded-xl bg-slate-950/90 border border-slate-800 space-y-3">
-            <p class="text-xs text-slate-400">Nenhuma avaliação ativa no momento.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- 5. GOVERNANÇA & IA INFILTRADA (RESTRITA) -->
-      <section id="panel-governance" data-restricted-panel="governance" class="module-sec hidden space-y-5">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <div class="pro-card rounded-2xl p-6 space-y-4">
-            <div class="flex items-center justify-between flex-wrap gap-2">
-              <h3 class="font-display text-3xl font-bold text-white">Painel de Comando &amp; Aproveitamento</h3>
-              <span id="activeRoleBadge" class="font-mono text-xs px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-300">Perfil: Estudante</span>
-            </div>
-
-            <div class="p-4 rounded-xl bg-slate-950/85 border border-slate-800 space-y-2.5">
-              <div class="text-xs font-mono uppercase text-sky-400">Aproveitamento Escolar → Sistema Directivo</div>
-              <div class="flex gap-2">
-                <input id="gradeEntryInput" type="number" step="0.1" min="0" max="20" placeholder="Nota (0–20)" class="w-32 px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-white" />
-                <button type="button" id="btnAddGradeAndSync" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">
-                  Registar &amp; Enviar à Direção
-                </button>
-              </div>
-              <div id="directiveGradesLog" class="text-xs font-mono text-slate-300 space-y-1 max-h-36 overflow-y-auto">
-                <div>Aguardar lançamentos de aproveitamento.</div>
-              </div>
-            </div>
-
-            <div id="techAdminBox" class="p-4 rounded-xl bg-slate-950/85 border border-slate-800 space-y-2.5">
-              <div class="text-xs font-mono uppercase text-amber-300">Avisos &amp; Controlo Operacional</div>
-              <div class="flex gap-2">
-                <input id="noticeInput" type="text" placeholder="Escrever aviso ou diretriz técnica..." class="flex-1 px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
-                <button type="button" id="btnPublishNotice" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-semibold text-white">Publicar</button>
-              </div>
-              <div id="noticesFeed" class="text-xs text-slate-300 space-y-1 max-h-28 overflow-y-auto"></div>
-            </div>
-          </div>
-
-          <div class="pro-card rounded-2xl p-6 space-y-4">
-            <h3 class="font-display text-3xl font-bold text-white">Monitorização &amp; IA Infiltrada</h3>
-            <p class="text-xs text-slate-400">
-              Registos de ocorrências (DMs com teor sexual, álcool/drogas fora de contexto académico) e observação silenciosa das IAs infiltradas.
-            </p>
-
-            <div class="p-4 rounded-xl bg-slate-950/85 border border-slate-800 space-y-1.5">
-              <div class="text-xs font-mono uppercase text-rose-300">Alertas de Conduta &amp; DM</div>
-              <div id="conductAlertsBox" class="text-xs font-mono text-slate-300 space-y-1 max-h-32 overflow-y-auto">
-                <div>Sem alertas registados nesta sessão.</div>
-              </div>
-            </div>
-
-            <div class="p-4 rounded-xl bg-slate-950/85 border border-slate-800 space-y-1.5">
-              <div class="text-xs font-mono uppercase text-slate-400">IA Infiltrada (Modo Silencioso)</div>
-              <div id="silentSentinelBox" class="text-xs font-mono text-slate-400 space-y-1 max-h-36 overflow-y-auto">
-                <div>Observação silenciosa ativa.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </main>
-
-    <footer class="max-w-6xl w-full mx-auto px-4 pt-8 pb-4 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-      <span>EXorg MT — Sistema Áurea • Complexo Escolar Privado Madre Trindade</span>
-      <button type="button" id="btnFooterRestricted" class="px-3.5 py-1.5 rounded-lg bg-slate-950 hover:bg-slate-900 border border-slate-800 text-[11px] font-mono text-slate-400 hover:text-white transition">
-        Acesso ADM / Directivo
-      </button>
-    </footer>
+      </form>
+    </div>
   </div>
 
   <script>
-    (function () {
-      function digestSecret(s) {
-        let h = 2166136261;
-        for (let i = 0; i < s.length; i++) {
-          h ^= s.charCodeAt(i);
-          h = Math.imul(h, 16777619);
+    /**
+     * =========================================================================
+     * SISTEMA ÁUREA — PROJETO EXorg MT (PRÉ-VISUALIZAÇÃO INTERATIVA)
+     * Arquitetura em ficheiro único: estado central, bancos de questões por classe,
+     * simulador de gestão (10.ª CEJ), chat isolado por classe e tutor S.A.G.A.
+     * =========================================================================
+     */
+
+    const COURSES_BY_CLASS = {
+      '7.ª Classe': ['Formação Geral (1.º Ciclo)'],
+      '8.ª Classe': ['Formação Geral (1.º Ciclo)'],
+      '9.ª Classe': ['Formação Geral (1.º Ciclo)'],
+      '10.ª Classe': [
+        'Ciências Económicas e Jurídicas (CEJ)',
+        'Ciências Físicas e Biológicas',
+        'Ciências Humanas'
+      ],
+      '11.ª Classe': [
+        'Ciências Económicas e Jurídicas (CEJ)',
+        'Ciências Físicas e Biológicas',
+        'Ciências Humanas'
+      ],
+      '12.ª Classe': [
+        'Ciências Económicas e Jurídicas (CEJ)',
+        'Ciências Físicas e Biológicas',
+        'Ciências Humanas'
+      ]
+    };
+
+    // Banco de questões da Áurea Academy adaptadas a cada classe (7.ª à 12.ª)
+    const ACADEMY_BANK = {
+      '7.ª Classe': [
+        { q: 'Em Língua Portuguesa, qual é a classe gramatical da palavra "rapidamente"?', opts: ['Advérbio', 'Adjetivo', 'Substantivo', 'Preposição'], ans: 0, exp: '"Rapidamente" modifica o verbo e indica modo, sendo um advérbio de modo.' },
+        { q: 'Qual é o valor de 3/4 de 80?', opts: ['40', '60', '20', '75'], ans: 1, exp: '(80 ÷ 4) × 3 = 20 × 3 = 60.' },
+        { q: 'Em Geografia de Angola, qual é a capital do país?', opts: ['Benguela', 'Huambo', 'Luanda', 'Lubango'], ans: 2, exp: 'Luanda é a capital administrativa e política de Angola.' },
+        { q: 'Qual destas é uma grandeza física fundamental no SI?', opts: ['Velocidade', 'Massa', 'Área', 'Densidade'], ans: 1, exp: 'A massa (em quilogramas, kg) é uma das grandezas base do Sistema Internacional.' },
+        { q: 'Em História, o que significa o período pré-histórico?', opts: ['Antes da invenção da escrita', 'Após a independência', 'Apenas a Idade Média', 'O período digital'], ans: 0, exp: 'A Pré-História estende-se até ao surgimento da escrita.' },
+        { q: 'Qual é o resultado de 145 + 268?', opts: ['403', '413', '423', '393'], ans: 1, exp: '145 + 268 = 413.' },
+        { q: 'Em Ciências da Natureza, qual órgão bombeia o sangue no corpo humano?', opts: ['Pulmões', 'Estômago', 'Coração', 'Fígado'], ans: 2, exp: 'O coração impulsiona o sangue através do sistema circulatório.' },
+        { q: 'Qual é o plural de "cidadão" em português?', opts: ['Cidadãos', 'Cidadães', 'Cidadões', 'Cidadãos-gerais'], ans: 0, exp: 'O plural regular e normativo de cidadão é "cidadãos".' },
+        { q: 'Em Matemática, um triângulo com três lados iguais chama-se:', opts: ['Escaleno', 'Isósceles', 'Equilátero', 'Retângulo'], ans: 2, exp: 'O triângulo equilátero possui os três lados com o mesmo comprimento.' },
+        { q: 'Qual rio banha a província do Kwanza Norte e do Kwanza Sul?', opts: ['Rio Cunene', 'Rio Kwanza', 'Rio Zambeze', 'Rio Cubango'], ans: 1, exp: 'O rio Kwanza é o maior rio inteiramente angolano e dá nome a duas províncias.' }
+      ],
+      '8.ª Classe': [
+        { q: 'Na equação 2x + 6 = 14, qual é o valor de x?', opts: ['2', '3', '4', '5'], ans: 2, exp: '2x = 14 - 6 → 2x = 8 → x = 4.' },
+        { q: 'Qual é a função principal da clorofila nas plantas?', opts: ['Absorver água do solo', 'Captar luz para a fotossíntese', 'Transportar sementes', 'Produzir raízes'], ans: 1, exp: 'A clorofila absorve energia luminosa essencial à fotossíntese.' },
+        { q: 'Em Língua Portuguesa, o sujeito em "Choveu muito ontem à noite" é:', opts: ['Simples', 'Composto', 'Inexistente (oração sem sujeito)', 'Indeterminado'], ans: 2, exp: 'Verbos que indicam fenómenos da natureza formam orações sem sujeito.' },
+        { q: 'Qual é a unidade de força no Sistema Internacional (SI)?', opts: ['Joule (J)', 'Pascal (Pa)', 'Newton (N)', 'Watt (W)'], ans: 2, exp: 'A força mede-se em Newton (N).' },
+        { q: 'Em Geografia, o clima tropical seco caracteriza-se geralmente por:', opts: ['Chuvas abundantes todo o ano', 'Estação seca prolongada e chuvas concentradas', 'Neve constante', 'Ausência total de calor'], ans: 1, exp: 'Há alternância marcada entre estação chuvosa e estação seca.' },
+        { q: 'Quanto é (-5) × (-4)?', opts: ['-20', '20', '-9', '9'], ans: 1, exp: 'O produto de dois números negativos é positivo: (-5) × (-4) = +20.' },
+        { q: 'Em Biologia, a célula é considerada a:', opts: ['Unidade básica da vida', 'Parte não viva dos tecidos', 'Apenas um glóbulo vermelho', 'Estrutura exclusiva das rochas'], ans: 0, exp: 'Todos os seres vivos são constituídos por células.' },
+        { q: 'Qual destas palavras está corretamente acentuada?', opts: ['Lampada', 'Lâmpada', 'Lampáda', 'Lampadâ'], ans: 1, exp: '"Lâmpada" é proparoxítona e leva acento circunflexo.' },
+        { q: 'Qual é a área de um retângulo de base 9 cm e altura 5 cm?', opts: ['14 cm²', '28 cm²', '45 cm²', '90 cm²'], ans: 2, exp: 'Área = base × altura = 9 × 5 = 45 cm².' },
+        { q: 'Em História, o comércio triangular envolveu frequentemente:', opts: ['Europa, África e América', 'Apenas Ásia e Antártida', 'Somente o interior da Europa', 'Ilhas do Pacífico sem comércio'], ans: 0, exp: 'As rotas atlânticas ligaram portos europeus, africanos e americanos.' }
+      ],
+      '9.ª Classe': [
+        { q: 'Quais são as raízes da equação x² - 5x + 6 = 0?', opts: ['1 e 6', '2 e 3', '-2 e -3', '3 e 4'], ans: 1, exp: 'A soma das raízes é 5 e o produto é 6: x₁ = 2 e x₂ = 3.' },
+        { q: 'Em Química, qual é o símbolo químico do sódio?', opts: ['So', 'Sd', 'Na', 'K'], ans: 2, exp: 'O símbolo do sódio vem do latim "natrium": Na.' },
+        { q: 'Em Língua Portuguesa, uma oração coordenada sindética adversativa costuma ser introduzida por:', opts: ['Mas / porém', 'Portanto / logo', 'E / nem', 'Ou / ora'], ans: 0, exp: '"Mas" e "porém" exprimem oposição ou contraste.' },
+        { q: 'Em Física, a velocidade média de um móvel que percorre 120 km em 2 horas é:', opts: ['40 km/h', '60 km/h', '120 km/h', '240 km/h'], ans: 1, exp: 'v = Δs / Δt = 120 km / 2 h = 60 km/h.' },
+        { q: 'Qual é o valor de sen(30°)?', opts: ['0,5', '√2/2', '√3/2', '1'], ans: 0, exp: 'O seno de 30 graus é igual a 1/2 (0,5).' },
+        { q: 'Na Constituição / Cidadania, o voto consciente e o respeito às leis representam:', opts: ['Deveres e participação cívica', 'Isenção de responsabilidades', 'Apenas obrigações fiscais', 'Direito exclusivo de empresas'], ans: 0, exp: 'A cidadania ativa combina direitos e deveres na vida em sociedade.' },
+        { q: 'Em Biologia, o ADN encontra-se principalmente:', opts: ['No núcleo celular (em eucariontes)', 'Na parede celular externa', 'Apenas nos vacúolos', 'Fora da célula'], ans: 0, exp: 'Nas células eucarióticas, o material genético concentra-se no núcleo.' },
+        { q: 'Se f(x) = 3x - 2, quanto vale f(4)?', opts: ['8', '10', '12', '14'], ans: 1, exp: 'f(4) = 3(4) - 2 = 12 - 2 = 10.' },
+        { q: 'Qual destes processos envolve mudança de estado físico de líquido para gás?', opts: ['Fusão', 'Solidificação', 'Vaporização', 'Condensação'], ans: 2, exp: 'A passagem do estado líquido para o gasoso designa-se vaporização.' },
+        { q: 'Em Geografia de Angola, o planalto central destaca-se por:', opts: ['Altitude média elevada e clima ameno', 'Ser uma planície costeira desértica', 'Ficar abaixo do nível do mar', 'Não ter cursos de água'], ans: 0, exp: 'O Planalto Central (Huambo/Bié) apresenta altitudes expressivas e temperaturas mais amenas.' }
+      ],
+      '10.ª Classe': [
+        { q: 'Em Economia / Gestão (CEJ), o que representa o capital próprio inicial de um negócio?', opts: ['Recursos aportados pelos sócios/proprietário', 'Apenas dívidas de curto prazo', 'Impostos em atraso', 'Prejuízo acumulado'], ans: 0, exp: 'O capital próprio corresponde aos recursos próprios afetos à atividade.' },
+        { q: 'Qual é o valor de log₁₀(1000)?', opts: ['2', '3', '10', '100'], ans: 1, exp: '10³ = 1000, logo log₁₀(1000) = 3.' },
+        { q: 'Em Biologia / Ciências, qual organelo celular é responsável pela produção de ATP via respiração celular?', opts: ['Ribossoma', 'Mitocôndria', 'Complexo de Golgi', 'Lisossoma'], ans: 1, exp: 'As mitocôndrias são o centro da respiração celular aeróbia.' },
+        { q: 'Numa empresa, se as Receitas do mês forem 180.000 Kz e as Despesas forem 125.000 Kz, o resultado líquido é:', opts: ['Prejuízo de 55.000 Kz', 'Lucro de 55.000 Kz', 'Lucro de 305.000 Kz', 'Saldo nulo'], ans: 1, exp: 'Resultado = Receitas - Despesas = 180.000 - 125.000 = +55.000 Kz.' },
+        { q: 'Em Língua Portuguesa, a coesão textual serve para:', opts: ['Garantir ligação lógica entre frases e parágrafos', 'Eliminar sinais de pontuação', 'Repetir palavras sem sentido', 'Substituir o tema do texto'], ans: 0, exp: 'A coesão assegura continuidade e articulação entre as partes do texto.' },
+        { q: 'Qual é o módulo do vetor u = (3, 4)?', opts: ['3', '4', '5', '7'], ans: 2, exp: '|u| = √(3² + 4²) = √(9 + 16) = √25 = 5.' },
+        { q: 'Em Direito / Cidadania (CEJ), uma norma jurídica caracteriza-se por:', opts: ['Generalidade, abstração e coercibilidade', 'Aplicação apenas a uma pessoa', 'Ausência de sanção', 'Validade meramente estética'], ans: 0, exp: 'As normas jurídicas têm caráter geral, abstrato e podem ser impostas coercivamente.' },
+        { q: 'Qual é a fórmula da velocidade média no MRU?', opts: ['v = Δs / Δt', 'v = a · t²', 'v = m · g', 'v = F / A'], ans: 0, exp: 'No Movimento Retilíneo Uniforme, a velocidade constante é dada por Δs / Δt.' },
+        { q: 'Em História, o conceito de "fonte histórica" abrange:', opts: ['Apenas livros impressos recentes', 'Documentos escritos, orais, materiais e visuais', 'Somente mapas digitais', 'Apenas datas isoladas'], ans: 1, exp: 'Fontes históricas incluem registos escritos, testemunhos orais, objetos e monumentos.' },
+        { q: 'Se um produto custa 50.000 Kz e sofre aumento de 10%, qual passa a ser o preço?', opts: ['51.000 Kz', '55.000 Kz', '60.000 Kz', '45.000 Kz'], ans: 1, exp: '10% de 50.000 = 5.000 Kz; 50.000 + 5.000 = 55.000 Kz.' }
+      ],
+      '11.ª Classe': [
+        { q: 'Em Matemática, qual é a derivada de f(x) = x³?', opts: ['x²', '3x²', '3x', 'x⁴/4'], ans: 1, exp: 'Pela regra da potência, d/dx(xⁿ) = n·xⁿ⁻¹, logo 3x².' },
+        { q: 'Em Filosofia, a dúvida metódica está fortemente associada a:', opts: ['René Descartes', 'Platão apenas', 'Aristóteles', 'Auguste Comte'], ans: 0, exp: 'Descartes utilizou a dúvida metódica na busca de um fundamento seguro para o conhecimento.' },
+        { q: 'Em Economia / Gestão, o ponto de equilíbrio (break-even) ocorre quando:', opts: ['Receitas totais igualam os custos totais', 'As vendas são zero', 'O stock esgota por completo', 'Não há clientes'], ans: 0, exp: 'No ponto crítico das vendas, o resultado operacional é nulo (Receitas = Custos).' },
+        { q: 'Em Física, a 2.ª Lei de Newton expressa-se por:', opts: ['F = m · a', 'E = m · c²', 'P = V · I', 'PV = nRT'], ans: 0, exp: 'A resultante das forças é igual ao produto da massa pela aceleração (F = m·a).' },
+        { q: 'Em Biologia, a transcrição genética consiste na síntese de:', opts: ['ARN a partir de ADN', 'ADN a partir de proteínas', 'Lípidos a partir de glicose', 'ATP a partir de celulose'], ans: 0, exp: 'A transcrição copia informação de uma cadeia de ADN para uma molécula de ARN.' },
+        { q: 'Qual é o limite de (2x + 1) quando x tende a 3?', opts: ['5', '6', '7', '8'], ans: 2, exp: 'Substituindo diretamente: 2(3) + 1 = 7.' },
+        { q: 'Em Sociologia / Ciências Humanas, a socialização primária ocorre sobretudo:', opts: ['Na família e primeiros círculos próximos', 'Apenas no mercado de trabalho', 'Exclusivamente na universidade', 'Após a reforma'], ans: 0, exp: 'A família é o agente central da socialização primária na infância.' },
+        { q: 'Em Química, uma reação endotérmica caracteriza-se por:', opts: ['Absorver calor do meio', 'Libertar sempre luz intensa', 'Não envolver variação de energia', 'Ocorrer apenas no vácuo'], ans: 0, exp: 'Processos endotérmicos absorvem energia térmica da vizinhança.' },
+        { q: 'Qual é a probabilidade de sair cara numa moeda equilibrada?', opts: ['0', '0,25', '0,5', '1'], ans: 2, exp: 'Há 1 caso favorável em 2 possíveis: 1/2 = 0,5 (50%).' },
+        { q: 'Em Língua Portuguesa, a ironia consiste em:', opts: ['Dizer o contrário do que se quer fazer entender com intenção crítica ou humorística', 'Usar apenas palavras estrangeiras', 'Escrever sem verbos', 'Repetir a mesma sílaba'], ans: 0, exp: 'A ironia sugere um sentido oposto ou irónico ao sentido literal.' }
+      ],
+      '12.ª Classe': [
+        { q: 'Em Análise Matemática, qual é o integral indefinido de ∫ 2x dx?', opts: ['x² + c', '2x² + c', 'x + c', 'x³/3 + c'], ans: 0, exp: 'A primitiva de 2x é x² + c, onde c é uma constante real.' },
+        { q: 'Em Estatística / Probabilidades, a média de [10, 12, 14, 16] é:', opts: ['12', '13', '14', '15'], ans: 1, exp: '(10 + 12 + 14 + 16) / 4 = 52 / 4 = 13.' },
+        { q: 'Em Economia / Direito (CEJ), um contrato válido exige em regra:', opts: ['Capacidade, objeto lícito e consentimento livre', 'Apenas assinatura de testemunha', 'Valor superior a 1 milhão', 'Prazo sempre inferior a 30 dias'], ans: 0, exp: 'Nos negócios jurídicos, destacam-se a capacidade das partes, objeto lícito/possível e vontade livre.' },
+        { q: 'Em Física, num movimento harmónico simples (MHS), a aceleração é:', opts: ['Proporcional ao deslocamento e de sentido oposto', 'Sempre nula', 'Constante em módulo e direção', 'Independente da posição'], ans: 0, exp: 'No MHS, a = -ω²x, apontando sempre para a posição de equilíbrio.' },
+        { q: 'Em Genética / Biologia, o cruzamento Aa × Aa numa dominância completa gera proporção fenotípica de:', opts: ['3 : 1', '1 : 1', '9 : 3 : 3 : 1', '4 : 0'], ans: 0, exp: 'Resulta em 1 AA, 2 Aa (fenótipo dominante) e 1 aa (fenótipo recessivo) → 3:1.' },
+        { q: 'Se z₁ = 2 + 3i e z₂ = 1 - i, então z₁ + z₂ é igual a:', opts: ['3 + 2i', '1 + 4i', '3 + 4i', '2 + 2i'], ans: 0, exp: 'Somam-se partes reais (2+1=3) e partes imaginárias (3-1=2): 3 + 2i.' },
+        { q: 'Em Geografia / Economia de Angola, a diversificação económica procura:', opts: ['Reduzir dependência excessiva de um único setor e dinamizar outros ramos', 'Eliminar o comércio externo', 'Concentrar tudo numa única província', 'Suspender a produção agrícola'], ans: 0, exp: 'Diversificar reforça agricultura, indústria, serviços e cadeias produtivas locais.' },
+        { q: 'Em Língua Portuguesa, um texto argumentativo bem estruturado apoia-se em:', opts: ['Tese clara, argumentos consistentes e conclusão coerente', 'Apenas enumeração de datas', 'Ausência de ponto de vista', 'Frases soltas sem conexão'], ans: 0, exp: 'A argumentação exige posicionamento defendido por razões e exemplos pertinentes.' },
+        { q: 'Qual é a derivada de f(x) = e^(2x)?', opts: ['e^(2x)', '2e^(2x)', '2x·e^x', 'ln(2x)'], ans: 1, exp: 'Pela regra da cadeia, d/dx(e^(2x)) = 2·e^(2x).' },
+        { q: 'Na preparação para exame da 12.ª classe, qual prática melhora a retenção a longo prazo?', opts: ['Prática espaçada com resolução ativa de exercícios e revisão de erros', 'Ler apenas na véspera sem resolver problemas', 'Decorar sem compreender conceitos', 'Ignorar temas difíceis'], ans: 0, exp: 'A recuperação ativa e o espaçamento consolidam a memória e a resolução sob tempo.' }
+      ]
+    };
+
+    // Perguntas leves para o Lado 0 (pausa ativa sem pressão de prova)
+    const LADO_ZERO_POOL = [
+      { q: 'Qual planeta do Sistema Solar é conhecido como o "Planeta Vermelho"?', opts: ['Vénus', 'Marte', 'Júpiter', 'Saturno'], ans: 1, tip: 'A cor avermelhada deve-se ao óxido de ferro na superfície.' },
+      { q: 'Quantos minutos tem uma hora e meia?', opts: ['75 min', '80 min', '90 min', '100 min'], ans: 2, tip: '60 + 30 = 90 minutos.' },
+      { q: 'Qual instrumento mede a temperatura?', opts: ['Barómetro', 'Termómetro', 'Higrómetro', 'Bússola'], ans: 1, tip: 'Termo- refere-se a temperatura.' },
+      { q: 'Em que continente fica o deserto do Saara?', opts: ['Ásia', 'África', 'Europa', 'América do Sul'], ans: 1, tip: 'O Saara estende-se pelo norte de África.' },
+      { q: 'Qual é o resultado de 12 × 12?', opts: ['124', '144', '132', '148'], ans: 1, tip: '12 ao quadrado é 144.' },
+      { q: 'Qual gás é indispensável para a respiração celular aeróbia?', opts: ['Oxigénio', 'Hélio', 'Árgon', 'Neónio'], ans: 0, tip: 'O oxigénio atua como aceitador final de eletrões na cadeia respiratória.' },
+      { q: 'Qual é a forma correta de dizer "ir ao encontro de" alguém?', opts: ['Ir de encontro a (sempre oposto)', 'Ir ao encontro de (favorável/reunião)', 'Tanto faz em qualquer contexto', 'Não existe'], ans: 1, tip: '"Ir ao encontro de" significa aproximar-se favoravelmente; "ir de encontro a" sugere choque ou oposição.' },
+      { q: 'Qual destas cidades costeiras pertence a Angola?', opts: ['Lobito', 'Maputo', 'Dakar', 'Accra'], ans: 0, tip: 'O Lobito é um importante município e porto na província de Benguela.' }
+    ];
+
+    // Mensagens iniciais isoladas por classe para o Chat da Turma
+    const INITIAL_CLASS_CHATS = {
+      '7.ª Classe': [
+        { author: 'Mário (7.ª A)', time: '18:10', text: 'Pessoal, alguém já resolveu os exercícios de frações da página 42?' },
+        { author: 'Jéssica (7.ª B)', time: '18:14', text: 'Eu fiz! O segredo é achar o mesmo denominador antes de somar.' }
+      ],
+      '8.ª Classe': [
+        { author: 'Cláudio (8.ª A)', time: '19:02', text: 'Malta, revisão de equações do 1.º grau: lembrem-se de trocar o sinal ao passar para o outro membro.' },
+        { author: 'Nádia (8.ª C)', time: '19:08', text: 'Obrigado! Vamos partilhar resumos de Ciências antes da prova.' }
+      ],
+      '9.ª Classe': [
+        { author: 'Hélio (9.ª B)', time: '17:45', text: 'Alguém tem dicas para resolver equações quadráticas rapidamente sem errar o sinal de Δ?' },
+        { author: 'Teresa (9.ª A)', time: '17:50', text: 'Anota sempre a, b e c bem separados antes de calcular b² - 4ac.' }
+      ],
+      '10.ª Classe': [
+        { author: 'Wilson (10.ª CEJ)', time: '20:05', text: 'Pessoal da 10.ª, na simulação de pequena empresa o capital inicial está estável, convém controlar bem as saídas.' },
+        { author: 'Beatriz (10.ª CEJ)', time: '20:11', text: 'Verdade! Registei todas as despesas fixas para o trimestre não fechar no vermelho.' }
+      ],
+      '11.ª Classe': [
+        { author: 'Edson (11.ª CFB)', time: '19:30', text: 'Como estão com a preparação para derivadas e leis de Newton esta semana?' },
+        { author: 'Cármen (11.ª CH)', time: '19:36', text: 'A usar o Estudo Definitivo para treinar questões mais puxadas sobre os temas da prova.' }
+      ],
+      '12.ª Classe': [
+        { author: 'Duarte (12.ª CEJ)', time: '20:20', text: 'Foco total na 12.ª! Quem quiser trocar esquemas de revisão para o exame, pode mandar aqui.' },
+        { author: 'Lúcia (12.ª CFB)', time: '20:25', text: 'Boa ideia! Treinar 10 questões por dia na Áurea Academy ajuda muito no ritmo.' }
+      ]
+    };
+
+    // Estado central da aplicação
+    const state = {
+      studentName: 'Estudante Áurea',
+      classe: '10.ª Classe',
+      curso: 'Ciências Económicas e Jurídicas (CEJ)',
+      activeModule: 'academy',
+      // Estado Áurea Academy
+      academyAnswers: {},
+      academySubmitted: false,
+      // Estado Estudo Definitivo
+      definitivoTopics: 'Funções, Equações e Resolução de Problemas Aplicados',
+      definitivoDifficulty: 'Exigente (Nível de Prova)',
+      definitivoExercises: [],
+      // Estado Lado 0
+      lado0Questions: [],
+      lado0Answers: {},
+      lado0Finished: false,
+      // Chat da Turma isolado por classe
+      classChats: JSON.parse(JSON.stringify(INITIAL_CLASS_CHATS)),
+      // Chat S.A.G.A.
+      sagaMessages: [],
+      // Áurea Manager (10.ª CEJ — simulação de pequena empresa com capital estável)
+      manager: {
+        companyName: 'Comércio Horizonte Lda.',
+        quarter: '1.º Trimestre',
+        initialCapital: 500000, // Capital estável de referência (Kz)
+        transactions: [
+          { id: 1, desc: 'Venda de mercadorias (Lote A)', type: 'receita', amount: 165000, quarterTask: true },
+          { id: 2, desc: 'Renda do espaço comercial', type: 'despesa', amount: 65000, quarterTask: true },
+          { id: 3, desc: 'Aquisição de stock de reposição', type: 'despesa', amount: 70000, quarterTask: true }
+        ],
+        tasks: [
+          { id: 't1', title: 'Mapear receitas e despesas do mês', done: true },
+          { id: 't2', title: 'Manter reserva de estabilidade do capital', done: false },
+          { id: 't3', title: 'Fechar balancete trimestral sem défice', done: false }
+        ]
+      },
+      // Painel de Administração
+      adminLogs: [
+        'Ambiente isolado inicializado para a 10.ª Classe • CEJ.',
+        'Módulos Áurea Academy, Estudo Definitivo, Lado 0 e Áurea Manager ativos.',
+        'Filtro de separação por classe ativo (sem mistura entre classes).'
+      ]
+    };
+
+    // Utilitário de notificação não bloqueante
+    let toastTimeout = null;
+    function showToast(msg) {
+      const banner = document.getElementById('toastBanner');
+      const textEl = document.getElementById('toastMessage');
+      textEl.textContent = msg;
+      banner.classList.remove('hidden');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        banner.classList.add('hidden');
+      }, 3200);
+    }
+
+    function formatKz(value) {
+      const num = Number(value) || 0;
+      return num.toLocaleString('pt-AO') + ' Kz';
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Inicializa mensagens iniciais do S.A.G.A. adequadas à classe
+    function resetSagaWelcome() {
+      state.sagaMessages = [
+        {
+          sender: 'saga',
+          time: 'Agora',
+          text: `Olá, ${state.studentName}! Sou o S.A.G.A., o teu assistente de estudo no Sistema Áurea. Estou focado na ${state.classe} (${state.curso}). Pede-me uma explicação rápida, um resumo ou diz "gera pergunta" para treinares.`
         }
-        return (h >>> 0).toString(16);
-      }
-
-      const ROLE_DIGESTS = {
-        DIRECTIVE: digestSecret('1841'),
-        ADMIN_2013: digestSecret('2013'),
-        ADMIN_2012: digestSecret('2012'),
-      };
-
-      // 20 opções variadas de cor para o usuário (dourado, roxo, violeta, esmeralda, cobre, índigo, etc.)
-      const USER_PALETTE_20 = [
-        { key: 'burnishedGold', name: 'Dourado Queimado', hex: '#4f3810', bg: 'bg-[#3d2b0c]', border: 'border-amber-400/45' },
-        { key: 'deepRoyalPurple', name: 'Roxo Real', hex: '#311a4d', bg: 'bg-[#25133b]', border: 'border-purple-400/45' },
-        { key: 'imperialViolet', name: 'Violeta Imperial', hex: '#401c59', bg: 'bg-[#311545]', border: 'border-fuchsia-400/40' },
-        { key: 'steelBlue', name: 'Azul Aço', hex: '#1e3a5f', bg: 'bg-[#172d4a]', border: 'border-sky-400/40' },
-        { key: 'royalCobalt', name: 'Cobalto Real', hex: '#1b3661', bg: 'bg-[#152a4c]', border: 'border-blue-400/40' },
-        { key: 'darkEmerald', name: 'Esmeralda Escuro', hex: '#123b34', bg: 'bg-[#0e2d28]', border: 'border-emerald-400/40' },
-        { key: 'forestPine', name: 'Verde Pinheiro', hex: '#153629', bg: 'bg-[#10291f]', border: 'border-teal-400/40' },
-        { key: 'copperRust', name: 'Cobre Sóbrio', hex: '#4a2513', bg: 'bg-[#391c0e]', border: 'border-orange-400/40' },
-        { key: 'antiqueBronze', name: 'Bronze Antigo', hex: '#423017', bg: 'bg-[#332511]', border: 'border-yellow-500/40' },
-        { key: 'midnightIndigo', name: 'Índigo Meia-Noite', hex: '#1d2452', bg: 'bg-[#161c3f]', border: 'border-indigo-400/40' },
-        { key: 'slateGraphite', name: 'Grafite Escuro', hex: '#1e293b', bg: 'bg-[#182130]', border: 'border-slate-400/40' },
-        { key: 'charcoalIron', name: 'Ferro Carbono', hex: '#242933', bg: 'bg-[#1c2028]', border: 'border-zinc-400/40' },
-        { key: 'mahoganyWood', name: 'Mogno Escuro', hex: '#401e17', bg: 'bg-[#311711]', border: 'border-red-400/40' },
-        { key: 'crimsonWine', name: 'Vinho Carmesim', hex: '#471626', bg: 'bg-[#36101c]', border: 'border-rose-400/40' },
-        { key: 'deepBurgundy', name: 'Borgonha Profundo', hex: '#381321', bg: 'bg-[#2b0e19]', border: 'border-pink-500/35' },
-        { key: 'stormSlateBlue', name: 'Ardósia Azulada', hex: '#1d334d', bg: 'bg-[#16273b]', border: 'border-cyan-400/40' },
-        { key: 'oliveDrab', name: 'Oliva Escuro', hex: '#2b3317', bg: 'bg-[#212711]', border: 'border-lime-400/40' },
-        { key: 'plumShadow', name: 'Ameixa Sombrio', hex: '#33193d', bg: 'bg-[#27132f]', border: 'border-purple-500/40' },
-        { key: 'graniteGrey', name: 'Granito', hex: '#292e38', bg: 'bg-[#20242c]', border: 'border-neutral-400/40' },
-        { key: 'obsidianNavy', name: 'Marinho Obsidiana', hex: '#10213d', bg: 'bg-[#0b182e]', border: 'border-sky-500/40' },
       ];
+    }
 
-      function getUserColorTheme(key) {
-        return USER_PALETTE_20.find((c) => c.key === key) || USER_PALETTE_20[0];
+    // Prepara nova rodada do Lado 0
+    function initLadoZero() {
+      const shuffled = [...LADO_ZERO_POOL].sort(() => Math.random() - 0.5).slice(0, 5);
+      state.lado0Questions = shuffled;
+      state.lado0Answers = {};
+      state.lado0Finished = false;
+    }
+
+    // Gera exercícios detalhados para o Estudo Definitivo com base nos temas inseridos
+    function generateDefinitivoExercises(topicsText, difficulty) {
+      const cleanTopics = topicsText
+        .split(/[,;\n]+/)
+        .map(t => t.trim())
+        .filter(Boolean);
+
+      const topics = cleanTopics.length > 0 ? cleanTopics : ['Conteúdos Gerais da Classe'];
+
+      return topics.map((topic, idx) => {
+        const isHard = difficulty.includes('Exigente') || difficulty.includes('Exame');
+        return {
+          id: idx + 1,
+          topic,
+          difficulty,
+          prompt: isHard
+            ? `Exercício de Prova (${state.classe} — ${topic}): Analise a situação-problema relacionada com "${topic}", identifique as variáveis ou conceitos centrais, apresente o desenvolvimento passo a passo e justifique o resultado final.`
+            : `Exercício Prático (${state.classe} — ${topic}): Resolva a questão aplicada sobre "${topic}", explicando o raciocínio utilizado em cada etapa.`,
+          hint: `Dica Áurea: Começa por definir os dados/conceitos de "${topic}" e aplica a regra ou fórmula correspondente antes de calcular.`,
+          solution: `Resolução Orientada (${topic}): 1) Identificar os elementos essenciais do enunciado e a relação teórica em ${state.classe}. 2) Estruturar o cálculo ou argumentação por etapas claras. 3) Verificar a coerência do resultado face às condições do problema e às unidades/critérios exigidos na avaliação.`
+        };
+      });
+    }
+
+    // Atualiza cabeçalho, barra lateral e isolamento de classe/curso
+    function syncContextUI() {
+      const labelShort = `${state.classe} • ${state.curso.includes('CEJ') ? 'CEJ' : state.curso}`;
+      document.getElementById('contextText').textContent = labelShort;
+      document.getElementById('sidebarClassTitle').textContent = state.classe;
+      document.getElementById('sidebarCourseTitle').textContent = state.curso;
+      document.getElementById('turmaBadgeCount').textContent = state.classe.replace(' Classe', '');
+
+      const msgCount = (state.classChats[state.classe] || []).length;
+      document.getElementById('sidebarIsolationNote').textContent =
+        `Isolamento ativo: ${msgCount} msg na turma da ${state.classe} (${state.curso}).`;
+
+      // Se o utilizador não estiver na 10.ª CEJ, mostramos aviso útil no Áurea Manager mas mantemos o simulador funcional
+      state.adminLogs.unshift(`Contexto ativo: ${state.classe} — ${state.curso} (${new Date().toLocaleTimeString('pt-AO', { hour: '2-digit', minute: '2-digit' })})`);
+      if (state.adminLogs.length > 8) state.adminLogs.pop();
+    }
+
+    // Atualiza opções de curso conforme a classe escolhida no modal
+    function populateCourseOptions(selectedClass, selectedCourse) {
+      const courseSelect = document.getElementById('courseSelect');
+      const courses = COURSES_BY_CLASS[selectedClass] || ['Formação Geral'];
+      courseSelect.innerHTML = courses
+        .map(c => `<option value="${escapeHtml(c)}" ${c === selectedCourse ? 'selected' : ''}>${escapeHtml(c)}</option>`)
+        .join('');
+    }
+
+    // Navegação entre módulos
+    function setActiveModule(moduleKey) {
+      state.activeModule = moduleKey;
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.module === moduleKey);
+      });
+      // Fecha menu mobile após escolha
+      const sidebar = document.getElementById('sidebarNav');
+      if (window.innerWidth < 1024) {
+        sidebar.classList.add('hidden');
       }
+      renderWorkspace();
+    }
 
-      function populateColorSelectAndSwatches() {
-        const sel = document.getElementById('profileColorSelect');
-        const grid = document.getElementById('colorSwatchesPreview');
-        if (sel) {
-          sel.innerHTML = USER_PALETTE_20
-            .map((c, idx) => `<option value="${c.key}">${idx + 1}. ${c.name}</option>`)
-            .join('');
-        }
-        if (grid) {
-          grid.innerHTML = USER_PALETTE_20
-            .map(
-              (c) =>
-                `<button type="button" data-pick-color="${c.key}" title="${c.name}" class="h-6 rounded-md border border-white/20 transition transform hover:scale-105" style="background:${c.hex};"></button>`
-            )
-            .join('');
-          grid.querySelectorAll('[data-pick-color]').forEach((btn) => {
-            btn.addEventListener('click', () => {
-              state.msgColor = btn.dataset.pickColor;
-              if (sel) sel.value = state.msgColor;
-              renderChatMessages();
-            });
-          });
-        }
+    // Renderiza o módulo ativo no contentor principal
+    function renderWorkspace() {
+      const container = document.getElementById('moduleWorkspace');
+      container.innerHTML = '';
+
+      switch (state.activeModule) {
+        case 'academy':
+          renderAcademy(container);
+          break;
+        case 'definitivo':
+          renderDefinitivo(container);
+          break;
+        case 'lado0':
+          renderLadoZero(container);
+          break;
+        case 'chatTurma':
+          renderChatTurma(container);
+          break;
+        case 'saga':
+          renderSaga(container);
+          break;
+        case 'manager':
+          renderManager(container);
+          break;
+        case 'admin':
+          renderAdmin(container);
+          break;
+        default:
+          renderAcademy(container);
       }
+    }
 
-      const state = {
-        nome: 'Sófocles',
-        email: '',
-        classe: '7.ª Classe',
-        turma: 'Turma A',
-        curso: 'Geral (1.º Ciclo)',
-        msgColor: 'burnishedGold',
-        avatarDataUrl: '',
-        role: 'STUDENT',
-        photoUnlockedBelow11: false,
-        sagaBlockedByExam: false,
-        sagaApiLinked: false, // Só fica true quando concluirmos a ligação final do S.A.G.A.
-        lastSagaText: 'Pronto para trabalhar contigo.',
-        voiceMode: 'male',
-        exam: null,
-        grades: [],
-        notices: ['Sistema Áurea em operação profissional no Complexo Escolar Privado Madre Trindade.'],
-        conductAlerts: [],
-        silentLogs: [],
-        wellbeingLogs: [],
-        cejMissions: [],
-        chartSeriesHistory: [320000, 385000, 450000],
-        chatsByScope: {},
+    /* -----------------------------------------------------------------------
+     * 1. ÁUREA ACADEMY — 10 questões rápidas adaptadas à classe selecionada
+     * ----------------------------------------------------------------------- */
+    function renderAcademy(container) {
+      const questions = ACADEMY_BANK[state.classe] || ACADEMY_BANK['10.ª Classe'];
+      const answeredCount = Object.keys(state.academyAnswers).length;
+
+      let score = 0;
+      questions.forEach((item, idx) => {
+        if (state.academyAnswers[idx] === item.ans) score++;
+      });
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'fade-in space-y-5';
+
+      wrapper.innerHTML = `
+        <div class="flex flex-col justify-between gap-4 rounded-2xl border border-borda bg-ardosia p-5 sm:flex-row sm:items-center">
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="rounded-lg bg-aurea/15 px-2.5 py-1 text-xs font-semibold text-aureaSuave">Áurea Academy</span>
+              <span class="rounded-lg border border-borda bg-painel px-2.5 py-1 text-xs text-slate-300">${escapeHtml(state.classe)}</span>
+            </div>
+            <h1 class="mt-2 text-xl font-bold text-white">Teste Diário Rápido (10 Questões)</h1>
+            <p class="mt-1 text-sm text-slate-400">
+              Revê os conteúdos essenciais da ${escapeHtml(state.classe)} com correção imediata e pontuação final.
+            </p>
+          </div>
+          <div class="flex shrink-0 flex-col items-start rounded-xl border border-borda bg-painel px-4 py-3 sm:items-end">
+            <span class="text-[11px] uppercase tracking-wider text-slate-400">Progresso / Pontuação</span>
+            <span class="mt-0.5 text-lg font-bold text-aureaSuave">${answeredCount}/10 respondidas</span>
+            <span class="text-xs text-slate-300">${state.academySubmitted ? `Pontuação final: ${score}/10 (${score * 10}%)` : 'Conclui para ver a pontuação final'}</span>
+          </div>
+        </div>
+
+        ${state.academySubmitted ? `
+          <div class="rounded-2xl border border-aurea/40 bg-gradient-to-r from-aurea/15 via-painel to-painel p-5 aurea-glow">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 class="text-lg font-bold text-white">Resultado do Treino Diário: ${score} em 10 (${score * 10}%)</h2>
+                <p class="mt-1 text-sm text-slate-300">
+                  ${score >= 8 ? 'Excelente domínio! Mantém a consistência diária.' : score >= 5 ? 'Bom ritmo! Revê as questões marcadas para consolidar.' : 'Bom treino inicial! Analisa as explicações abaixo e tenta novamente.'}
+                </p>
+              </div>
+              <button id="resetAcademyBtn" type="button" class="cursor-pointer rounded-xl bg-aurea px-4 py-2.5 text-xs font-bold text-grafite hover:bg-aureaSuave">
+                Reiniciar 10 Questões
+              </button>
+            </div>
+          </div>
+        ` : ''}
+
+        <div id="academyQuestionsList" class="space-y-4"></div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-borda bg-ardosia p-4">
+          <span class="text-xs text-slate-400">Seleciona as opções e submete para verificar a tua pontuação.</span>
+          <div class="flex gap-2">
+            <button id="clearAcademyBtn" type="button" class="cursor-pointer rounded-xl border border-borda bg-painel px-4 py-2 text-xs font-semibold text-slate-200 hover:border-aurea/40">
+              Limpar Respostas
+            </button>
+            <button id="submitAcademyBtn" type="button" class="cursor-pointer rounded-xl bg-aurea px-5 py-2 text-xs font-bold text-grafite hover:bg-aureaSuave">
+              Concluir e Pontuar
+            </button>
+          </div>
+        </div>
+      `;
+
+      const listEl = wrapper.querySelector('#academyQuestionsList');
+      questions.forEach((item, qIdx) => {
+        const userPick = state.academyAnswers[qIdx];
+        const isCorrect = userPick === item.ans;
+
+        const card = document.createElement('div');
+        card.className = 'rounded-2xl border border-borda bg-ardosia p-4 sm:p-5';
+
+        const optsHtml = item.opts.map((optText, oIdx) => {
+          const picked = userPick === oIdx;
+          let optClasses = 'border-borda bg-painel text-slate-200 hover:border-aurea/50';
+
+          if (state.academySubmitted) {
+            if (oIdx === item.ans) {
+              optClasses = 'border-emerald-500/60 bg-emerald-950/40 text-emerald-200';
+            } else if (picked && oIdx !== item.ans) {
+              optClasses = 'border-rose-500/60 bg-rose-950/40 text-rose-200';
+            }
+          } else if (picked) {
+            optClasses = 'border-aurea bg-aurea/15 text-aureaSuave font-medium';
+          }
+
+          return `
+            <button
+              type="button"
+              data-qidx="${qIdx}"
+              data-oidx="${oIdx}"
+              class="academy-opt-btn flex w-full cursor-pointer items-center gap-3 rounded-xl border px-3.5 py-2.5 text-left text-sm transition ${optClasses}"
+            >
+              <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-current/30 text-xs font-bold">
+                ${String.fromCharCode(65 + oIdx)}
+              </span>
+              <span>${escapeHtml(optText)}</span>
+            </button>
+          `;
+        }).join('');
+
+        const feedbackHtml = (userPick !== undefined || state.academySubmitted) ? `
+          <div class="mt-3 rounded-xl border ${isCorrect ? 'border-emerald-500/30 bg-emerald-950/25 text-emerald-200' : 'border-borda bg-painel/80 text-slate-300'} p-3 text-xs">
+            <strong class="font-semibold">${userPick === undefined ? 'Não respondida.' : (isCorrect ? 'Correto!' : 'A rever.')}</strong>
+            <span class="ml-1">${escapeHtml(item.exp)}</span>
+          </div>
+        ` : '';
+
+        card.innerHTML = `
+          <p class="text-xs font-semibold uppercase tracking-wider text-aureaSuave">Questão ${qIdx + 1} de 10</p>
+          <h3 class="mt-1 text-sm font-semibold text-white sm:text-base">${escapeHtml(item.q)}</h3>
+          <div class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">${optsHtml}</div>
+          ${feedbackHtml}
+        `;
+        listEl.appendChild(card);
+      });
+
+      container.appendChild(wrapper);
+
+      container.querySelectorAll('.academy-opt-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (state.academySubmitted) return;
+          const qIdx = Number(btn.dataset.qidx);
+          const oIdx = Number(btn.dataset.oidx);
+          state.academyAnswers[qIdx] = oIdx;
+          renderWorkspace();
+        });
+      });
+
+      wrapper.querySelector('#submitAcademyBtn').addEventListener('click', () => {
+        state.academySubmitted = true;
+        showToast(`Teste concluído: ${score}/10 na ${state.classe}.`);
+        renderWorkspace();
+      });
+
+      const clearAction = () => {
+        state.academyAnswers = {};
+        state.academySubmitted = false;
+        showToast('Respostas da Áurea Academy limpas.');
+        renderWorkspace();
       };
 
-      function scopeKey() {
-        return `${state.classe}__${state.turma}__${state.curso}`;
+      wrapper.querySelector('#clearAcademyBtn').addEventListener('click', clearAction);
+      const resetTopBtn = wrapper.querySelector('#resetAcademyBtn');
+      if (resetTopBtn) resetTopBtn.addEventListener('click', clearAction);
+    }
+
+    /* -----------------------------------------------------------------------
+     * 2. ESTUDO DEFINITIVO — Exercícios exigentes com base nos temas da prova
+     * ----------------------------------------------------------------------- */
+    function renderDefinitivo(container) {
+      if (state.definitivoExercises.length === 0) {
+        state.definitivoExercises = generateDefinitivoExercises(state.definitivoTopics, state.definitivoDifficulty);
       }
 
-      function isDirective() {
-        return state.role === 'DIRECTIVE';
-      }
+      const wrapper = document.createElement('div');
+      wrapper.className = 'fade-in space-y-5';
 
-      function isTechAdmin() {
-        return state.role === 'ADMIN_2013' || state.role === 'ADMIN_2012' || state.role === 'DIRECTIVE';
-      }
-
-      function hasRestrictedAccess() {
-        return isTechAdmin();
-      }
-
-      function recordSilent(action) {
-        const entry = `[${new Date().toLocaleTimeString()}] ${action}`;
-        state.silentLogs.push(entry);
-        const el = document.getElementById('silentSentinelBox');
-        if (el) {
-          el.innerHTML = state.silentLogs.slice(-25).map((x) => `<div>${x}</div>`).join('');
-          el.scrollTop = el.scrollHeight;
-        }
-      }
-
-      function recordConductAlert(detail) {
-        const entry = `[${new Date().toLocaleTimeString()}] ${detail}`;
-        state.conductAlerts.push(entry);
-        const el = document.getElementById('conductAlertsBox');
-        if (el) {
-          el.innerHTML = state.conductAlerts.slice(-25).map((x) => `<div class="text-rose-300">${x}</div>`).join('');
-          el.scrollTop = el.scrollHeight;
-        }
-      }
-
-      function enforceRestrictedVisibility(targetTabIfAllowed) {
-        const allowed = hasRestrictedAccess();
-        document.querySelectorAll('[data-restricted-tab]').forEach((btn) => {
-          btn.classList.toggle('hidden', !allowed);
-          btn.setAttribute('data-hidden', String(!allowed));
-        });
-
-        const activeSec = document.querySelector('.module-sec:not(.hidden)');
-        if (!allowed && activeSec && activeSec.hasAttribute('data-restricted-panel')) {
-          switchTab('saga');
-          return;
-        }
-
-        if (targetTabIfAllowed) {
-          switchTab(targetTabIfAllowed);
-        }
-      }
-
-      function switchTab(tab) {
-        const isRestricted = tab === 'exam' || tab === 'governance';
-        if (isRestricted && !hasRestrictedAccess()) {
-          tab = 'saga';
-        }
-        document.querySelectorAll('.nav-tab').forEach((b) => {
-          const on = b.dataset.tab === tab;
-          b.classList.toggle('bg-sky-500', on);
-          b.classList.toggle('text-slate-950', on);
-          b.classList.toggle('font-bold', on);
-          b.classList.toggle('bg-slate-900', !on);
-          b.classList.toggle('text-slate-300', !on);
-          b.classList.toggle('font-semibold', !on);
-        });
-        document.querySelectorAll('.module-sec').forEach((sec) => {
-          const match = sec.id === `panel-${tab}`;
-          sec.classList.toggle('hidden', !match);
-          sec.setAttribute('data-hidden', String(!match));
-        });
-      }
-
-      document.querySelectorAll('.nav-tab').forEach((btn) => {
-        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
-      });
-
-      const canvas = document.getElementById('cosmosCanvas');
-      const ctx = canvas ? canvas.getContext('2d') : null;
-      let pts = [];
-
-      function resizePts() {
-        if (!canvas || !ctx) return;
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        canvas.width = Math.floor(window.innerWidth * dpr);
-        canvas.height = Math.floor(window.innerHeight * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const count = Math.min(70, Math.floor((window.innerWidth * window.innerHeight) / 18000));
-        pts = Array.from({ length: count }, () => ({
-          x: Math.random() * window.innerWidth,
-          y: Math.random() * window.innerHeight,
-          r: Math.random() * 1.1 + 0.3,
-          a: Math.random() * 0.35 + 0.1,
-          vx: (Math.random() - 0.5) * 0.08,
-        }));
-      }
-
-      function tickPts() {
-        if (!canvas || !ctx) return;
-        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        for (const p of pts) {
-          p.x += p.vx;
-          if (p.x < 0) p.x = window.innerWidth;
-          if (p.x > window.innerWidth) p.x = 0;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(148, 163, 184, ${p.a})`;
-          ctx.fill();
-        }
-        requestAnimationFrame(tickPts);
-      }
-
-      window.addEventListener('resize', resizePts);
-      resizePts();
-      tickPts();
-
-      function speakPortuguese(text) {
-        const clean = String(text || '').replace(/<[^>]*>/g, '').trim();
-        if (!clean || !('speechSynthesis' in window)) return;
-        try {
-          window.speechSynthesis.cancel();
-          const u = new SpeechSynthesisUtterance(clean);
-          u.lang = 'pt-PT';
-          const voices = window.speechSynthesis.getVoices() || [];
-          const pt = voices.filter((v) => /pt/i.test(v.lang));
-          const list = pt.length ? pt : voices;
-          if (state.voiceMode === 'male') {
-            const m = list.find((v) => /male|masculin|daniel|ricardo|antonio|antónio|jorge|paulo|tiago/i.test(v.name));
-            u.voice = m || list[0] || null;
-            u.pitch = 0.78;
-            u.rate = 0.98;
-          } else {
-            const f = list.find((v) => /female|feminin|maria|ines|inês|catarina|ana|clara|lucia|lúcia/i.test(v.name));
-            u.voice = f || list[list.length - 1] || null;
-            u.pitch = 1.18;
-            u.rate = 1.02;
-          }
-          window.speechSynthesis.speak(u);
-        } catch {}
-      }
-
-      // --- CALCULADORA SIMPLES, CIENTÍFICA E FINANCEIRA (CONTACTA COM MISSÕES CEJ & GRÁFICOS) ---
-      let lastCalcNumericResult = null;
-
-      function evaluateScientific(exprRaw) {
-        let e = String(exprRaw || '').trim();
-        if (!e) return 'Introduz uma expressão.';
-        e = e.replace(/,/g, '.').replace(/\^/g, '**');
-        e = e.replace(/sqrt\(/gi, 'Math.sqrt(');
-        e = e.replace(/cbrt\(/gi, 'Math.cbrt(');
-        e = e.replace(/abs\(/gi, 'Math.abs(');
-        e = e.replace(/log10\(/gi, 'Math.log10(');
-        e = e.replace(/ln\(/gi, 'Math.log(');
-        e = e.replace(/pi\b/gi, 'Math.PI');
-        e = e.replace(/\be\b/g, 'Math.E');
-        e = e.replace(/sin\(([^)]+)\)/gi, (_, a) => `Math.sin((${a})*Math.PI/180)`);
-        e = e.replace(/cos\(([^)]+)\)/gi, (_, a) => `Math.cos((${a})*Math.PI/180)`);
-        e = e.replace(/tan\(([^)]+)\)/gi, (_, a) => `Math.tan((${a})*Math.PI/180)`);
-        const safe = e.replace(/[^0-9+\-*/().%\sMathPIElog10cbrtsqrtabswincotan]/g, '');
-        if (!safe) return 'Expressão inválida.';
-        try {
-          const val = Function(`"use strict"; return (${safe})`)();
-          if (typeof val !== 'number' || !Number.isFinite(val)) return 'Resultado indefinido.';
-          lastCalcNumericResult = Number(val.toFixed(2));
-          return Number.isInteger(val) ? String(val) : String(Number(val.toFixed(6)));
-        } catch {
-          return 'Erro na expressão.';
-        }
-      }
-
-      document.querySelectorAll('.calc-mode-btn').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const mode = btn.dataset.calcMode;
-          document.querySelectorAll('.calc-mode-btn').forEach((b) => {
-            const active = b.dataset.calcMode === mode;
-            b.className = active
-              ? 'calc-mode-btn px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 text-xs font-bold'
-              : 'calc-mode-btn px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 border border-slate-700 text-xs font-semibold';
-          });
-          document.getElementById('calcSciPanel')?.classList.toggle('hidden', mode !== 'sci');
-          document.getElementById('calcFinPanel')?.classList.toggle('hidden', mode !== 'fin');
-        });
-      });
-
-      document.querySelectorAll('.calc-fn-btn').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const inp = document.getElementById('calcExprInput');
-          if (!inp) return;
-          inp.value = (inp.value || '') + (btn.dataset.fn || '');
-          inp.focus();
-        });
-      });
-
-      document.getElementById('btnEvalSci')?.addEventListener('click', () => {
-        const raw = document.getElementById('calcExprInput')?.value || '';
-        const out = document.getElementById('calcSciOutput');
-        if (out) out.textContent = `Resultado: ${evaluateScientific(raw)}`;
-      });
-
-      document.getElementById('btnCalcToMission')?.addEventListener('click', () => {
-        if (lastCalcNumericResult === null || Number.isNaN(lastCalcNumericResult)) return;
-        const mInp = document.getElementById('cejMissionValueInput');
-        if (mInp) mInp.value = String(lastCalcNumericResult);
-        switchTab('cej');
-      });
-
-      document.getElementById('btnCalcToChart')?.addEventListener('click', () => {
-        if (lastCalcNumericResult === null || Number.isNaN(lastCalcNumericResult)) return;
-        const revInp = document.getElementById('cejRevInput');
-        if (revInp) revInp.value = String(lastCalcNumericResult);
-        state.chartSeriesHistory.push(lastCalcNumericResult);
-        drawCejChart();
-        switchTab('cej');
-      });
-
-      document.getElementById('btnEvalFin')?.addEventListener('click', () => {
-        const c = parseFloat(document.getElementById('finCapitalInput')?.value || '0');
-        const i = parseFloat(document.getElementById('finRateInput')?.value || '0') / 100;
-        const n = parseFloat(document.getElementById('finPeriodsInput')?.value || '0');
-        const out = document.getElementById('calcFinOutput');
-        if (!out) return;
-        if ([c, i, n].some((v) => Number.isNaN(v) || n < 0)) {
-          out.innerHTML = '<div>Verifica os valores de capital, taxa e períodos.</div>';
-          return;
-        }
-        const jSimples = c * i * n;
-        const mSimples = c + jSimples;
-        const mComposto = c * Math.pow(1 + i, n);
-        const jComposto = mComposto - c;
-        lastCalcNumericResult = Number(mComposto.toFixed(2));
-        out.innerHTML = `
-          <div>Juro Simples: ${jSimples.toFixed(2)} | Montante Simples: ${mSimples.toFixed(2)}</div>
-          <div>Juro Composto: ${jComposto.toFixed(2)} | Montante Composto: ${mComposto.toFixed(2)}</div>
-        `;
-      });
-
-      document.getElementById('btnSendFinToCej')?.addEventListener('click', () => {
-        const cap = parseFloat(document.getElementById('finCapitalInput')?.value || '');
-        const targetVal = !Number.isNaN(cap) && cap > 0 ? cap : lastCalcNumericResult;
-        if (targetVal === null || Number.isNaN(targetVal)) return;
-        const revInp = document.getElementById('cejRevInput');
-        if (revInp) revInp.value = String(targetVal);
-        state.chartSeriesHistory.push(targetVal);
-        drawCejChart();
-        switchTab('cej');
-      });
-
-      // --- BOTÃO NOVO: ESTUDAR COISAS NOVAS (COM SELO NEW, ATIVO QUANDO RESOLVERMOS O S.A.G.A.) ---
-      document.getElementById('btnStudyNewThings')?.addEventListener('click', () => {
-        switchTab('saga');
-        if (!state.sagaApiLinked) {
-          appendSagaMessage(
-            'S.A.G.A.',
-            'A opção "Estudar Coisas Novas" (NEW) já está na interface, mas fica totalmente disponível assim que concluirmos a ligação final do S.A.G.A.',
-            false
-          );
-          return;
-        }
-        handleSagaSubmit('Apresenta um tópico novo, atual e desafiador de estudo adaptado à minha classe e curso.');
-      });
-
-      function syncNetworkStatus() {
-        const online = navigator.onLine;
-        const pill = document.getElementById('networkStatusPill');
-        const note = document.getElementById('calcNetworkNote');
-        if (pill) {
-          pill.textContent = online ? 'REDE ATIVA' : 'SEM REDE • MODO CALCULADORA';
-          pill.className = online
-            ? 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
-            : 'text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-200 border border-amber-400/40';
-        }
-        if (note && !online) {
-          note.textContent = 'Ligação de rede indisponível: o S.A.G.A. opera diretamente com a calculadora simples, científica e financeira.';
-        }
-      }
-
-      window.addEventListener('online', syncNetworkStatus);
-      window.addEventListener('offline', () => {
-        syncNetworkStatus();
-        appendSagaMessage('S.A.G.A.', 'Sem ligação à rede detetada. Passei o foco para a calculadora simples, científica e financeira aqui em baixo.', false);
-      });
-      syncNetworkStatus();
-
-      const sagaStream = document.getElementById('sagaStream');
-      const sagaStar = document.getElementById('sagaStarIndicator');
-
-      function appendSagaMessage(sender, text, isUser = false) {
-        if (!sagaStream) return;
-        const uTheme = getUserColorTheme(state.msgColor);
-        const div = document.createElement('div');
-        div.className = isUser
-          ? `p-3.5 rounded-xl ${uTheme.bg} border-2 ${uTheme.border} text-sm text-white ml-auto max-w-[90%] shadow-md`
-          : 'p-3.5 rounded-xl bg-[#0e192d] border border-sky-400/35 text-sm text-slate-100 leading-relaxed whitespace-pre-line mr-auto max-w-[95%]';
-        div.innerHTML = `<div class="text-[11px] font-mono ${isUser ? 'text-amber-200/90' : 'text-sky-400'} mb-1">${sender}</div>${text}`;
-        sagaStream.appendChild(div);
-        sagaStream.scrollTop = sagaStream.scrollHeight;
-      }
-
-      async function handleSagaSubmit(rawText) {
-        if (state.sagaBlockedByExam && !isDirective()) {
-          appendSagaMessage('S.A.G.A.', 'O S.A.G.A. encontra-se bloqueado durante a avaliação em curso.', false);
-          return;
-        }
-        appendSagaMessage(`${state.nome} • ${getUserColorTheme(state.msgColor).name}`, rawText, true);
-
-        if (!navigator.onLine) {
-          const calcAns = evaluateScientific(rawText);
-          const reply = calcAns !== 'Erro na expressão.' && calcAns !== 'Introduz uma expressão.'
-            ? `Sem rede ativa. Cálculo direto: ${calcAns}`
-            : 'Sem rede ativa. Usa a calculadora simples, científica ou financeira logo abaixo para contas e taxas.';
-          state.lastSagaText = reply;
-          appendSagaMessage('S.A.G.A.', reply, false);
-          document.getElementById('offlineCalculatorCard')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          return;
-        }
-
-        sagaStar?.classList.add('star-hopping');
-        await new Promise((r) => setTimeout(r, 420));
-        sagaStar?.classList.remove('star-hopping');
-
-        const reply = `Contexto atual: ${state.nome} (${state.classe} • ${state.turma} • ${state.curso}).\nSobre "${rawText}": vamos analisar objetivamente os passos principais, os conceitos envolvidos e a aplicação prática na tua área.`;
-        state.lastSagaText = reply;
-        appendSagaMessage('S.A.G.A.', reply, false);
-        recordSilent(`Consulta respondida no S.A.G.A. (${state.classe} / ${state.curso}).`);
-        speakPortuguese(reply);
-      }
-
-      document.getElementById('sagaPromptForm')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const inp = document.getElementById('sagaPromptInput');
-        const txt = (inp?.value || '').trim();
-        if (!txt) return;
-        if (inp) inp.value = '';
-        handleSagaSubmit(txt);
-      });
-
-      document.getElementById('sagaVoiceModeSelect')?.addEventListener('change', (e) => {
-        state.voiceMode = e.target.value;
-      });
-
-      document.getElementById('btnListenSaga')?.addEventListener('click', () => {
-        speakPortuguese(state.lastSagaText);
-      });
-
-      document.getElementById('btnClearSagaHistory')?.addEventListener('click', () => {
-        if (sagaStream) sagaStream.innerHTML = '';
-        recordSilent('Histórico local do S.A.G.A. limpo.');
-      });
-
-      const loginModal = document.getElementById('loginModal');
-
-      function applyUserUI() {
-        const badge = document.getElementById('userContextBadge');
-        const cTheme = getUserColorTheme(state.msgColor);
-        if (badge) badge.textContent = `${state.nome} • ${state.classe} • ${state.turma} • ${state.curso} • ${cTheme.name}`;
-        const av = document.getElementById('headerAvatarImg');
-        if (av) {
-          if (state.avatarDataUrl) {
-            av.src = state.avatarDataUrl;
-            av.alt = state.nome;
-            av.classList.remove('hidden');
-            av.setAttribute('data-hidden', 'false');
-          } else {
-            av.classList.add('hidden');
-            av.setAttribute('data-hidden', 'true');
-          }
-        }
-        const scopeSum = document.getElementById('chatScopeSummary');
-        if (scopeSum) {
-          scopeSum.textContent = `Espaço: ${state.classe} • ${state.turma} • ${state.curso} | Cor: ${cTheme.name} | Fotos: ${canUploadChatPhoto() ? 'Liberadas' : 'A partir da 11.ª Classe'}`;
-        }
-        const photoBtn = document.getElementById('btnTogglePhotoGate11');
-        if (photoBtn) {
-          photoBtn.classList.toggle('hidden', !isTechAdmin());
-          photoBtn.setAttribute('data-hidden', String(!isTechAdmin()));
-          photoBtn.textContent = `Liberar Fotos <11.ª: ${state.photoUnlockedBelow11 ? 'ON' : 'OFF'}`;
-        }
-        const roleBadge = document.getElementById('activeRoleBadge');
-        const labels = {
-          STUDENT: 'Perfil: Estudante',
-          ADMIN_2012: 'Perfil: ADM Técnico',
-          ADMIN_2013: 'Perfil: ADM Sófocles (Técnico)',
-          DIRECTIVE: 'Perfil: Agente Directivo',
-        };
-        if (roleBadge) roleBadge.textContent = labels[state.role] || 'Perfil: Estudante';
-        const dirTag = document.getElementById('directiveOnlyTag');
-        if (dirTag) {
-          dirTag.textContent = isDirective() ? 'Autorizado: Agente Directivo' : 'Apenas Agente Directivo pode lançar';
-          dirTag.className = isDirective() ? 'text-[11px] font-mono text-emerald-400' : 'text-[11px] font-mono text-slate-400';
-        }
-        const lockBadge = document.getElementById('sagaAccessStateBadge');
-        if (lockBadge) {
-          lockBadge.textContent = state.sagaBlockedByExam ? 'BLOQUEADO (AVALIAÇÃO)' : 'OPERACIONAL';
-          lockBadge.className = state.sagaBlockedByExam
-            ? 'text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40'
-            : 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30';
-        }
-        const availBadge = document.getElementById('newStudyAvailabilityBadge');
-        const bridgePill = document.getElementById('sagaBridgeStatusPill');
-        if (availBadge) {
-          availBadge.textContent = state.sagaApiLinked
-            ? 'Disponível • S.A.G.A. Resolvido'
-            : 'Disponível quando resolvermos o S.A.G.A.';
-          availBadge.className = state.sagaApiLinked
-            ? 'text-[11px] font-mono px-3 py-1.5 rounded-lg bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 self-start sm:self-center'
-            : 'text-[11px] font-mono px-3 py-1.5 rounded-lg bg-slate-900 border border-amber-400/35 text-amber-300 self-start sm:self-center';
-        }
-        if (bridgePill) {
-          bridgePill.textContent = state.sagaApiLinked ? 'S.A.G.A. ATIVO' : 'S.A.G.A. PENDENTE';
-          bridgePill.className = state.sagaApiLinked
-            ? 'text-[10px] font-mono px-2 py-0.5 rounded bg-sky-500/15 text-sky-300 border border-sky-500/30'
-            : 'text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30';
-        }
-        enforceRestrictedVisibility();
-      }
-
-      document.getElementById('btnOpenLogin')?.addEventListener('click', () => {
-        loginModal?.classList.remove('hidden');
-        loginModal?.setAttribute('data-hidden', 'false');
-      });
-      document.getElementById('btnCloseLogin')?.addEventListener('click', () => {
-        loginModal?.classList.add('hidden');
-        loginModal?.setAttribute('data-hidden', 'true');
-      });
-      document.getElementById('btnCancelLogin')?.addEventListener('click', () => {
-        loginModal?.classList.add('hidden');
-        loginModal?.setAttribute('data-hidden', 'true');
-      });
-
-      document.getElementById('profileAvatarInput')?.addEventListener('change', (e) => {
-        const file = e.target.files && e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = () => {
-          state.avatarDataUrl = String(reader.result || '');
-          applyUserUI();
-        };
-        reader.readAsDataURL(file);
-      });
-
-      document.getElementById('loginForm')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        state.nome = (document.getElementById('loginNameInput')?.value || '').trim() || 'Estudante';
-        state.email = (document.getElementById('loginEmailInput')?.value || '').trim();
-        state.classe = document.getElementById('loginClassSelect')?.value || '7.ª Classe';
-        state.turma = document.getElementById('loginSectionSelect')?.value || 'Turma A';
-        state.curso = document.getElementById('loginTrackSelect')?.value || 'CFB';
-        state.msgColor = document.getElementById('profileColorSelect')?.value || 'burnishedGold';
-        applyUserUI();
-        renderChatMessages();
-        loginModal?.classList.add('hidden');
-        loginModal?.setAttribute('data-hidden', 'true');
-        recordSilent(`Login efetuado: ${state.nome} (${state.classe} ${state.turma} ${state.curso}).`);
-      });
-
-      const hierarchyModal = document.getElementById('hierarchyModal');
-      const hierarchyFeedback = document.getElementById('hierarchyFeedback');
-
-      document.getElementById('btnFooterRestricted')?.addEventListener('click', () => {
-        if (hierarchyFeedback) hierarchyFeedback.textContent = '';
-        const k = document.getElementById('hierarchyKeyInput');
-        if (k) k.value = '';
-        hierarchyModal?.classList.remove('hidden');
-        hierarchyModal?.setAttribute('data-hidden', 'false');
-      });
-
-      document.getElementById('btnCloseHierarchy')?.addEventListener('click', () => {
-        hierarchyModal?.classList.add('hidden');
-        hierarchyModal?.setAttribute('data-hidden', 'true');
-      });
-
-      document.getElementById('hierarchyForm')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const rawKey = (document.getElementById('hierarchyKeyInput')?.value || '').trim();
-        const d = digestSecret(rawKey);
-        if (d === ROLE_DIGESTS.DIRECTIVE) {
-          state.role = 'DIRECTIVE';
-        } else if (d === ROLE_DIGESTS.ADMIN_2013) {
-          state.role = 'ADMIN_2013';
-        } else if (d === ROLE_DIGESTS.ADMIN_2012) {
-          state.role = 'ADMIN_2012';
-        } else {
-          if (hierarchyFeedback) {
-            hierarchyFeedback.textContent = 'Credencial não reconhecida.';
-            hierarchyFeedback.className = 'text-xs text-rose-400 min-h-[16px]';
-          }
-          return;
-        }
-        applyUserUI();
-        recordSilent(`Sessão elevada para ${state.role}.`);
-        hierarchyModal?.classList.add('hidden');
-        hierarchyModal?.setAttribute('data-hidden', 'true');
-        switchTab(isDirective() ? 'exam' : 'governance');
-      });
-
-      function recordGradeAuto(aluno, disciplina, nota, motivo) {
-        state.grades.push({
-          aluno,
-          disciplina,
-          nota,
-          motivo,
-          classe: state.classe,
-          turma: state.turma,
-          curso: state.curso,
-          at: new Date().toLocaleTimeString(),
-        });
-        const logBox = document.getElementById('directiveGradesLog');
-        if (logBox) {
-          const avg = (state.grades.reduce((s, item) => s + item.nota, 0) / state.grades.length).toFixed(2);
-          logBox.innerHTML =
-            `<div class="text-emerald-300 font-bold">Média Geral Enviada à Direção: ${avg} / 20 (${state.grades.length} reg.)</div>` +
-            state.grades
-              .slice(-10)
-              .map((g) => `<div>• ${g.aluno} [${g.classe} ${g.turma}]: ${g.nota.toFixed(1)} (${g.motivo})</div>`)
-              .join('');
-        }
-      }
-
-      function renderActiveExamView() {
-        const box = document.getElementById('activeExamContainer');
-        if (!box) return;
-        if (!state.exam) {
-          box.innerHTML = '<p class="text-xs text-slate-400">Nenhuma avaliação ativa no momento.</p>';
-          return;
-        }
-        if (state.exam.status === 'CLOSED_ZERO') {
-          box.innerHTML = `
-            <div class="p-3.5 rounded-xl bg-rose-950/50 border border-rose-500/40 text-xs text-rose-200 space-y-1">
-              <div class="font-bold font-mono">AVALIAÇÃO ENCERRADA — NOTA 0,0</div>
-              <div>Motivo: ${state.exam.closeReason || 'Encerrada.'}</div>
-              <div>Núcleo S.A.G.A. bloqueado durante o período da avaliação.</div>
-            </div>
-          `;
-          return;
-        }
-        if (state.exam.status === 'SUBMITTED') {
-          box.innerHTML = `<div class="text-xs text-emerald-300 font-mono">Avaliação submetida. S.A.G.A. liberado.</div>`;
-          return;
-        }
-        box.innerHTML = `
-          <div class="space-y-3">
-            <div class="text-sm font-bold text-white">${state.exam.title}</div>
-            <p class="text-xs text-slate-200">${state.exam.question}</p>
-            <input id="studentExamAnswerInput" type="text" placeholder="Escreve a tua resposta" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white" />
-            <button type="button" id="btnSubmitStudentExam" class="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Submeter Avaliação</button>
+      wrapper.innerHTML = `
+        <div class="rounded-2xl border border-borda bg-ardosia p-5">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="rounded-lg bg-aurea/15 px-2.5 py-1 text-xs font-semibold text-aureaSuave">Estudo Definitivo</span>
+            <span class="rounded-lg border border-borda bg-painel px-2.5 py-1 text-xs text-slate-300">${escapeHtml(state.classe)} • ${escapeHtml(state.curso)}</span>
           </div>
-        `;
-        document.getElementById('btnSubmitStudentExam')?.addEventListener('click', () => {
-          const ans = (document.getElementById('studentExamAnswerInput')?.value || '').trim();
-          const expected = (state.exam.expected || '').trim();
-          const score = ans && expected && ans.toLowerCase() === expected.toLowerCase() ? 20 : ans ? 12 : 0;
-          state.exam.status = 'SUBMITTED';
-          state.sagaBlockedByExam = false;
-          applyUserUI();
-          recordGradeAuto(state.nome, state.exam.title, score, 'Submissão dentro do prazo');
-          renderActiveExamView();
-        });
-      }
+          <h1 class="mt-2 text-xl font-bold text-white">Preparação Intensiva para Provas e Exames</h1>
+          <p class="mt-1 text-sm text-slate-400">
+            Indica os temas que saem na avaliação para gerar exercícios mais exigentes, dicas estratégicas e resolução guiada.
+          </p>
 
-      document.getElementById('directiveExamForm')?.addEventListener('submit', (e) => {
+          <form id="definitivoForm" class="mt-4 space-y-4">
+            <div>
+              <label for="topicsInput" class="mb-1.5 block text-xs font-semibold text-slate-300">
+                Temas da Prova (separa por vírgula ou nova linha)
+              </label>
+              <textarea
+                id="topicsInput"
+                rows="3"
+                placeholder="Ex.: Equações quadráticas, Funções afins, Interpretação de texto..."
+                class="w-full rounded-xl border border-borda bg-painel p-3 text-sm text-white placeholder-slate-500 focus:border-aurea focus:outline-none"
+              >${escapeHtml(state.definitivoTopics)}</textarea>
+            </div>
+
+            <div class="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+              <div class="flex items-center gap-2">
+                <label for="difficultySelect" class="text-xs font-semibold text-slate-300">Nível:</label>
+                <select id="difficultySelect" class="rounded-xl border border-borda bg-painel px-3 py-2 text-xs text-white focus:border-aurea focus:outline-none">
+                  <option value="Exigente (Nível de Prova)" ${state.definitivoDifficulty.includes('Exigente') ? 'selected' : ''}>Exigente (Nível de Prova)</option>
+                  <option value="Exame / Desafio Máximo" ${state.definitivoDifficulty.includes('Exame') ? 'selected' : ''}>Exame / Desafio Máximo</option>
+                </select>
+              </div>
+
+              <button type="submit" class="cursor-pointer rounded-xl bg-aurea px-5 py-2.5 text-xs font-bold text-grafite hover:bg-aureaSuave">
+                Gerar Exercícios Detalhados
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="space-y-4">
+          ${state.definitivoExercises.map(ex => `
+            <div class="rounded-2xl border border-borda bg-ardosia p-5">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="rounded-lg bg-aurea/15 px-2.5 py-1 text-xs font-semibold text-aureaSuave">Tema: ${escapeHtml(ex.topic)}</span>
+                <span class="text-xs text-slate-400">${escapeHtml(ex.difficulty)}</span>
+              </div>
+              <p class="mt-3 text-sm leading-relaxed text-slate-100">${escapeHtml(ex.prompt)}</p>
+
+              <div class="mt-4 flex flex-wrap gap-2">
+                <button type="button" data-toggle="hint-${ex.id}" class="toggle-panel-btn cursor-pointer rounded-xl border border-borda bg-painel px-3.5 py-2 text-xs font-semibold text-aureaSuave hover:border-aurea/50">
+                  Ver Dica
+                </button>
+                <button type="button" data-toggle="sol-${ex.id}" class="toggle-panel-btn cursor-pointer rounded-xl border border-borda bg-painel px-3.5 py-2 text-xs font-semibold text-slate-200 hover:border-aurea/50">
+                  Ver Resolução Orientada
+                </button>
+              </div>
+
+              <div id="hint-${ex.id}" class="mt-3 hidden rounded-xl border border-aurea/30 bg-aurea/10 p-3.5 text-xs leading-relaxed text-aureaSuave">
+                ${escapeHtml(ex.hint)}
+              </div>
+              <div id="sol-${ex.id}" class="mt-3 hidden rounded-xl border border-borda bg-painel p-3.5 text-xs leading-relaxed text-slate-300">
+                ${escapeHtml(ex.solution)}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      container.appendChild(wrapper);
+
+      wrapper.querySelector('#definitivoForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        if (!isDirective()) {
-          alert('Apenas o Agente Directivo pode lançar avaliações oficiais.');
-          return;
-        }
-        const title = (document.getElementById('examTitleInput')?.value || '').trim();
-        const question = (document.getElementById('examQuestionInput')?.value || '').trim();
-        const expected = (document.getElementById('examExpectedAnswerInput')?.value || '').trim();
-        const mins = Math.max(1, parseInt(document.getElementById('examDurationMinutesInput')?.value || '15', 10));
-        if (!title || !question) return;
-
-        state.exam = {
-          title,
-          question,
-          expected,
-          endsAt: Date.now() + mins * 60 * 1000,
-          awaySince: null,
-          status: 'ACTIVE',
-        };
-        state.sagaBlockedByExam = true;
-        applyUserUI();
-        renderActiveExamView();
-        recordSilent(`Avaliação "${title}" (${mins} min) lançada pelo Agente Directivo.`);
+        state.definitivoTopics = wrapper.querySelector('#topicsInput').value;
+        state.definitivoDifficulty = wrapper.querySelector('#difficultySelect').value;
+        state.definitivoExercises = generateDefinitivoExercises(state.definitivoTopics, state.definitivoDifficulty);
+        showToast('Novos exercícios do Estudo Definitivo gerados.');
+        renderWorkspace();
       });
 
-      function closeExamWithZero(reason) {
-        if (!state.exam || state.exam.status !== 'ACTIVE') return;
-        state.exam.status = 'CLOSED_ZERO';
-        state.exam.closeReason = reason;
-        state.sagaBlockedByExam = false;
-        applyUserUI();
-        recordGradeAuto(state.nome, state.exam.title, 0, reason);
-        recordConductAlert(`Avaliação encerrada com nota 0,0 para ${state.nome}: ${reason}`);
-        renderActiveExamView();
-      }
-
-      function checkExamTimers() {
-        const clockEl = document.getElementById('examClockDisplay');
-        if (!state.exam || state.exam.status !== 'ACTIVE') {
-          if (clockEl) clockEl.textContent = 'Tempo: —';
-          return;
-        }
-        const now = Date.now();
-        if (state.exam.awaySince && now - state.exam.awaySince >= 120000) {
-          closeExamWithZero('Ausência igual ou superior a 2 minutos fora da aplicação/site.');
-          return;
-        }
-        const remSec = Math.max(0, Math.floor((state.exam.endsAt - now) / 1000));
-        const mm = String(Math.floor(remSec / 60)).padStart(2, '0');
-        const ss = String(remSec % 60).padStart(2, '0');
-        if (clockEl) clockEl.textContent = `Tempo: ${mm}:${ss}`;
-        if (remSec <= 0) {
-          closeExamWithZero('Tempo da avaliação esgotado.');
-        }
-      }
-
-      document.addEventListener('visibilitychange', () => {
-        if (!state.exam || state.exam.status !== 'ACTIVE') return;
-        if (document.hidden) {
-          state.exam.awaySince = Date.now();
-        } else if (state.exam.awaySince) {
-          const awayMs = Date.now() - state.exam.awaySince;
-          state.exam.awaySince = null;
-          if (awayMs >= 120000) {
-            closeExamWithZero('Ausência detetada de 2 minutos ou mais.');
-          }
-        }
-      });
-
-      setInterval(checkExamTimers, 1000);
-
-      function canUploadChatPhoto() {
-        const clsNum = parseInt(state.classe, 10);
-        return (!Number.isNaN(clsNum) && clsNum >= 11) || state.photoUnlockedBelow11 || isTechAdmin();
-      }
-
-      function inspectChatContent(text, isDm) {
-        const low = text.toLowerCase();
-        const sexualHit = /\b(sexo|sexual|nude|porno|tesao|tesão|transar|safada|safado)\b/i.test(low);
-        const substanceHit = /\b(alcool|álcool|cerveja|vinho|whisky|vodka|cachaça|bebedeira|droga|drogas|maconha|erva|baseado|cocaina|cocaína|crack)\b/i.test(low);
-        const studyContext = /\b(estudo|escola|aula|prova|biologia|quimica|química|farmacologia|saude|saúde|pesquisa|trabalho|cej|cfb)\b/i.test(low);
-
-        if (isDm && sexualHit) {
-          recordConductAlert(`DM com teor sexual detetada de ${state.nome} (${state.classe} ${state.turma}).`);
-        }
-        if (substanceHit && !studyContext) {
-          recordConductAlert(`Menção a álcool/drogas fora de contexto de estudo por ${state.nome} (${state.classe} ${state.turma}).`);
-        }
-      }
-
-      function renderChatMessages() {
-        const box = document.getElementById('chatStreamBox');
-        if (!box) return;
-        const key = scopeKey();
-        const list = state.chatsByScope[key] || [];
-        if (!list.length) {
-          box.innerHTML = `<div class="text-xs text-slate-500">Nenhuma mensagem registada em ${state.classe} • ${state.turma} • ${state.curso}.</div>`;
-          return;
-        }
-        box.innerHTML = '';
-        list.forEach((m) => {
-          const theme = getUserColorTheme(m.colorKey);
-          const card = document.createElement('div');
-          card.className = `p-3 rounded-xl ${theme.bg} border-2 ${theme.border} text-xs text-slate-100 space-y-1.5`;
-          const meta = m.mode === 'DM' ? ` • DM → ${m.recipient || 'Destinatário'}` : ` • ${m.turma}`;
-          card.innerHTML = `<div class="font-bold text-slate-200">${m.sender}<span class="font-normal text-slate-400">${meta} • ${theme.name}</span></div><div>${m.text}</div>`;
-          if (m.imageUrl) {
-            const img = document.createElement('img');
-            img.src = m.imageUrl;
-            img.alt = 'Imagem partilhada';
-            img.className = 'max-h-44 rounded-lg border border-slate-700 mt-1';
-            card.appendChild(img);
-          }
-          box.appendChild(card);
+      wrapper.querySelectorAll('.toggle-panel-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = wrapper.querySelector('#' + btn.dataset.toggle);
+          if (target) target.classList.toggle('hidden');
         });
-        box.scrollTop = box.scrollHeight;
-      }
+      });
+    }
 
-      function addChatEntry({ text, imageUrl = null }) {
-        const key = scopeKey();
-        if (!state.chatsByScope[key]) state.chatsByScope[key] = [];
-        const mode = document.getElementById('chatChannelSelect')?.value || 'TURMA';
-        const recipient = (document.getElementById('chatDmRecipientInput')?.value || '').trim();
-        state.chatsByScope[key].push({
-          sender: state.nome,
-          turma: state.turma,
-          mode,
-          recipient,
-          colorKey: state.msgColor,
-          text,
-          imageUrl,
+    /* -----------------------------------------------------------------------
+     * 3. LADO 0 — Pausa ativa leve sem pressão de prova + % de acertos no fim
+     * ----------------------------------------------------------------------- */
+    function renderLadoZero(container) {
+      if (state.lado0Questions.length === 0) initLadoZero();
+
+      const qs = state.lado0Questions;
+      const answered = Object.keys(state.lado0Answers).length;
+      let hits = 0;
+      qs.forEach((item, idx) => {
+        if (state.lado0Answers[idx] === item.ans) hits++;
+      });
+      const pct = qs.length > 0 ? Math.round((hits / qs.length) * 100) : 0;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'fade-in space-y-5';
+
+      wrapper.innerHTML = `
+        <div class="flex flex-col justify-between gap-4 rounded-2xl border border-borda bg-ardosia p-5 sm:flex-row sm:items-center">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="rounded-lg bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-300">Lado 0 • Pausa Ativa</span>
+              <span class="text-xs text-slate-400">Sem pressão de avaliação</span>
+            </div>
+            <h1 class="mt-2 text-xl font-bold text-white">Desanuviar e Rever Conhecimentos Gerais</h1>
+            <p class="mt-1 text-sm text-slate-400">
+              Uma pausa leve entre blocos de estudo para manter a mente ativa sem peso de exame.
+            </p>
+          </div>
+          <button id="newLado0Btn" type="button" class="cursor-pointer rounded-xl border border-borda bg-painel px-4 py-2.5 text-xs font-semibold text-slate-200 hover:border-aurea/40">
+            Nova Pausa Leve
+          </button>
+        </div>
+
+        ${state.lado0Finished ? `
+          <div class="rounded-2xl border border-aurea/40 bg-painel p-5 aurea-glow">
+            <p class="text-xs font-semibold uppercase tracking-wider text-aureaSuave">Resumo do Lado 0</p>
+            <h2 class="mt-1 text-2xl font-bold text-white">${pct}% de acertos (${hits} de ${qs.length})</h2>
+            <p class="mt-1 text-sm text-slate-300">
+              Pausa concluída com leveza. Podes regressar à Áurea Academy ou continuar no ritmo que preferires.
+            </p>
+          </div>
+        ` : ''}
+
+        <div class="space-y-4">
+          ${qs.map((item, idx) => {
+            const pick = state.lado0Answers[idx];
+            return `
+              <div class="rounded-2xl border border-borda bg-ardosia p-4 sm:p-5">
+                <p class="text-xs font-semibold text-slate-400">Pergunta leve ${idx + 1} de ${qs.length}</p>
+                <h3 class="mt-1 text-base font-semibold text-white">${escapeHtml(item.q)}</h3>
+                <div class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  ${item.opts.map((opt, oIdx) => {
+                    const selected = pick === oIdx;
+                    const rightAns = state.lado0Finished && oIdx === item.ans;
+                    const wrongPick = state.lado0Finished && selected && oIdx !== item.ans;
+                    let cls = 'border-borda bg-painel text-slate-200 hover:border-aurea/50';
+                    if (rightAns) cls = 'border-emerald-500/60 bg-emerald-950/40 text-emerald-200';
+                    else if (wrongPick) cls = 'border-rose-500/60 bg-rose-950/40 text-rose-200';
+                    else if (selected) cls = 'border-aurea bg-aurea/15 text-aureaSuave font-medium';
+
+                    return `
+                      <button type="button" data-q="${idx}" data-o="${oIdx}" class="lado0-opt cursor-pointer rounded-xl border px-3.5 py-2.5 text-left text-sm transition ${cls}">
+                        ${escapeHtml(opt)}
+                      </button>
+                    `;
+                  }).join('')}
+                </div>
+                ${state.lado0Finished ? `<p class="mt-3 text-xs text-slate-400">Nota: ${escapeHtml(item.tip)}</p>` : ''}
+              </div>
+            `;
+          }).join('')}
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-borda bg-ardosia p-4">
+          <span class="text-xs text-slate-400">Respondidas: ${answered}/${qs.length}</span>
+          <button id="finishLado0Btn" type="button" class="cursor-pointer rounded-xl bg-aurea px-5 py-2.5 text-xs font-bold text-grafite hover:bg-aureaSuave">
+            Ver Percentagem de Acertos
+          </button>
+        </div>
+      `;
+
+      container.appendChild(wrapper);
+
+      wrapper.querySelectorAll('.lado0-opt').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.lado0Answers[Number(btn.dataset.q)] = Number(btn.dataset.o);
+          renderWorkspace();
         });
-        inspectChatContent(text, mode === 'DM');
-        renderChatMessages();
-      }
-
-      document.getElementById('chatChannelSelect')?.addEventListener('change', (e) => {
-        document.getElementById('chatDmRecipientInput')?.classList.toggle('hidden', e.target.value !== 'DM');
       });
 
-      document.getElementById('btnTogglePhotoGate11')?.addEventListener('click', () => {
-        if (!isTechAdmin()) return;
-        state.photoUnlockedBelow11 = !state.photoUnlockedBelow11;
-        applyUserUI();
-        recordSilent(`Liberação de fotos abaixo da 11.ª classe: ${state.photoUnlockedBelow11 ? 'ATIVADA' : 'DESATIVADA'}.`);
+      wrapper.querySelector('#finishLado0Btn').addEventListener('click', () => {
+        state.lado0Finished = true;
+        showToast(`Lado 0 concluído: ${pct}% de acertos.`);
+        renderWorkspace();
       });
 
-      document.getElementById('btnClearChatBtn')?.addEventListener('click', () => {
-        state.chatsByScope[scopeKey()] = [];
-        renderChatMessages();
-        recordSilent(`Chat limpo em ${scopeKey()}.`);
+      wrapper.querySelector('#newLado0Btn').addEventListener('click', () => {
+        initLadoZero();
+        showToast('Nova sequência leve gerada no Lado 0.');
+        renderWorkspace();
       });
+    }
 
-      document.getElementById('chatMessageForm')?.addEventListener('submit', (e) => {
+    /* -----------------------------------------------------------------------
+     * 4. CHAT DA TURMA — Exclusivo e isolado por classe selecionada
+     * ----------------------------------------------------------------------- */
+    function renderChatTurma(container) {
+      const messages = state.classChats[state.classe] || [];
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'fade-in flex flex-col space-y-4';
+
+      wrapper.innerHTML = `
+        <div class="rounded-2xl border border-borda bg-ardosia p-5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="rounded-lg bg-aurea/15 px-2.5 py-1 text-xs font-semibold text-aureaSuave">Chat da Turma • Isolado</span>
+              <h1 class="mt-2 text-xl font-bold text-white">Conversa da ${escapeHtml(state.classe)}</h1>
+              <p class="mt-1 text-sm text-slate-400">
+                Espaço exclusivo para colegas da <strong class="text-slate-200">${escapeHtml(state.classe)}</strong> (${escapeHtml(state.curso)}). Mensagens de outras classes não aparecem aqui.
+              </p>
+            </div>
+            <span class="rounded-xl border border-emerald-500/30 bg-emerald-950/30 px-3 py-1.5 text-xs font-medium text-emerald-300">
+              Canal: ${escapeHtml(state.classe)}
+            </span>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-borda bg-ardosia p-4 sm:p-5">
+          <div id="turmaMessagesBox" class="max-h-96 space-y-3 overflow-y-auto pr-1">
+            ${messages.map(m => `
+              <div class="rounded-xl border border-borda/80 bg-painel p-3.5">
+                <div class="flex items-center justify-between gap-2 text-xs">
+                  <span class="font-bold text-aureaSuave">${escapeHtml(m.author)}</span>
+                  <span class="text-slate-400">${escapeHtml(m.time)}</span>
+                </div>
+                <p class="mt-1.5 text-sm leading-relaxed text-slate-100">${escapeHtml(m.text)}</p>
+              </div>
+            `).join('')}
+          </div>
+
+          <form id="turmaChatForm" class="mt-4 flex flex-col gap-2 sm:flex-row">
+            <input
+              id="turmaMessageInput"
+              type="text"
+              placeholder="Escreve uma dúvida ou ajuda para a ${escapeHtml(state.classe)}..."
+              class="flex-1 rounded-xl border border-borda bg-painel px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:border-aurea focus:outline-none"
+            />
+            <button type="submit" class="cursor-pointer rounded-xl bg-aurea px-5 py-2.5 text-sm font-bold text-grafite hover:bg-aureaSuave">
+              Enviar
+            </button>
+          </form>
+        </div>
+      `;
+
+      container.appendChild(wrapper);
+
+      wrapper.querySelector('#turmaChatForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        const inp = document.getElementById('chatComposerInput');
-        const txt = (inp?.value || '').trim();
+        const input = wrapper.querySelector('#turmaMessageInput');
+        const txt = input.value.trim();
         if (!txt) return;
-        addChatEntry({ text: txt });
-        if (inp) inp.value = '';
+
+        if (!state.classChats[state.classe]) state.classChats[state.classe] = [];
+        const nowTime = new Date().toLocaleTimeString('pt-AO', { hour: '2-digit', minute: '2-digit' });
+        state.classChats[state.classe].push({
+          author: `${state.studentName} (${state.classe})`,
+          time: nowTime,
+          text: txt
+        });
+        input.value = '';
+        renderWorkspace();
+      });
+    }
+
+    /* -----------------------------------------------------------------------
+     * 5. CHAT S.A.G.A. — Assistente educativo adaptado ao currículo de Angola
+     * ----------------------------------------------------------------------- */
+    function buildSagaReply(promptText) {
+      const lower = promptText.toLowerCase();
+      if (lower.includes('pergunta') || lower.includes('questão') || lower.includes('exercício') || lower.includes('treino')) {
+        const bank = ACADEMY_BANK[state.classe] || ACADEMY_BANK['10.ª Classe'];
+        const sample = bank[Math.floor(Math.random() * bank.length)];
+        return `Pergunta de treino para a **${state.classe}** (${state.curso}):\n\n"${sample.q}"\n\nOpções: ${sample.opts.join(' | ')}.\n\nDica: ${sample.exp}`;
+      }
+      if (lower.includes('resumo') || lower.includes('dica') || lower.includes('estudar')) {
+        return `Para organizar o estudo na **${state.classe}**:\n1. Divide o tema em conceitos-chave e fórmulas/regras.\n2. Resolve exercícios sem olhar logo para a solução.\n3. Faz uma revisão rápida antes de dormir.\n\nQual disciplina ou tópico da ${state.classe} queres trabalhar agora?`;
+      }
+      return `Na **${state.classe}** (${state.curso}), sobre "${promptText}", o ideal é começar por identificar a definição principal do programa escolar e aplicá-la num exemplo concreto. Se quiseres, escreve "gera pergunta" para criarmos um exercício prático sobre este assunto.`;
+    }
+
+    function renderSaga(container) {
+      if (state.sagaMessages.length === 0) resetSagaWelcome();
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'fade-in space-y-4';
+
+      wrapper.innerHTML = `
+        <div class="rounded-2xl border border-borda bg-ardosia p-5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="rounded-lg bg-aurea/15 px-2.5 py-1 text-xs font-semibold text-aureaSuave">Chat S.A.G.A. • Currículo Angolano</span>
+              <h1 class="mt-2 text-xl font-bold text-white">Assistente Virtual S.A.G.A.</h1>
+              <p class="mt-1 text-sm text-slate-400">
+                Tira dúvidas rápidas, pede explicações e gera perguntas de treino alinhadas à ${escapeHtml(state.classe)}.
+              </p>
+            </div>
+            <button id="sagaGenBtn" type="button" class="cursor-pointer rounded-xl border border-aurea/40 bg-aurea/15 px-3.5 py-2 text-xs font-semibold text-aureaSuave hover:bg-aurea/25">
+              Gerar Pergunta de Treino
+            </button>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-borda bg-ardosia p-4 sm:p-5">
+          <div class="max-h-96 space-y-3 overflow-y-auto pr-1">
+            ${state.sagaMessages.map(m => {
+              const isSaga = m.sender === 'saga';
+              return `
+                <div class="rounded-xl border ${isSaga ? 'border-aurea/30 bg-painel' : 'border-borda bg-grafite/80'} p-3.5">
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="font-bold ${isSaga ? 'text-aureaSuave' : 'text-sky-300'}">${isSaga ? 'S.A.G.A.' : escapeHtml(state.studentName)}</span>
+                    <span class="text-slate-400">${escapeHtml(m.time)}</span>
+                  </div>
+                  <p class="mt-1.5 whitespace-pre-line text-sm leading-relaxed text-slate-100">${escapeHtml(m.text)}</p>
+                </div>
+              `;
+            }).join('')}
+          </div>
+
+          <form id="sagaForm" class="mt-4 flex flex-col gap-2 sm:flex-row">
+            <input
+              id="sagaInput"
+              type="text"
+              placeholder="Pergunta algo sobre a ${escapeHtml(state.classe)} ou pede uma questão..."
+              class="flex-1 rounded-xl border border-borda bg-painel px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:border-aurea focus:outline-none"
+            />
+            <button type="submit" class="cursor-pointer rounded-xl bg-aurea px-5 py-2.5 text-sm font-bold text-grafite hover:bg-aureaSuave">
+              Perguntar
+            </button>
+          </form>
+        </div>
+      `;
+
+      container.appendChild(wrapper);
+
+      const sendSagaPrompt = (text) => {
+        const nowTime = new Date().toLocaleTimeString('pt-AO', { hour: '2-digit', minute: '2-digit' });
+        state.sagaMessages.push({ sender: 'user', time: nowTime, text });
+        state.sagaMessages.push({ sender: 'saga', time: nowTime, text: buildSagaReply(text) });
+        renderWorkspace();
+      };
+
+      wrapper.querySelector('#sagaForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = wrapper.querySelector('#sagaInput');
+        const val = input.value.trim();
+        if (!val) return;
+        input.value = '';
+        sendSagaPrompt(val);
       });
 
-      document.getElementById('chatImageUpload')?.addEventListener('change', (e) => {
-        const f = e.target.files && e.target.files[0];
-        if (!f) return;
-        if (!canUploadChatPhoto()) {
-          alert('Envio de fotos disponível a partir da 11.ª classe.');
-          e.target.value = '';
+      wrapper.querySelector('#sagaGenBtn').addEventListener('click', () => {
+        sendSagaPrompt('Gera pergunta de treino');
+      });
+    }
+
+    /* -----------------------------------------------------------------------
+     * 6. ÁUREA MANAGER — Simulador de pequena empresa (10.ª Classe — CEJ)
+     * ----------------------------------------------------------------------- */
+    function renderManager(container) {
+      const m = state.manager;
+      const totalReceitas = m.transactions.filter(t => t.type === 'receita').reduce((acc, t) => acc + t.amount, 0);
+      const totalDespesas = m.transactions.filter(t => t.type === 'despesa').reduce((acc, t) => acc + t.amount, 0);
+      const resultadoLiquido = totalReceitas - totalDespesas;
+      const saldoAtual = m.initialCapital + resultadoLiquido;
+      const capitalEstavelOk = saldoAtual >= m.initialCapital * 0.85;
+
+      const is10Cej = state.classe === '10.ª Classe' && state.curso.includes('CEJ');
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'fade-in space-y-5';
+
+      wrapper.innerHTML = `
+        <div class="rounded-2xl border border-borda bg-ardosia p-5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="rounded-lg bg-aurea/15 px-2.5 py-1 text-xs font-semibold text-aureaSuave">Áurea Manager • 10.ª Classe (CEJ)</span>
+              <h1 class="mt-2 text-xl font-bold text-white">Simulador Prático de Pequena Empresa</h1>
+              <p class="mt-1 text-sm text-slate-400">
+                Controlo de receitas, despesas, saldo/capital estável e tarefas trimestrais — <strong class="text-slate-200">${escapeHtml(m.companyName)}</strong> (${escapeHtml(m.quarter)}).
+              </p>
+            </div>
+            <span class="rounded-xl border ${is10Cej ? 'border-emerald-500/40 bg-emerald-950/30 text-emerald-300' : 'border-aurea/35 bg-aurea/10 text-aureaSuave'} px-3 py-1.5 text-xs font-semibold">
+              ${is10Cej ? 'Contexto 10.ª CEJ Ativo' : `Atual: ${escapeHtml(state.classe)} (Módulo focado na 10.ª CEJ)`}
+            </span>
+          </div>
+        </div>
+
+        <!-- Indicadores Financeiros -->
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div class="rounded-2xl border border-borda bg-ardosia p-4">
+            <p class="text-xs text-slate-400">Capital Base Estável</p>
+            <p class="mt-1 text-lg font-bold text-white">${formatKz(m.initialCapital)}</p>
+            <p class="mt-1 text-[11px] ${capitalEstavelOk ? 'text-emerald-300' : 'text-rose-300'}">
+              ${capitalEstavelOk ? 'Dentro da margem de estabilidade' : 'Atenção: abaixo da margem mínima'}
+            </p>
+          </div>
+
+          <div class="rounded-2xl border border-borda bg-ardosia p-4">
+            <p class="text-xs text-slate-400">Receitas do Período</p>
+            <p class="mt-1 text-lg font-bold text-emerald-300">+ ${formatKz(totalReceitas)}</p>
+            <p class="mt-1 text-[11px] text-slate-400">Entradas operacionais</p>
+          </div>
+
+          <div class="rounded-2xl border border-borda bg-ardosia p-4">
+            <p class="text-xs text-slate-400">Despesas do Período</p>
+            <p class="mt-1 text-lg font-bold text-rose-300">- ${formatKz(totalDespesas)}</p>
+            <p class="mt-1 text-[11px] text-slate-400">Custos e saídas registadas</p>
+          </div>
+
+          <div class="rounded-2xl border border-aurea/35 bg-painel p-4">
+            <p class="text-xs text-aureaSuave">Saldo / Capital Atual</p>
+            <p class="mt-1 text-lg font-bold text-white">${formatKz(saldoAtual)}</p>
+            <p class="mt-1 text-[11px] text-slate-300">Resultado líquido: ${resultadoLiquido >= 0 ? '+' : ''}${formatKz(resultadoLiquido)}</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+          <!-- Registo de Lançamentos -->
+          <div class="rounded-2xl border border-borda bg-ardosia p-5">
+            <h2 class="text-base font-bold text-white">Lançamentos de Receitas e Despesas</h2>
+            <form id="txForm" class="mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+              <input id="txDesc" type="text" placeholder="Descrição (ex.: Venda)" class="rounded-xl border border-borda bg-painel px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-aurea focus:outline-none sm:col-span-2" />
+              <select id="txType" class="rounded-xl border border-borda bg-painel px-3 py-2 text-xs text-white focus:border-aurea focus:outline-none">
+                <option value="receita">Receita (+)</option>
+                <option value="despesa">Despesa (-)</option>
+              </select>
+              <input id="txAmount" type="number" min="1" step="100" placeholder="Valor em Kz" class="rounded-xl border border-borda bg-painel px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-aurea focus:outline-none sm:col-span-2" />
+              <button type="submit" class="cursor-pointer rounded-xl bg-aurea px-4 py-2 text-xs font-bold text-grafite hover:bg-aureaSuave">
+                Registar
+              </button>
+            </form>
+
+            <div class="mt-4 max-h-64 space-y-2 overflow-y-auto pr-1">
+              ${m.transactions.map(t => `
+                <div class="flex items-center justify-between rounded-xl border border-borda/80 bg-painel px-3.5 py-2.5 text-xs">
+                  <div>
+                    <p class="font-medium text-slate-100">${escapeHtml(t.desc)}</p>
+                    <span class="text-[11px] text-slate-400">${t.type === 'receita' ? 'Receita' : 'Despesa'}</span>
+                  </div>
+                  <span class="font-bold ${t.type === 'receita' ? 'text-emerald-300' : 'text-rose-300'}">
+                    ${t.type === 'receita' ? '+' : '-'} ${formatKz(t.amount)}
+                  </span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Tarefas Trimestrais da 10.ª CEJ -->
+          <div class="rounded-2xl border border-borda bg-ardosia p-5">
+            <h2 class="text-base font-bold text-white">Tarefas Trimestrais de Gestão</h2>
+            <p class="mt-1 text-xs text-slate-400">Marca as etapas concluídas no acompanhamento trimestral da empresa.</p>
+
+            <div class="mt-4 space-y-2.5">
+              ${m.tasks.map(tk => `
+                <label class="flex cursor-pointer items-center justify-between gap-3 rounded-xl border border-borda bg-painel p-3 text-xs hover:border-aurea/40">
+                  <div class="flex items-center gap-3">
+                    <input type="checkbox" data-taskid="${tk.id}" class="task-chk h-4 w-4 accent-[#e5a93c]" ${tk.done ? 'checked' : ''} />
+                    <span class="${tk.done ? 'line-through text-slate-400' : 'font-medium text-slate-100'}">${escapeHtml(tk.title)}</span>
+                  </div>
+                  <span class="rounded px-2 py-0.5 text-[11px] ${tk.done ? 'bg-emerald-950 text-emerald-300' : 'bg-slate-800 text-slate-300'}">
+                    ${tk.done ? 'Concluída' : 'Pendente'}
+                  </span>
+                </label>
+              `).join('')}
+            </div>
+
+            <div class="mt-4 rounded-xl border border-borda bg-painel/70 p-3 text-xs text-slate-300">
+              <strong class="text-aureaSuave">Foco CEJ:</strong> Acompanhar a estabilidade do capital ajuda a tomar decisões prudentes antes de expandir gastos.
+            </div>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(wrapper);
+
+      wrapper.querySelector('#txForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const desc = wrapper.querySelector('#txDesc').value.trim();
+        const type = wrapper.querySelector('#txType').value;
+        const amount = Number(wrapper.querySelector('#txAmount').value);
+
+        if (!desc || !amount || amount <= 0) {
+          showToast('Preenche uma descrição e um valor válido em Kz.');
           return;
         }
-        const reader = new FileReader();
-        reader.onload = () => addChatEntry({ text: `Imagem: ${f.name}`, imageUrl: String(reader.result || '') });
-        reader.readAsDataURL(f);
-        e.target.value = '';
+
+        m.transactions.unshift({
+          id: Date.now(),
+          desc,
+          type,
+          amount
+        });
+        showToast(`${type === 'receita' ? 'Receita' : 'Despesa'} registada no Áurea Manager.`);
+        renderWorkspace();
       });
 
-      // --- MISSÕES CEJ (VINCULADAS AO GERADOR DE GRÁFICOS) ---
-      function drawCejChart() {
-        const cnv = document.getElementById('cejBusinessChart');
-        const kpi = document.getElementById('cejKpiSummary');
-        const styleMode = document.getElementById('cejChartStyleSelect')?.value || 'bar';
-        if (!cnv) return;
-        const cCtx = cnv.getContext('2d');
-        if (!cCtx) return;
-
-        const rev = Math.max(0, parseFloat(document.getElementById('cejRevInput')?.value || '0'));
-        const cost = Math.max(0, parseFloat(document.getElementById('cejCostInput')?.value || '0'));
-        const tax = Math.max(0, parseFloat(document.getElementById('cejTaxInput')?.value || '0'));
-        const net = rev - cost - tax;
-
-        cCtx.clearRect(0, 0, cnv.width, cnv.height);
-
-        if (styleMode === 'line') {
-          const series = state.chartSeriesHistory.length ? state.chartSeriesHistory.slice(-6) : [rev];
-          const maxL = Math.max(1, ...series);
-          cCtx.strokeStyle = '#38bdf8';
-          cCtx.lineWidth = 3;
-          cCtx.beginPath();
-          series.forEach((v, idx) => {
-            const x = series.length === 1 ? 260 : 55 + (idx * (cnv.width - 110)) / (series.length - 1);
-            const y = 160 - Math.max(8, Math.round((Math.max(0, v) / maxL) * 120));
-            if (idx === 0) cCtx.moveTo(x, y);
-            else cCtx.lineTo(x, y);
-          });
-          cCtx.stroke();
-
-          series.forEach((v, idx) => {
-            const x = series.length === 1 ? 260 : 55 + (idx * (cnv.width - 110)) / (series.length - 1);
-            const y = 160 - Math.max(8, Math.round((Math.max(0, v) / maxL) * 120));
-            cCtx.fillStyle = '#f6dc7c';
-            cCtx.beginPath();
-            cCtx.arc(x, y, 4.5, 0, Math.PI * 2);
-            cCtx.fill();
-            cCtx.fillStyle = '#cbd5e1';
-            cCtx.font = '10px "JetBrains Mono", monospace';
-            cCtx.fillText(`#${idx + 1}`, x - 8, 182);
-          });
-        } else {
-          const bars = [
-            { label: 'Receita/Missões', val: rev, color: '#38bdf8' },
-            { label: 'Custos', val: cost, color: '#f59e0b' },
-            { label: 'Impostos', val: tax, color: '#94a3b8' },
-            { label: 'Resultado Líq.', val: Math.max(0, net), color: net >= 0 ? '#10b981' : '#f43f5e' },
-          ];
-          const maxVal = Math.max(1, ...bars.map((b) => b.val));
-
-          bars.forEach((b, idx) => {
-            const x = 35 + idx * 122;
-            const barH = Math.max(6, Math.round((b.val / maxVal) * 120));
-            const y = 160 - barH;
-            cCtx.fillStyle = b.color;
-            cCtx.fillRect(x, y, 68, barH);
-            cCtx.fillStyle = '#cbd5e1';
-            cCtx.font = '11px "Plus Jakarta Sans", sans-serif';
-            cCtx.fillText(b.label, x, 182);
-          });
-        }
-
-        const marginPct = rev > 0 ? ((net / rev) * 100).toFixed(1) : '0.0';
-        if (kpi) {
-          kpi.textContent = `Resultado Líquido: ${net.toFixed(2)} | Margem Líquida: ${marginPct}% | Missões: ${state.cejMissions.length}`;
-        }
-      }
-
-      document.getElementById('btnRunCejMission')?.addEventListener('click', () => {
-        const mission = document.getElementById('cejMissionSelect')?.value || 'Missão CEJ';
-        const val = parseFloat(document.getElementById('cejMissionValueInput')?.value || '0');
-        if (Number.isNaN(val)) return;
-
-        state.cejMissions.push({ mission, val, at: new Date().toLocaleTimeString() });
-        const hist = document.getElementById('cejMissionHistoryBox');
-        if (hist) {
-          hist.innerHTML = state.cejMissions
-            .slice(-10)
-            .map((m) => `<div>• [${m.at}] ${m.mission}: +${m.val.toFixed(2)}</div>`)
-            .join('');
-        }
-
-        const revInp = document.getElementById('cejRevInput');
-        const nextRev = revInp ? Math.max(0, parseFloat(revInp.value || '0') + val) : val;
-        if (revInp) revInp.value = String(nextRev.toFixed(2));
-        state.chartSeriesHistory.push(Number(nextRev.toFixed(2)));
-
-        drawCejChart();
-        recordSilent(`Missão CEJ concluída: ${mission} (${val.toFixed(2)}) → gráfico atualizado.`);
-      });
-
-      document.getElementById('btnGenerateCejChart')?.addEventListener('click', () => {
-        const rev = parseFloat(document.getElementById('cejRevInput')?.value || '0');
-        if (!Number.isNaN(rev)) {
-          state.chartSeriesHistory.push(Number(rev.toFixed(2)));
-        }
-        drawCejChart();
-      });
-
-      document.getElementById('cejChartStyleSelect')?.addEventListener('change', drawCejChart);
-      drawCejChart();
-
-      // --- SAÚDE MENTAL (SEPARADA) & BEM-ESTAR (SEPARADO) ---
-      ['mhSleepRange', 'mhCalmRange', 'mhLoadRange'].forEach((id) => {
-        document.getElementById(id)?.addEventListener('input', () => {
-          const s = document.getElementById('mhSleepRange')?.value || '70';
-          const c = document.getElementById('mhCalmRange')?.value || '65';
-          const l = document.getElementById('mhLoadRange')?.value || '60';
-          const sv = document.getElementById('mhSleepVal');
-          const cv = document.getElementById('mhCalmVal');
-          const lv = document.getElementById('mhLoadVal');
-          if (sv) sv.textContent = `${s}%`;
-          if (cv) cv.textContent = `${c}%`;
-          if (lv) lv.textContent = `${l}%`;
+      wrapper.querySelectorAll('.task-chk').forEach(chk => {
+        chk.addEventListener('change', () => {
+          const found = m.tasks.find(item => item.id === chk.dataset.taskid);
+          if (found) found.done = chk.checked;
+          renderWorkspace();
         });
       });
+    }
 
-      document.getElementById('btnCalcMentalHealth')?.addEventListener('click', () => {
-        const s = parseFloat(document.getElementById('mhSleepRange')?.value || '70');
-        const c = parseFloat(document.getElementById('mhCalmRange')?.value || '65');
-        const l = parseFloat(document.getElementById('mhLoadRange')?.value || '60');
-        const pct = Math.round((s + c + l) / 3);
-        const pctEl = document.getElementById('mentalHealthPctText');
-        const advEl = document.getElementById('mentalHealthAdviceText');
-        if (pctEl) pctEl.textContent = `Saúde Mental: ${pct}%`;
-        if (advEl) {
-          advEl.textContent =
-            pct >= 75
-              ? 'Indicador favorável de equilíbrio mental e disponibilidade para estudo.'
-              : pct >= 50
-              ? 'Indicador moderado. Recomenda-se pausas planeadas e revisão leve.'
-              : 'Indicador baixo. Reduz a carga imediata, prioriza descanso e usa o módulo de Bem-Estar.';
-        }
+    /* -----------------------------------------------------------------------
+     * 7. PAINEL DE ADMINISTRAÇÃO — Gestão, estatísticas e estado dos módulos
+     * ----------------------------------------------------------------------- */
+    function renderAdmin(container) {
+      const totalTurmaMsgs = Object.values(state.classChats).reduce((acc, arr) => acc + arr.length, 0);
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'fade-in space-y-5';
+
+      wrapper.innerHTML = `
+        <div class="rounded-2xl border border-borda bg-ardosia p-5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="rounded-lg bg-aurea/15 px-2.5 py-1 text-xs font-semibold text-aureaSuave">Painel de Administração</span>
+              <h1 class="mt-2 text-xl font-bold text-white">Gestão do Ambiente e Acompanhamento</h1>
+              <p class="mt-1 text-sm text-slate-400">
+                Visão geral do isolamento por classe, estado operacional dos módulos e registo de apoio do Sistema Áurea.
+              </p>
+            </div>
+            <button id="adminClearLogsBtn" type="button" class="cursor-pointer rounded-xl border border-borda bg-painel px-3.5 py-2 text-xs font-semibold text-slate-200 hover:border-aurea/40">
+              Limpar Registos
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div class="rounded-2xl border border-borda bg-ardosia p-4">
+            <p class="text-xs text-slate-400">Sessão / Estudante</p>
+            <p class="mt-1 text-base font-bold text-white">${escapeHtml(state.studentName)}</p>
+            <p class="mt-1 text-xs text-aureaSuave">${escapeHtml(state.classe)} • ${escapeHtml(state.curso)}</p>
+          </div>
+
+          <div class="rounded-2xl border border-borda bg-ardosia p-4">
+            <p class="text-xs text-slate-400">Mensagens em Todas as Classes</p>
+            <p class="mt-1 text-base font-bold text-white">${totalTurmaMsgs} mensagens</p>
+            <p class="mt-1 text-xs text-slate-400">Isoladas por classe (7.ª à 12.ª)</p>
+          </div>
+
+          <div class="rounded-2xl border border-borda bg-ardosia p-4">
+            <p class="text-xs text-slate-400">Estado dos Módulos</p>
+            <p class="mt-1 text-base font-bold text-emerald-300">7 Módulos Operacionais</p>
+            <p class="mt-1 text-xs text-slate-400">Tema noturno ativo • Sem bloqueios</p>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-borda bg-ardosia p-5">
+          <h2 class="text-base font-bold text-white">Registo de Atividade e Suporte</h2>
+          <div class="mt-3 space-y-2">
+            ${state.adminLogs.map(log => `
+              <div class="rounded-xl border border-borda/80 bg-painel px-3.5 py-2.5 text-xs text-slate-200">
+                ${escapeHtml(log)}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      container.appendChild(wrapper);
+
+      wrapper.querySelector('#adminClearLogsBtn').addEventListener('click', () => {
+        state.adminLogs = ['Registos limpos pelo administrador.'];
+        showToast('Registos de administração limpos.');
+        renderWorkspace();
+      });
+    }
+
+    // Eventos globais de interface e modal de classe/curso
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('contextModal');
+      const openModalBtn = document.getElementById('openContextModalBtn');
+      const closeModalBtn = document.getElementById('closeContextModalBtn');
+      const classSelect = document.getElementById('classSelect');
+      const contextForm = document.getElementById('contextForm');
+      const mobileToggle = document.getElementById('mobileNavToggle');
+
+      mobileToggle.addEventListener('click', () => {
+        document.getElementById('sidebarNav').classList.toggle('hidden');
       });
 
-      document.getElementById('btnRegisterWellbeing')?.addEventListener('click', () => {
-        const routine = document.getElementById('wellbeingRoutineSelect')?.value || 'Pausa de Ecrã';
-        const note = (document.getElementById('wellbeingNoteInput')?.value || '').trim();
-        const line = `[${new Date().toLocaleTimeString()}] ${routine}${note ? ` — ${note}` : ''}`;
-        state.wellbeingLogs.push(line);
-        const box = document.getElementById('wellbeingLogBox');
-        if (box) {
-          box.innerHTML = state.wellbeingLogs.slice(-10).map((item) => `<div>• ${item}</div>`).join('');
-        }
-        const inp = document.getElementById('wellbeingNoteInput');
-        if (inp) inp.value = '';
-        recordSilent(`Registo de Bem-Estar guardado: ${routine}.`);
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => setActiveModule(btn.dataset.module));
       });
 
-      // --- APROVEITAMENTO & AVISOS ---
-      document.getElementById('btnAddGradeAndSync')?.addEventListener('click', () => {
-        const val = parseFloat(document.getElementById('gradeEntryInput')?.value || '');
-        if (Number.isNaN(val) || val < 0 || val > 20) return;
-        recordGradeAuto(state.nome, state.curso, val, 'Aproveitamento registado');
-        const inp = document.getElementById('gradeEntryInput');
-        if (inp) inp.value = '';
+      openModalBtn.addEventListener('click', () => {
+        document.getElementById('studentNameInput').value = state.studentName;
+        classSelect.value = state.classe;
+        populateCourseOptions(state.classe, state.curso);
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
       });
 
-      function renderNotices() {
-        const feed = document.getElementById('noticesFeed');
-        if (!feed) return;
-        feed.innerHTML = state.notices.slice(-10).map((n) => `<div class="p-2 rounded bg-slate-900 border border-slate-800">${n}</div>`).join('');
-      }
-
-      document.getElementById('btnPublishNotice')?.addEventListener('click', () => {
-        if (!isTechAdmin()) {
-          alert('Apenas ADM ou Agente Directivo pode publicar avisos.');
-          return;
-        }
-        const inp = document.getElementById('noticeInput');
-        const txt = (inp?.value || '').trim();
-        if (!txt) return;
-        state.notices.push(`[${state.role}] ${txt}`);
-        if (inp) inp.value = '';
-        renderNotices();
-        recordSilent(`Aviso publicado por ${state.role}.`);
+      closeModalBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
       });
 
-      populateColorSelectAndSwatches();
-      applyUserUI();
-      renderChatMessages();
-      renderActiveExamView();
-      renderNotices();
-      recordSilent('Sistema Áurea inicializado com separação de módulos, 20 cores e ligação CEJ/Calculadora.');
-    })();
+      classSelect.addEventListener('change', () => {
+        const nextCourses = COURSES_BY_CLASS[classSelect.value] || ['Formação Geral'];
+        populateCourseOptions(classSelect.value, nextCourses[0]);
+      });
+
+      contextForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const enteredName = document.getElementById('studentNameInput').value.trim();
+        state.studentName = enteredName || 'Estudante Áurea';
+        state.classe = classSelect.value;
+        state.curso = document.getElementById('courseSelect').value;
+
+        // Reinicia o teste da Academy e atualiza saudação do S.A.G.A. para a nova classe
+        state.academyAnswers = {};
+        state.academySubmitted = false;
+        state.definitivoExercises = generateDefinitivoExercises(state.definitivoTopics, state.definitivoDifficulty);
+        resetSagaWelcome();
+        syncContextUI();
+
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        showToast(`Ambiente isolado para ${state.classe} • ${state.curso}.`);
+        renderWorkspace();
+      });
+
+      // Arranque inicial
+      initLadoZero();
+      resetSagaWelcome();
+      syncContextUI();
+      renderWorkspace();
+    });
   </script>
 </body>
 </html>
