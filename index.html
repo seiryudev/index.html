@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-AO" class="dark">
 <head>
@@ -12,12 +11,12 @@
       theme: {
         extend: {
           colors: {
-            obsidian: '#080b10',
-            slateDark: '#0f1520',
-            surface: '#161f2e',
-            surfaceAlt: '#1e293b',
-            borderLine: '#283548',
-            cyanGlow: '#38bdf8',
+            obsidian: 'var(--bg-main, #080b10)',
+            slateDark: 'var(--bg-card, #0f1520)',
+            surface: 'var(--bg-surface, #161f2e)',
+            surfaceAlt: 'var(--bg-surface-alt, #1e293b)',
+            borderLine: 'var(--border-line, #283548)',
+            cyanGlow: 'var(--accent-color, #38bdf8)',
             emeraldGlow: '#10b981',
             amberGlow: '#f59e0b'
           },
@@ -32,6 +31,15 @@
   <style>
     :root {
       color-scheme: dark;
+      --accent-color: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.16);
+      --accent-ring: rgba(56, 189, 248, 0.5);
+      --accent-contrast: #080b10;
+      --bg-main: #080b10;
+      --bg-card: #0f1520;
+      --bg-surface: #161f2e;
+      --bg-surface-alt: #1e293b;
+      --border-line: #283548;
     }
 
     * {
@@ -42,37 +50,79 @@
     html, body {
       margin: 0;
       padding: 0;
-      background-color: #080b10;
+      background-color: var(--bg-main);
       color: #f1f5f9;
       font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
       overflow-x: hidden;
       touch-action: manipulation;
     }
 
-    /* Botões grandes, táteis e com resposta imediata */
+    /* Botões realmente táteis, acessíveis e com onda visual ao toque */
     button,
     select,
     input,
     textarea,
+    label[for],
     [role="button"] {
       touch-action: manipulation;
     }
 
     .tactile-btn {
-      min-height: 46px;
+      position: relative;
+      overflow: hidden;
+      min-height: 48px;
+      padding-top: 11px;
+      padding-bottom: 11px;
       cursor: pointer;
       user-select: none;
-      transition: transform 0.1s ease, background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, filter 0.12s ease;
+      transition: transform 0.09s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, filter 0.12s ease;
     }
 
     .tactile-btn:hover {
-      filter: brightness(1.07);
+      filter: brightness(1.08);
     }
 
-    .tactile-btn:active {
-      transform: scale(0.96);
+    .tactile-btn:active,
+    .tactile-btn.is-pressed {
+      transform: scale(0.965);
       filter: brightness(0.92);
-      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.45);
+      box-shadow: 0 0 0 2px var(--accent-ring);
+    }
+
+    .tactile-ripple {
+      position: absolute;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.28);
+      transform: translate(-50%, -50%) scale(0);
+      pointer-events: none;
+      animation: rippleExpand 0.45s ease-out forwards;
+    }
+
+    @keyframes rippleExpand {
+      0% {
+        width: 12px;
+        height: 12px;
+        opacity: 0.65;
+      }
+      100% {
+        width: 220px;
+        height: 220px;
+        opacity: 0;
+      }
+    }
+
+    .accent-solid {
+      background-color: var(--accent-color);
+      color: var(--accent-contrast);
+    }
+
+    .accent-text {
+      color: var(--accent-color);
+    }
+
+    .accent-soft-box {
+      background-color: var(--accent-soft);
+      border-color: var(--accent-ring);
     }
 
     /* Scrollbar discreta */
@@ -81,14 +131,14 @@
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: #0b1018;
+      background: var(--bg-main);
     }
     ::-webkit-scrollbar-thumb {
       background: #2b394f;
       border-radius: 9999px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #38bdf8;
+      background: var(--accent-color);
     }
 
     /* Animações suaves */
@@ -100,11 +150,11 @@
     @keyframes sagaTopBlink {
       0%, 100% {
         opacity: 1;
-        border-color: rgba(56, 189, 248, 0.85);
-        box-shadow: 0 0 22px rgba(56, 189, 248, 0.28);
+        border-color: var(--accent-color);
+        box-shadow: 0 0 22px var(--accent-soft);
       }
       50% {
-        opacity: 0.42;
+        opacity: 0.45;
         border-color: rgba(245, 158, 11, 0.85);
         box-shadow: 0 0 24px rgba(245, 158, 11, 0.25);
       }
@@ -128,14 +178,14 @@
     }
 
     .nav-tab-btn.active {
-      background: linear-gradient(90deg, rgba(56, 189, 248, 0.16) 0%, rgba(16, 185, 129, 0.05) 100%);
-      border-color: rgba(56, 189, 248, 0.5);
+      background: linear-gradient(90deg, var(--accent-soft) 0%, rgba(16, 185, 129, 0.06) 100%);
+      border-color: var(--accent-ring);
       color: #ffffff;
     }
 
     .nav-tab-btn.active .nav-dot {
-      background-color: #38bdf8;
-      box-shadow: 0 0 8px #38bdf8;
+      background-color: var(--accent-color);
+      box-shadow: 0 0 8px var(--accent-color);
     }
   </style>
 </head>
@@ -149,7 +199,7 @@
   <!-- ===================================================================== -->
   <section id="authScreen" class="relative flex min-h-screen items-center justify-center p-4 sm:p-6">
     <!-- Fundo decorativo estritamente não-interativo -->
-    <div aria-hidden="true" class="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_top_right,rgba(56,189,248,0.09),transparent_42%),radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.07),transparent_44%)]"></div>
+    <div aria-hidden="true" class="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_top_right,var(--accent-soft),transparent_44%),radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.07),transparent_44%)]"></div>
 
     <div class="anim-view relative z-10 w-full max-w-xl rounded-2xl border border-borderLine bg-slateDark/95 p-6 sm:p-8 shadow-2xl">
       <!-- Cabeçalho limpo -->
@@ -170,13 +220,13 @@
 
       <!-- Seletor de Abas de Autenticação -->
       <div class="mt-5 grid grid-cols-3 gap-1.5 rounded-xl border border-borderLine bg-obsidian p-1.5">
-        <button type="button" data-auth-tab="student-login" class="auth-tab-btn tactile-btn rounded-lg bg-surfaceAlt px-2 py-2 text-xs font-bold text-white shadow">
+        <button type="button" data-auth-tab="student-login" class="auth-tab-btn tactile-btn rounded-lg bg-surfaceAlt px-2 py-2.5 text-xs font-bold text-white shadow">
           Entrar (Aluno)
         </button>
-        <button type="button" data-auth-tab="student-register" class="auth-tab-btn tactile-btn rounded-lg px-2 py-2 text-xs font-semibold text-slate-400 hover:text-white">
+        <button type="button" data-auth-tab="student-register" class="auth-tab-btn tactile-btn rounded-lg px-2 py-2.5 text-xs font-semibold text-slate-400 hover:text-white">
           Criar Conta
         </button>
-        <button type="button" data-auth-tab="staff-access" class="auth-tab-btn tactile-btn rounded-lg px-2 py-2 text-xs font-semibold text-slate-400 hover:text-white">
+        <button type="button" data-auth-tab="staff-access" class="auth-tab-btn tactile-btn rounded-lg px-2 py-2.5 text-xs font-semibold text-slate-400 hover:text-white">
           Gestão / Direção
         </button>
       </div>
@@ -191,7 +241,7 @@
             required
             autocomplete="username"
             placeholder="Ex.: AUR-2026-1042"
-            class="min-h-[46px] w-full rounded-xl border border-borderLine bg-surface px-4 py-2.5 font-mono text-sm uppercase text-white placeholder-slate-500 focus:border-cyanGlow focus:outline-none"
+            class="min-h-[48px] w-full rounded-xl border border-borderLine bg-surface px-4 py-2.5 font-mono text-sm uppercase text-white placeholder-slate-500 focus:border-cyanGlow focus:outline-none"
           />
         </div>
 
@@ -203,26 +253,39 @@
             required
             autocomplete="current-password"
             placeholder="Introduza a palavra-passe"
-            class="min-h-[46px] w-full rounded-xl border border-borderLine bg-surface px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:border-cyanGlow focus:outline-none"
+            class="min-h-[48px] w-full rounded-xl border border-borderLine bg-surface px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:border-cyanGlow focus:outline-none"
           />
         </div>
 
-        <button type="submit" class="tactile-btn w-full rounded-xl bg-cyanGlow px-4 py-3 text-sm font-bold text-obsidian hover:bg-sky-300">
+        <button type="submit" class="tactile-btn accent-solid w-full rounded-xl px-4 py-3 text-sm font-bold hover:opacity-95">
           Entrar na Minha Turma
         </button>
 
         <div class="pt-2 border-t border-borderLine/70 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
-          <button type="button" data-action="quick-demo-student" class="tactile-btn rounded-xl border border-borderLine bg-surface px-3.5 py-2 text-xs font-semibold text-slate-200 hover:border-cyanGlow/50">
+          <button type="button" data-action="quick-demo-student" class="tactile-btn rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-xs font-semibold text-slate-200 hover:border-cyanGlow/50">
             Entrar com Aluno Exemplo (10.ª CEJ)
           </button>
-          <button type="button" data-auth-tab="student-register" class="tactile-btn rounded-xl border border-emeraldGlow/35 bg-emerald-950/25 px-3.5 py-2 text-xs font-semibold text-emeraldGlow hover:bg-emerald-950/45">
+          <button type="button" data-auth-tab="student-register" class="tactile-btn rounded-xl border border-emeraldGlow/35 bg-emerald-950/25 px-3.5 py-2.5 text-xs font-semibold text-emeraldGlow hover:bg-emerald-950/45">
             Gerar Novo ID Agora
           </button>
         </div>
       </form>
 
-      <!-- MODO B: CRIAR CONTA DE ALUNO (GERA ID ÚNICO NA HORA) -->
+      <!-- MODO B: CRIAR CONTA DE ALUNO (GERA ID ÚNICO NA HORA + FOTO DE PERFIL) -->
       <form id="formStudentRegister" class="mt-6 hidden space-y-4">
+        <div class="flex flex-col sm:flex-row items-center gap-4 rounded-xl border border-borderLine bg-surface/70 p-3.5">
+          <div id="regAvatarPreviewBox" class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-cyanGlow/40 bg-obsidian font-mono text-base font-bold text-cyanGlow">
+            AL
+          </div>
+          <div class="flex-1 text-center sm:text-left">
+            <label for="regAvatarFile" class="tactile-btn inline-flex items-center justify-center rounded-xl border border-borderLine bg-obsidian px-3.5 py-2 text-xs font-bold text-cyanGlow hover:border-cyanGlow/60">
+              Escolher Foto de Perfil
+            </label>
+            <input id="regAvatarFile" type="file" accept="image/*" class="hidden" />
+            <p class="mt-1 text-[11px] text-slate-400">Opcional • Comprime automaticamente para caber na sessão.</p>
+          </div>
+        </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           <div>
             <label for="regFullName" class="mb-1.5 block text-xs font-semibold text-slate-300">Nome do Aluno</label>
@@ -231,7 +294,7 @@
               type="text"
               required
               placeholder="Ex.: Carla Francisco"
-              class="min-h-[46px] w-full rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-cyanGlow focus:outline-none"
+              class="min-h-[48px] w-full rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-cyanGlow focus:outline-none"
             />
           </div>
 
@@ -243,7 +306,7 @@
               required
               minlength="4"
               placeholder="Crie uma senha"
-              class="min-h-[46px] w-full rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-cyanGlow focus:outline-none"
+              class="min-h-[48px] w-full rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-cyanGlow focus:outline-none"
             />
           </div>
         </div>
@@ -251,7 +314,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           <div>
             <label for="regClasse" class="mb-1.5 block text-xs font-semibold text-slate-300">Classe (7.ª à 12.ª)</label>
-            <select id="regClasse" class="min-h-[46px] w-full rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-sm text-white focus:border-cyanGlow focus:outline-none">
+            <select id="regClasse" class="min-h-[48px] w-full rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-sm text-white focus:border-cyanGlow focus:outline-none">
               <option value="7.ª Classe">7.ª Classe</option>
               <option value="8.ª Classe">8.ª Classe</option>
               <option value="9.ª Classe">9.ª Classe</option>
@@ -263,7 +326,7 @@
 
           <div>
             <label for="regCurso" class="mb-1.5 block text-xs font-semibold text-slate-300">Curso / Área</label>
-            <select id="regCurso" class="min-h-[46px] w-full rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-sm text-white focus:border-cyanGlow focus:outline-none"></select>
+            <select id="regCurso" class="min-h-[48px] w-full rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-sm text-white focus:border-cyanGlow focus:outline-none"></select>
           </div>
         </div>
 
@@ -318,6 +381,10 @@
             <span>Menu</span>
           </button>
 
+          <div id="headerUserAvatar" class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-cyanGlow/40 bg-surface font-mono text-xs font-bold text-cyanGlow">
+            ÁU
+          </div>
+
           <div class="min-w-0">
             <div class="flex items-center gap-2">
               <span id="topModuleTitle" class="truncate text-sm sm:text-base font-bold text-white">Áurea Academy</span>
@@ -344,11 +411,16 @@
     <div id="navDrawerBackdrop" data-action="close-menu" class="fixed inset-0 z-40 hidden bg-black/70 backdrop-blur-xs"></div>
 
     <aside id="navDrawer" class="fixed inset-y-0 left-0 z-50 hidden w-72 max-w-[85vw] flex-col border-r border-borderLine bg-slateDark p-4 shadow-2xl">
-      <div class="flex items-center justify-between border-b border-borderLine pb-3.5">
-        <div>
-          <span class="font-mono text-[10px] font-bold uppercase tracking-wider text-cyanGlow">Sistema Áurea</span>
-          <p id="drawerUserName" class="text-sm font-bold text-white truncate">Utilizador</p>
-          <p id="drawerUserId" class="font-mono text-[11px] text-slate-400">AUR-2026-0000</p>
+      <div class="flex items-center justify-between gap-2 border-b border-borderLine pb-3.5">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div id="drawerUserAvatar" class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-cyanGlow/40 bg-surface font-mono text-xs font-bold text-cyanGlow">
+            ÁU
+          </div>
+          <div class="min-w-0">
+            <span class="font-mono text-[10px] font-bold uppercase tracking-wider text-cyanGlow">Sistema Áurea</span>
+            <p id="drawerUserName" class="text-sm font-bold text-white truncate">Utilizador</p>
+            <p id="drawerUserId" class="font-mono text-[11px] text-slate-400">AUR-2026-0000</p>
+          </div>
         </div>
         <button type="button" data-action="close-menu" class="tactile-btn rounded-xl border border-borderLine bg-surface px-3 py-2 text-xs font-bold text-slate-300 hover:text-white">
           ✕
@@ -385,6 +457,11 @@
         <button type="button" data-tab="manager" class="nav-tab-btn tactile-btn flex w-full items-center justify-between rounded-xl border border-transparent px-3.5 py-2.5 text-left text-xs sm:text-sm font-semibold text-slate-300 hover:bg-surface">
           <span class="flex items-center gap-2.5"><span class="nav-dot h-2 w-2 rounded-full bg-slate-600"></span>Áurea Manager</span>
           <span class="font-mono text-[10px] text-amberGlow">CEJ</span>
+        </button>
+
+        <button type="button" data-tab="perfil" class="nav-tab-btn tactile-btn flex w-full items-center justify-between rounded-xl border border-transparent px-3.5 py-2.5 text-left text-xs sm:text-sm font-semibold text-slate-300 hover:bg-surface">
+          <span class="flex items-center gap-2.5"><span class="nav-dot h-2 w-2 rounded-full bg-slate-600"></span>Perfil &amp; Cores</span>
+          <span class="font-mono text-[10px] text-cyanGlow">Foto/Cor</span>
         </button>
 
         <div id="staffNavSection" class="hidden pt-2 mt-2 border-t border-borderLine">
@@ -453,24 +530,33 @@
             <p id="sagaPanelSubtitle" class="text-[10px] text-slate-400">10.ª Classe • Currículo Angola</p>
           </div>
         </div>
-        <div class="flex items-center gap-1.5">
-          <button type="button" data-action="saga-quick-quiz" class="tactile-btn rounded-lg border border-borderLine bg-obsidian px-2.5 py-1.5 font-mono text-[10px] font-bold text-cyanGlow hover:border-cyanGlow/50">
-            + Questão
-          </button>
-          <button type="button" data-action="saga-toggle" class="tactile-btn rounded-lg border border-borderLine bg-obsidian px-2.5 py-1.5 text-xs font-bold text-slate-300 hover:text-white">
-            —
-          </button>
-        </div>
+          <div class="flex items-center gap-1.5">
+            <button type="button" data-action="saga-voice-toggle" id="sagaVoiceToggleBtn" class="tactile-btn rounded-lg border border-borderLine bg-obsidian px-2.5 py-1.5 font-mono text-[10px] font-bold text-emeraldGlow hover:border-emeraldGlow/50" title="Ativar ou silenciar a voz do S.A.G.A.">
+              Voz: ON
+            </button>
+            <button type="button" data-action="saga-voice-stop" class="tactile-btn rounded-lg border border-borderLine bg-obsidian px-2.5 py-1.5 font-mono text-[10px] font-bold text-slate-300 hover:text-white" title="Parar leitura de voz">
+              Parar
+            </button>
+            <button type="button" data-action="saga-quick-quiz" class="tactile-btn rounded-lg border border-borderLine bg-obsidian px-2.5 py-1.5 text-[11px] font-bold text-cyanGlow hover:border-cyanGlow/50">
+              Nova Pergunta
+            </button>
+            <button type="button" data-action="saga-toggle" class="tactile-btn rounded-lg border border-borderLine bg-obsidian px-2.5 py-1.5 text-xs font-bold text-slate-300 hover:text-white">
+              —
+            </button>
+          </div>
       </div>
 
       <div id="sagaChatFeed" class="h-64 space-y-2.5 overflow-y-auto p-3.5 text-xs"></div>
 
       <form id="sagaPromptForm" class="flex items-center gap-2 border-t border-borderLine bg-surface/80 p-2.5">
+        <button type="button" data-action="saga-mic-start" id="sagaMicBtn" class="tactile-btn rounded-xl border border-borderLine bg-obsidian px-3 py-2 font-mono text-xs font-bold text-amberGlow hover:border-amberGlow/50" title="Falar por microfone">
+          Mic
+        </button>
         <input
           id="sagaPromptInput"
           type="text"
-          placeholder="Escreva a sua dúvida escolar..."
-          class="min-h-[42px] flex-1 rounded-xl border border-borderLine bg-obsidian px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-cyanGlow focus:outline-none"
+          placeholder="Escreva ou fale a sua dúvida escolar..."
+          class="min-h-[44px] flex-1 rounded-xl border border-borderLine bg-obsidian px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-cyanGlow focus:outline-none"
         />
         <button type="submit" class="tactile-btn rounded-xl bg-cyanGlow px-3.5 py-2 text-xs font-bold text-obsidian hover:bg-sky-300">
           Enviar
@@ -479,8 +565,8 @@
     </div>
 
     <!-- Botão Flutuante Tátil -->
-    <button type="button" data-action="saga-toggle" class="tactile-btn flex items-center gap-2.5 rounded-2xl border border-cyanGlow/45 bg-surface px-4 py-3 text-xs font-bold text-white shadow-2xl hover:border-cyanGlow">
-      <span class="flex h-6 w-6 items-center justify-center rounded-lg bg-cyanGlow font-mono text-xs font-extrabold text-obsidian">
+    <button type="button" data-action="saga-toggle" class="tactile-btn accent-solid flex items-center gap-2.5 rounded-2xl border border-white/20 px-4 py-3 text-xs font-bold shadow-2xl">
+      <span class="flex h-6 w-6 items-center justify-center rounded-lg bg-obsidian text-xs font-extrabold text-white">
         S
       </span>
       <span>S.A.G.A.</span>
@@ -489,150 +575,7 @@
   </div>
 
   <script>
-    /**
-     * =========================================================================
-     * SISTEMA ÁUREA — PROJETO EXorg MT
-     * Motor JavaScript auto-contido, resiliente a sandbox (safe storage em memória),
-     * delegação centralizada de cliques/toques e isolamento estrito por classe.
-     * =========================================================================
-     */
-
-    const STORAGE_KEY = 'aurea_exorg_mt_v3';
-    const memoryStorageFallback = {};
-
-    function safeGetStorage(key) {
-      try {
-        if (typeof window !== 'undefined' && window.localStorage) {
-          return window.localStorage.getItem(key);
-        }
-      } catch (err) {
-        // Fallback silencioso quando o iframe bloqueia localStorage
-      }
-      return Object.prototype.hasOwnProperty.call(memoryStorageFallback, key)
-        ? memoryStorageFallback[key]
-        : null;
-    }
-
-    function safeSetStorage(key, value) {
-      try {
-        if (typeof window !== 'undefined' && window.localStorage) {
-          window.localStorage.setItem(key, value);
-          return;
-        }
-      } catch (err) {
-        // Fallback silencioso em memória
-      }
-      memoryStorageFallback[key] = value;
-    }
-
-    const COURSES_BY_CLASS = {
-      '7.ª Classe': ['Geral'],
-      '8.ª Classe': ['Geral'],
-      '9.ª Classe': ['Geral'],
-      '10.ª Classe': [
-        'Ciências Económicas e Jurídicas - CEJ',
-        'Ciências Físicas e Biológicas',
-        'Ciências Humanas',
-        'Geral'
-      ],
-      '11.ª Classe': [
-        'Ciências Económicas e Jurídicas - CEJ',
-        'Ciências Físicas e Biológicas',
-        'Ciências Humanas',
-        'Geral'
-      ],
-      '12.ª Classe': [
-        'Ciências Económicas e Jurídicas - CEJ',
-        'Ciências Físicas e Biológicas',
-        'Ciências Humanas',
-        'Geral'
-      ]
-    };
-
-    const ACADEMY_QUESTIONS = {
-      '7.ª Classe': [
-        { q: 'Em Língua Portuguesa, qual é a classe gramatical de "rapidamente"?', opts: ['Advérbio', 'Adjetivo', 'Substantivo', 'Preposição'], ans: 0, exp: '"Rapidamente" indica modo e modifica o verbo.' },
-        { q: 'Quanto é 3/4 de 80?', opts: ['40', '60', '20', '75'], ans: 1, exp: '(80 ÷ 4) × 3 = 60.' },
-        { q: 'Qual é o maior rio inteiramente angolano?', opts: ['Rio Cunene', 'Rio Kwanza', 'Rio Zambeze', 'Rio Cubango'], ans: 1, exp: 'O rio Kwanza nasce no Bié e desagua a sul de Luanda.' },
-        { q: 'Em Ciências da Natureza, qual órgão bombeia o sangue pelo corpo?', opts: ['Pulmões', 'Estômago', 'Coração', 'Fígado'], ans: 2, exp: 'O coração impulsiona a circulação sanguínea.' },
-        { q: 'Qual é a unidade base de massa no Sistema Internacional?', opts: ['Grama', 'Quilograma (kg)', 'Litro', 'Metro'], ans: 1, exp: 'O quilograma (kg) é a unidade fundamental de massa no SI.' },
-        { q: 'Qual é o resultado de 245 + 178?', opts: ['413', '423', '433', '393'], ans: 1, exp: '245 + 178 = 423.' },
-        { q: 'Um triângulo com três lados iguais denomina-se:', opts: ['Escaleno', 'Isósceles', 'Equilátero', 'Retângulo'], ans: 2, exp: 'Triângulo equilátero possui os três lados congruentes.' },
-        { q: 'Em História, o período anterior à invenção da escrita chama-se:', opts: ['Pré-História', 'Idade Média', 'Idade Moderna', 'Contemporaneidade'], ans: 0, exp: 'A Pré-História abrange o período antes dos registos escritos.' },
-        { q: 'Qual é o plural normativo de "cidadão"?', opts: ['Cidadãos', 'Cidadães', 'Cidadões', 'Cidadãos-gerais'], ans: 0, exp: 'O plural correto é "cidadãos".' },
-        { q: 'Quanto é 14 × 7?', opts: ['88', '94', '98', '104'], ans: 2, exp: '14 × 7 = 98.' }
-      ],
-      '8.ª Classe': [
-        { q: 'Na equação 2x + 6 = 14, qual é o valor de x?', opts: ['2', '3', '4', '5'], ans: 2, exp: '2x = 8 → x = 4.' },
-        { q: 'Qual é a função da clorofila nas plantas?', opts: ['Absorver luz para a fotossíntese', 'Fixar raízes', 'Transportar sementes', 'Armazenar apenas sal'], ans: 0, exp: 'A clorofila capta energia luminosa na fotossíntese.' },
-        { q: 'Em "Choveu muito ontem", o sujeito da oração é:', opts: ['Simples', 'Composto', 'Inexistente', 'Oculto'], ans: 2, exp: 'Fenómenos da natureza formam orações sem sujeito.' },
-        { q: 'Qual é a unidade de força no Sistema Internacional?', opts: ['Joule', 'Newton (N)', 'Watt', 'Pascal'], ans: 1, exp: 'A força mede-se em Newton (N).' },
-        { q: 'Quanto é (-6) × (-5)?', opts: ['-30', '30', '-11', '11'], ans: 1, exp: 'Produto de dois números negativos é positivo: +30.' },
-        { q: 'Qual é a área de um retângulo de base 8 cm e altura 6 cm?', opts: ['14 cm²', '28 cm²', '48 cm²', '64 cm²'], ans: 2, exp: 'Área = 8 × 6 = 48 cm².' },
-        { q: 'A unidade estrutural e funcional básica dos seres vivos é:', opts: ['A célula', 'O átomo', 'O mineral', 'A rocha'], ans: 0, exp: 'Todos os seres vivos são constituídos por células.' },
-        { q: 'Qual palavra está corretamente acentuada?', opts: ['Lampada', 'Lâmpada', 'Lampáda', 'Lampadâ'], ans: 1, exp: 'Proparoxítonas são sempre acentuadas: "lâmpada".' },
-        { q: 'Qual é a capital da província da Huíla?', opts: ['Namibe', 'Lubango', 'Menongue', 'Ondjiva'], ans: 1, exp: 'Lubango é a capital da província da Huíla.' },
-        { q: 'Quanto vale 3³?', opts: ['9', '18', '27', '81'], ans: 2, exp: '3 × 3 × 3 = 27.' }
-      ],
-      '9.ª Classe': [
-        { q: 'Quais são as raízes de x² - 5x + 6 = 0?', opts: ['1 e 6', '2 e 3', '-2 e -3', '3 e 4'], ans: 1, exp: 'Soma = 5 e produto = 6 → x₁ = 2 e x₂ = 3.' },
-        { q: 'Qual é o símbolo químico do sódio?', opts: ['So', 'Sd', 'Na', 'K'], ans: 2, exp: 'Do latim natrium: Na.' },
-        { q: 'A conjunção "porém" introduz ideia de:', opts: ['Oposição / adversidade', 'Conclusão', 'Explicação', 'Alternância'], ans: 0, exp: '"Porém" é conjunção coordenativa adversativa.' },
-        { q: 'Um móvel percorre 150 km em 3 horas. Qual a velocidade média?', opts: ['45 km/h', '50 km/h', '60 km/h', '75 km/h'], ans: 1, exp: 'v = 150 / 3 = 50 km/h.' },
-        { q: 'Qual é o valor de sen(30°)?', opts: ['0,5', '√2/2', '√3/2', '1'], ans: 0, exp: 'sen(30°) = 1/2 = 0,5.' },
-        { q: 'Se f(x) = 3x - 2, quanto vale f(4)?', opts: ['8', '10', '12', '14'], ans: 1, exp: 'f(4) = 12 - 2 = 10.' },
-        { q: 'Em células eucarióticas, o ADN localiza-se sobretudo:', opts: ['No núcleo', 'Na parede celular', 'Nos vacúolos', 'Fora da membrana'], ans: 0, exp: 'O material genético fica protegido no núcleo celular.' },
-        { q: 'A passagem do estado líquido para o gasoso designa-se:', opts: ['Fusão', 'Vaporização', 'Solidificação', 'Sublimação'], ans: 1, exp: 'Líquido para gasoso é vaporização.' },
-        { q: 'Qual é a raiz quadrada de 196?', opts: ['12', '13', '14', '16'], ans: 2, exp: '14 × 14 = 196.' },
-        { q: 'O Planalto Central de Angola abrange sobretudo as províncias de:', opts: ['Huambo e Bié', 'Cabinda e Zaire', 'Namibe e Cunene', 'Lunda Norte e Lunda Sul'], ans: 0, exp: 'Huambo e Bié formam o núcleo do Planalto Central.' }
-      ],
-      '10.ª Classe': [
-        { q: '(CEJ) O capital próprio inicial de uma empresa corresponde a:', opts: ['Recursos próprios investidos pelos sócios', 'Dívidas bancárias de curto prazo', 'Impostos em atraso', 'Prejuízos acumulados'], ans: 0, exp: 'Capital próprio representa os recursos internos afetos à empresa.' },
-        { q: 'Qual é o valor de log₁₀(1000)?', opts: ['2', '3', '10', '100'], ans: 1, exp: '10³ = 1000 → log₁₀(1000) = 3.' },
-        { q: '(CEJ) Com receitas de 180.000 Kz e despesas de 125.000 Kz, o resultado é:', opts: ['Prejuízo de 55.000 Kz', 'Lucro de 55.000 Kz', 'Lucro de 305.000 Kz', 'Saldo nulo'], ans: 1, exp: '180.000 - 125.000 = +55.000 Kz.' },
-        { q: 'Qual organelo celular produz ATP na respiração aeróbia?', opts: ['Ribossoma', 'Mitocôndria', 'Lisossoma', 'Centríolo'], ans: 1, exp: 'As mitocôndrias são responsáveis pela respiração celular.' },
-        { q: 'Qual é o módulo do vetor u = (3, 4)?', opts: ['3', '4', '5', '7'], ans: 2, exp: '|u| = √(3² + 4²) = 5.' },
-        { q: '(CEJ) Uma norma jurídica caracteriza-se por:', opts: ['Generalidade, abstração e coercibilidade', 'Aplicação individual arbitrária', 'Ausência de sanção', 'Caráter facultativo'], ans: 0, exp: 'A norma jurídica é geral, abstrata e coercível.' },
-        { q: 'Se um artigo de 50.000 Kz sobe 10%, o novo preço é:', opts: ['51.000 Kz', '55.000 Kz', '60.000 Kz', '45.000 Kz'], ans: 1, exp: '50.000 + 5.000 = 55.000 Kz.' },
-        { q: 'A coesão textual tem como objetivo:', opts: ['Articular logicamente frases e parágrafos', 'Eliminar conectores', 'Repetir ideias sem nexo', 'Ignorar pontuação'], ans: 0, exp: 'Coesão garante ligação formal e semântica entre partes do texto.' },
-        { q: 'Qual é o valor de sen(90°)?', opts: ['0', '0,5', '1', '-1'], ans: 2, exp: 'No ciclo trigonométrico, sen(90°) = 1.' },
-        { q: 'Num movimento retilíneo uniforme (MRU), a velocidade é:', opts: ['Constante e não nula', 'Sempre nula', 'Crescente ao quadrado', 'Aleatória'], ans: 0, exp: 'No MRU o móvel percorre distâncias iguais em intervalos iguais.' }
-      ],
-      '11.ª Classe': [
-        { q: 'Qual é a derivada de f(x) = x³?', opts: ['x²', '3x²', '3x', 'x⁴/4'], ans: 1, exp: 'Pela regra da potência: d/dx(x³) = 3x².' },
-        { q: 'A dúvida metódica está associada ao filósofo:', opts: ['René Descartes', 'Aristóteles', 'Auguste Comte', 'Epicuro'], ans: 0, exp: 'Descartes formulou a dúvida metódica como método filosófico.' },
-        { q: 'Em Economia, o ponto de equilíbrio ocorre quando:', opts: ['Receitas totais igualam custos totais', 'Vendas são nulas', 'Custos são zero', 'Não há produção'], ans: 0, exp: 'No break-even o lucro operacional é zero (RT = CT).' },
-        { q: 'Na 2.ª Lei de Newton, F = m · a, se m = 5 kg e a = 3 m/s², F vale:', opts: ['8 N', '15 N', '1,6 N', '45 N'], ans: 1, exp: 'F = 5 × 3 = 15 N.' },
-        { q: 'A transcrição genética sintetiza:', opts: ['ARN a partir de ADN', 'ADN a partir de proteínas', 'Glicose a partir de ATP', 'Lípidos'], ans: 0, exp: 'A transcrição copia um segmento de ADN para ARN.' },
-        { q: 'Qual é o limite de (2x + 1) quando x → 3?', opts: ['5', '6', '7', '8'], ans: 2, exp: '2(3) + 1 = 7.' },
-        { q: 'Uma solução aquosa neutra a 25 °C tem pH igual a:', opts: ['0', '7', '10', '14'], ans: 1, exp: 'A neutralidade a 25 °C corresponde a pH = 7.' },
-        { q: 'A probabilidade de sair cara numa moeda equilibrada é:', opts: ['0', '0,25', '0,5', '1'], ans: 2, exp: '1 caso favorável em 2 possíveis = 0,5.' },
-        { q: 'A socialização primária ocorre principalmente:', opts: ['Na família', 'Apenas na empresa', 'Somente na reforma', 'No tribunal'], ans: 0, exp: 'A família é o primeiro agente de socialização.' },
-        { q: 'Qual é a derivada de f(x) = sen(x)?', opts: ['cos(x)', '-cos(x)', '-sen(x)', 'tg(x)'], ans: 0, exp: 'd/dx[sen(x)] = cos(x).' }
-      ],
-      '12.ª Classe': [
-        { q: 'Calcule o integral indefinido ∫ 2x dx.', opts: ['x² + c', '2x² + c', 'x + c', 'x³/3 + c'], ans: 0, exp: 'A primitiva de 2x é x² + c.' },
-        { q: 'A média aritmética de [10, 12, 14, 16] é:', opts: ['12', '13', '14', '15'], ans: 1, exp: '(10+12+14+16)/4 = 52/4 = 13.' },
-        { q: 'Em Direito, um contrato válido exige:', opts: ['Capacidade, objeto lícito e consentimento livre', 'Apenas valor elevado', 'Testemunha obrigatória em tudo', 'Prazo de 1 dia'], ans: 0, exp: 'São requisitos essenciais do negócio jurídico.' },
-        { q: 'Se z₁ = 2 + 3i e z₂ = 1 - i, então z₁ + z₂ vale:', opts: ['3 + 2i', '1 + 4i', '3 + 4i', '2 + 2i'], ans: 0, exp: '(2+1) + (3-1)i = 3 + 2i.' },
-        { q: 'No cruzamento Aa × Aa (dominância completa), a proporção fenotípica é:', opts: ['3 : 1', '1 : 1', '9 : 3 : 3 : 1', '2 : 2'], ans: 0, exp: '3 dominantes (AA, Aa, Aa) para 1 recessivo (aa).' },
-        { q: 'Qual é a derivada de f(x) = e^(2x)?', opts: ['e^(2x)', '2e^(2x)', '2x·e^x', 'ln(2x)'], ans: 1, exp: 'Regra da cadeia: 2·e^(2x).' },
-        { q: 'A diversificação económica em Angola visa:', opts: ['Dinamizar vários setores produtivos além do petróleo', 'Fechar o comércio', 'Reduzir a agricultura', 'Concentrar tudo num setor'], ans: 0, exp: 'Fortalece agricultura, indústria, serviços e emprego.' },
-        { q: 'Numa PA com a₁ = 4 e razão r = 5, o 3.º termo a₃ é:', opts: ['9', '14', '19', '20'], ans: 1, exp: 'a₃ = 4 + 2(5) = 14.' },
-        { q: 'A derivada de f(x) = ln(x) para x > 0 é:', opts: ['1/x', 'x', 'e^x', '-1/x'], ans: 0, exp: 'd/dx[ln(x)] = 1/x.' },
-        { q: 'Um texto argumentativo sólido baseia-se em:', opts: ['Tese clara, argumentos fundamentados e conclusão coerente', 'Frases soltas', 'Contradições internas', 'Ausência de tema'], ans: 0, exp: 'A argumentação exige tese defendida com coerência.' }
-      ]
-    };
-
-    const LADO0_BANK = [
-      { q: 'Qual planeta é conhecido como o "Planeta Vermelho"?', opts: ['Vénus', 'Marte', 'Júpiter', 'Saturno'], ans: 1, note: 'A coloração vem do óxido de ferro na superfície.' },
-      { q: 'Quantos minutos tem uma hora e meia?', opts: ['75 min', '80 min', '90 min', '100 min'], ans: 2, note: '60 + 30 = 90 minutos.' },
-      { q: 'Qual instrumento mede a temperatura?', opts: ['Barómetro', 'Termómetro', 'Bússola', 'Higrómetro'], ans: 1, note: 'O termómetro mede a temperatura.' },
-      { q: 'Quanto é 12 × 12?', opts: ['124', '132', '144', '148'], ans: 2, note: '12 ao quadrado = 144.' },
-      { q: 'Qual cidade portuária pertence à província de Benguela?', opts: ['Lobito', 'Soyo', 'Namibe', 'Cabinda'], ans: 0, note: 'O Lobito é um importante município e porto de Benguela.' },
-      { q: 'Qual gás é essencial na respiração aeróbia?', opts: ['Oxigénio', 'Hélio', 'Árgon', 'Neónio'], ans: 0, note: 'O oxigénio participa na produção de energia celular.' }
-    ];
-
+// ... existing code ... -->
     function buildInitialState() {
       return {
         users: [
@@ -642,6 +585,7 @@
             password: 'aurea10',
             classe: '10.ª Classe',
             curso: 'Ciências Económicas e Jurídicas - CEJ',
+            avatar: '',
             status: 'ativo'
           },
           {
@@ -650,6 +594,7 @@
             password: 'aurea10',
             classe: '10.ª Classe',
             curso: 'Ciências Económicas e Jurídicas - CEJ',
+            avatar: '',
             status: 'ativo'
           },
           {
@@ -658,6 +603,7 @@
             password: 'aurea07',
             classe: '7.ª Classe',
             curso: 'Geral',
+            avatar: '',
             status: 'ativo'
           }
         ],
@@ -668,7 +614,14 @@
           userId: '',
           userName: '',
           classe: '10.ª Classe',
-          curso: 'Ciências Económicas e Jurídicas - CEJ'
+          curso: 'Ciências Económicas e Jurídicas - CEJ',
+          avatar: ''
+        },
+
+        appearance: {
+          presetName: 'Ciano Oceano',
+          accentHex: '#38bdf8',
+          surfaceTheme: 'obsidian' // 'obsidian' | 'slateDeep' | 'midnight'
         },
 
         activeTab: 'academy',
@@ -698,24 +651,24 @@
 
         chats: {
           '7.ª Classe': [
-            { id: 101, userId: 'AUR-2026-0715', author: 'Paulo Cassinda • AUR-2026-0715', time: '18:10', text: 'Alguém já fez a ficha de frações de Matemática?', topic: 'Matemática - Frações', edited: false, deleted: false, flagged: false }
+            { id: 101, userId: 'AUR-2026-0715', author: 'Paulo Cassinda • AUR-2026-0715', avatar: '', image: '', time: '18:10', text: 'Alguém já fez a ficha de frações de Matemática?', topic: 'Matemática - Frações', edited: false, deleted: false, flagged: false }
           ],
           '8.ª Classe': [
-            { id: 102, userId: 'AUR-2026-0804', author: 'Nádia • AUR-2026-0804', time: '19:00', text: 'Revisão de equações do 1.º grau hoje às 20h.', topic: 'Equações 1.º Grau', edited: false, deleted: false, flagged: false }
+            { id: 102, userId: 'AUR-2026-0804', author: 'Nádia • AUR-2026-0804', avatar: '', image: '', time: '19:00', text: 'Revisão de equações do 1.º grau hoje às 20h.', topic: 'Equações 1.º Grau', edited: false, deleted: false, flagged: false }
           ],
           '9.ª Classe': [
-            { id: 103, userId: 'AUR-2026-0911', author: 'Hélio • AUR-2026-0911', time: '17:40', text: 'Dica: calculem sempre o binómio discriminante Δ com atenção aos sinais.', topic: 'Equações 2.º Grau', edited: false, deleted: false, flagged: false }
+            { id: 103, userId: 'AUR-2026-0911', author: 'Hélio • AUR-2026-0911', avatar: '', image: '', time: '17:40', text: 'Dica: calculem sempre o binómio discriminante Δ com atenção aos sinais.', topic: 'Equações 2.º Grau', edited: false, deleted: false, flagged: false }
           ],
           '10.ª Classe': [
-            { id: 104, userId: 'AUR-2026-1042', author: 'Mateus Domingos • AUR-2026-1042', time: '20:05', text: 'Pessoal da 10.ª CEJ, no exercício de gestão convém manter o capital estável acima de 85%.', topic: 'Gestão Empresarial CEJ', edited: false, deleted: false, flagged: false },
-            { id: 105, userId: 'AUR-2026-1088', author: 'Helena Quissanga • AUR-2026-1088', time: '20:11', text: 'Confirmei as despesas fixas do trimestre antes de fechar o saldo.', topic: 'Contabilidade Básica', edited: true, deleted: false, flagged: false },
-            { id: 106, userId: 'AUR-2026-1088', author: 'Helena Quissanga • AUR-2026-1088', time: '20:13', text: '[MENSAGEM ELIMINADA PELO UTILIZADOR]', originalText: 'http://link-suspeito-9999999', topic: 'Padrão Atípico', edited: false, deleted: true, flagged: true }
+            { id: 104, userId: 'AUR-2026-1042', author: 'Mateus Domingos • AUR-2026-1042', avatar: '', image: '', time: '20:05', text: 'Pessoal da 10.ª CEJ, no exercício de gestão convém manter o capital estável acima de 85%.', topic: 'Gestão Empresarial CEJ', edited: false, deleted: false, flagged: false },
+            { id: 105, userId: 'AUR-2026-1088', author: 'Helena Quissanga • AUR-2026-1088', avatar: '', image: '', time: '20:11', text: 'Confirmei as despesas fixas do trimestre antes de fechar o saldo.', topic: 'Contabilidade Básica', edited: true, deleted: false, flagged: false },
+            { id: 106, userId: 'AUR-2026-1088', author: 'Helena Quissanga • AUR-2026-1088', avatar: '', image: '', time: '20:13', text: '[MENSAGEM ELIMINADA PELO UTILIZADOR]', originalText: 'http://link-suspeito-9999999', topic: 'Padrão Atípico', edited: false, deleted: true, flagged: true }
           ],
           '11.ª Classe': [
-            { id: 107, userId: 'AUR-2026-1102', author: 'Edson • AUR-2026-1102', time: '19:25', text: 'Alguém tem exercícios resolvidos de derivadas?', topic: 'Cálculo Diferencial', edited: false, deleted: false, flagged: false }
+            { id: 107, userId: 'AUR-2026-1102', author: 'Edson • AUR-2026-1102', avatar: '', image: '', time: '19:25', text: 'Alguém tem exercícios resolvidos de derivadas?', topic: 'Cálculo Diferencial', edited: false, deleted: false, flagged: false }
           ],
           '12.ª Classe': [
-            { id: 108, userId: 'AUR-2026-1201', author: 'Duarte • AUR-2026-1201', time: '21:10', text: 'Preparação intensa para os exames da 12.ª classe!', topic: 'Revisão Exame', edited: false, deleted: false, flagged: false }
+            { id: 108, userId: 'AUR-2026-1201', author: 'Duarte • AUR-2026-1201', avatar: '', image: '', time: '21:10', text: 'Preparação intensa para os exames da 12.ª classe!', topic: 'Revisão Exame', edited: false, deleted: false, flagged: false }
           ]
         },
 
@@ -723,9 +676,9 @@
           empresa: 'Comercial Horizonte Lda.',
           capitalInicial: 500000,
           movimentos: [
-            { id: 1, desc: 'Venda de mercadorias (Lote 01)', tipo: 'receita', valor: 175000 },
-            { id: 2, desc: 'Renda mensal do espaço', tipo: 'despesa', valor: 65000 },
-            { id: 3, desc: 'Compra de stock de reposição', tipo: 'despesa', valor: 70000 }
+            { id: 1, desc: 'Venda de mercadorias (Lote 01)', tipo: 'receita', valor: 175000, image: '' },
+            { id: 2, desc: 'Renda mensal do espaço', tipo: 'despesa', valor: 65000, image: '' },
+            { id: 3, desc: 'Compra de stock de reposição', tipo: 'despesa', valor: 70000, image: '' }
           ],
           tarefas: [
             { id: 't1', label: 'Registar todas as entradas e saídas do trimestre', done: true },
@@ -734,727 +687,327 @@
           ]
         },
 
-        sagaScanner: {
-          active: false,
-          targetClass: '10.ª Classe',
-          queue: [],
-          index: 0,
-          currentId: '',
-          secondsLeft: 0,
-          liveDraft: {
-            id: '',
-            classe: '',
-            topics: '',
-            edits: '0',
-            deletions: '0',
-            alerts: ''
-          },
-          intelligenceTable: [
-            {
-              userId: 'AUR-2026-1042',
-              classe: '10.ª Classe',
-              topics: 'Gestão Empresarial CEJ',
-              edits: 0,
-              deletions: 0,
-              alerts: 'Comportamento regular dentro do tópico.',
-              status: 'ESTÁVEL'
-            },
-            {
-              userId: 'AUR-2026-1088',
-              classe: '10.ª Classe',
-              topics: 'Contabilidade Básica, Padrão Atípico',
-              edits: 1,
-              deletions: 1,
-              alerts: '1 eliminação + 1 edição + padrão estranho detetado.',
-              status: 'ALERTA'
-            }
-          ]
+        draftAttachments: {
+          regAvatar: '',
+          perfilAvatar: '',
+          chatImage: '',
+          managerImage: ''
         },
 
-        sagaWidget: {
-          open: false,
-          messages: [
-            {
-              sender: 'saga',
-              time: 'Agora',
-              text: 'Olá! Sou o Assistente S.A.G.A. Pergunta qualquer tema da tua classe ou clica em "+ Questão" para treinar.'
-            }
-          ]
-        }
-      };
-    }
-
     function loadState() {
+      const raw = safeGetStorage(STORAGE_KEY);
+      if (!raw) return buildInitialState();
       try {
-        const raw = safeGetStorage(STORAGE_KEY);
-        if (!raw) return buildInitialState();
         const parsed = JSON.parse(raw);
-        return Object.assign(buildInitialState(), parsed);
+        const base = buildInitialState();
+        return {
+          ...base,
+          ...parsed,
+          session: { ...base.session, ...(parsed.session || {}) },
+          appearance: { ...base.appearance, ...(parsed.appearance || {}) },
+          systemConfig: { ...base.systemConfig, ...(parsed.systemConfig || {}) },
+          academy: { ...base.academy, ...(parsed.academy || {}) },
+          definitivo: { ...base.definitivo, ...(parsed.definitivo || {}) },
+          lado0: { ...base.lado0, ...(parsed.lado0 || {}) },
+          chats: { ...base.chats, ...(parsed.chats || {}) },
+          manager: { ...base.manager, ...(parsed.manager || {}) },
+          draftAttachments: { ...base.draftAttachments, ...(parsed.draftAttachments || {}) },
+          sagaScanner: {
+            ...base.sagaScanner,
+            ...(parsed.sagaScanner || {}),
+            liveDraft: { ...base.sagaScanner.liveDraft, ...((parsed.sagaScanner && parsed.sagaScanner.liveDraft) || {}) }
+          },
+          sagaWidget: { ...base.sagaWidget, ...(parsed.sagaWidget || {}) }
+        };
       } catch (err) {
         return buildInitialState();
       }
     }
 
-    function saveState() {
-      try {
-        safeSetStorage(STORAGE_KEY, JSON.stringify(state));
-      } catch (err) {
-        // Ignora falhas de serialização/quota
-      }
-    }
-
     let state = loadState();
-    let scanTimer = null;
-    let liveWriteTimer = null;
 
-    /* =======================================================================
-     * UTILITÁRIOS GERAIS
-     * ======================================================================= */
-    function escapeHtml(val) {
-      return String(val ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+    const COLOR_PRESETS = [
+      { name: 'Ciano Oceano', hex: '#38bdf8' },
+      { name: 'Esmeralda', hex: '#10b981' },
+      { name: 'Âmbar Solar', hex: '#f59e0b' },
+      { name: 'Violeta', hex: '#a855f7' },
+      { name: 'Coral', hex: '#fb7185' },
+      { name: 'Azul Real', hex: '#3b82f6' }
+    ];
+
+    const SURFACE_THEMES = {
+      obsidian: {
+        label: 'Obsidiana',
+        bgMain: '#080b10',
+        bgCard: '#0f1520',
+        bgSurface: '#161f2e',
+        bgSurfaceAlt: '#1e293b',
+        borderLine: '#283548'
+      },
+      slateDeep: {
+        label: 'Ardósia Profunda',
+        bgMain: '#0a0f18',
+        bgCard: '#111927',
+        bgSurface: '#182336',
+        bgSurfaceAlt: '#213049',
+        borderLine: '#2d3f5c'
+      },
+      midnight: {
+        label: 'Meia-Noite',
+        bgMain: '#07090f',
+        bgCard: '#0d121d',
+        bgSurface: '#141c2c',
+        bgSurfaceAlt: '#1c273d',
+        borderLine: '#25334d'
+      }
+    };
+
+    function hexToRgb(hex) {
+      const clean = String(hex || '#38bdf8').replace('#', '');
+      const full = clean.length === 3
+        ? clean.split('').map(ch => ch + ch).join('')
+        : clean.padEnd(6, '0').slice(0, 6);
+      const num = parseInt(full, 16);
+      if (Number.isNaN(num)) return { r: 56, g: 189, b: 248 };
+      return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
     }
 
-    function formatKz(num) {
-      return (Number(num) || 0).toLocaleString('pt-AO') + ' Kz';
+    function getContrastTextHex(hex) {
+      const { r, g, b } = hexToRgb(hex);
+      const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      return luminance > 0.62 ? '#080b10' : '#06090f';
     }
 
-    function showToast(message, tone = 'info') {
-      const stack = document.getElementById('toastStack');
-      if (!stack) return;
-      const item = document.createElement('div');
-      const colors = {
-        info: 'border-cyanGlow/45 text-slate-100',
-        success: 'border-emeraldGlow/45 text-emerald-100',
-        warn: 'border-amberGlow/50 text-amber-100',
-        error: 'border-rose-500/50 text-rose-100'
-      };
-      const dots = {
-        info: 'bg-cyanGlow',
-        success: 'bg-emeraldGlow',
-        warn: 'bg-amberGlow',
-        error: 'bg-rose-500'
-      };
-      item.className = `anim-view pointer-events-auto flex items-center gap-2.5 rounded-xl border bg-surface/95 px-4 py-3 text-xs shadow-2xl ${colors[tone] || colors.info}`;
-      item.innerHTML = `<span class="h-2 w-2 shrink-0 rounded-full ${dots[tone] || dots.info}"></span><span>${escapeHtml(message)}</span>`;
-      stack.appendChild(item);
+    function applyAppearanceTheme() {
+      if (!state.appearance) {
+        state.appearance = { presetName: 'Ciano Oceano', accentHex: '#38bdf8', surfaceTheme: 'obsidian' };
+      }
+      const accent = /^#[0-9a-fA-F]{6}$/.test(state.appearance.accentHex || '')
+        ? state.appearance.accentHex
+        : '#38bdf8';
+      const { r, g, b } = hexToRgb(accent);
+      const surf = SURFACE_THEMES[state.appearance.surfaceTheme] || SURFACE_THEMES.obsidian;
+      const root = document.documentElement;
 
-      setTimeout(() => {
-        item.style.opacity = '0';
-        item.style.transition = 'opacity 0.2s ease';
-        setTimeout(() => item.remove(), 220);
-      }, 2800);
+      root.style.setProperty('--accent-color', accent);
+      root.style.setProperty('--accent-soft', `rgba(${r}, ${g}, ${b}, 0.16)`);
+      root.style.setProperty('--accent-ring', `rgba(${r}, ${g}, ${b}, 0.5)`);
+      root.style.setProperty('--accent-contrast', getContrastTextHex(accent));
+      root.style.setProperty('--bg-main', surf.bgMain);
+      root.style.setProperty('--bg-card', surf.bgCard);
+      root.style.setProperty('--bg-surface', surf.bgSurface);
+      root.style.setProperty('--bg-surface-alt', surf.bgSurfaceAlt);
+      root.style.setProperty('--border-line', surf.borderLine);
     }
 
-    function fillCourseOptions(selectEl, classe, currentCourse) {
-      if (!selectEl) return;
-      const list = COURSES_BY_CLASS[classe] || ['Geral'];
-      selectEl.innerHTML = list
-        .map(c => `<option value="${escapeHtml(c)}" ${c === currentCourse ? 'selected' : ''}>${escapeHtml(c)}</option>`)
-        .join('');
-    }
-
-    function generateNewStudentId() {
-      let id = '';
-      do {
-        const n = Math.floor(1000 + Math.random() * 9000);
-        id = `AUR-2026-${n}`;
-      } while (state.users.some(u => u.id === id));
-      return id;
-    }
-
-    function isStaffSession() {
-      return state.session.role === 'manager2012' || state.session.role === 'director2013';
-    }
-
-    function detectStrangePattern(text) {
-      const s = String(text || '');
-      const lower = s.toLowerCase();
-      const triggers = ['http://', 'https://', 'www.', '9999999', 'hack', 'spam', 'senha', 'token', 'apostas'];
-      const hasTrigger = triggers.some(t => lower.includes(t));
-      const shouting = s.length >= 16 && s === s.toUpperCase() && /[A-ZÁÉÍÓÚÂÊÔÃÕÇ]/.test(s);
-      return hasTrigger || shouting;
-    }
-
-    function classifyTopic(text, classe) {
-      const l = String(text || '').toLowerCase();
-      if (l.includes('capital') || l.includes('receita') || l.includes('despesa') || l.includes('cej') || l.includes('empresa')) return 'Gestão Empresarial CEJ';
-      if (l.includes('equaç') || l.includes('funç') || l.includes('derivad') || l.includes('integral') || l.includes('fração')) return 'Matemática';
-      if (l.includes('prova') || l.includes('exame') || l.includes('revisão')) return 'Preparação de Prova';
-      if (detectStrangePattern(text)) return 'Padrão Atípico';
-      return `Turma (${classe})`;
-    }
-
-    /* =======================================================================
-     * CONTROLO DE ECRÃS, MENU E ABAS
-     * ======================================================================= */
-    function switchAuthTab(tabName) {
-      const forms = {
-        'student-login': document.getElementById('formStudentLogin'),
-        'student-register': document.getElementById('formStudentRegister'),
-        'staff-access': document.getElementById('formStaffAccess')
-      };
-
-      Object.keys(forms).forEach(key => {
-        if (forms[key]) {
-          forms[key].classList.toggle('hidden', key !== tabName);
+    function triggerHapticFeedback(ms = 12) {
+      try {
+        if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+          navigator.vibrate(ms);
         }
-      });
-
-      document.querySelectorAll('.auth-tab-btn').forEach(btn => {
-        const active = btn.dataset.authTab === tabName;
-        btn.className = active
-          ? 'auth-tab-btn tactile-btn rounded-lg bg-surfaceAlt px-2 py-2 text-xs font-bold text-white shadow'
-          : 'auth-tab-btn tactile-btn rounded-lg px-2 py-2 text-xs font-semibold text-slate-400 hover:text-white';
-      });
-    }
-
-    function setMenuOpen(open) {
-      state.menuOpen = Boolean(open);
-      const drawer = document.getElementById('navDrawer');
-      const backdrop = document.getElementById('navDrawerBackdrop');
-      if (!drawer || !backdrop) return;
-
-      if (state.menuOpen) {
-        drawer.classList.remove('hidden');
-        drawer.classList.add('flex');
-        backdrop.classList.remove('hidden');
-      } else {
-        drawer.classList.add('hidden');
-        drawer.classList.remove('flex');
-        backdrop.classList.add('hidden');
+      } catch (err) {
+        // Ignora caso o dispositivo não permita vibração
       }
     }
 
-    function syncInterface() {
-      const authScreen = document.getElementById('authScreen');
-      const shell = document.getElementById('workspaceShell');
-      const sagaRoot = document.getElementById('sagaFloatingRoot');
+    function spawnTactileRipple(btn, clientX, clientY) {
+      if (!btn || !btn.getBoundingClientRect) return;
+      const rect = btn.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      ripple.className = 'tactile-ripple';
+      const x = typeof clientX === 'number' && clientX > 0 ? clientX - rect.left : rect.width / 2;
+      const y = typeof clientY === 'number' && clientY > 0 ? clientY - rect.top : rect.height / 2;
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+      btn.appendChild(ripple);
+      setTimeout(() => {
+        if (ripple.parentNode) ripple.parentNode.removeChild(ripple);
+      }, 480);
+    }
 
-      if (!state.session.loggedIn) {
-        authScreen.classList.remove('hidden');
-        shell.classList.add('hidden');
-        shell.classList.remove('flex');
-        sagaRoot.classList.add('hidden');
-        setMenuOpen(false);
-        return;
+    function compressImageFile(file, maxSize = 480, quality = 0.78) {
+      return new Promise((resolve, reject) => {
+        if (!file || !file.type || !file.type.startsWith('image/')) {
+          reject(new Error('Ficheiro inválido'));
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            let width = img.width || maxSize;
+            let height = img.height || maxSize;
+            if (width > maxSize || height > maxSize) {
+              if (width >= height) {
+                height = Math.round((height * maxSize) / width);
+                width = maxSize;
+              } else {
+                width = Math.round((width * maxSize) / height);
+                height = maxSize;
+              }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = Math.max(1, width);
+            canvas.height = Math.max(1, height);
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+              resolve(String(ev.target.result || ''));
+              return;
+            }
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            try {
+              resolve(canvas.toDataURL('image/jpeg', quality));
+            } catch (err) {
+              resolve(String(ev.target.result || ''));
+            }
+          };
+          img.onerror = () => reject(new Error('Falha ao ler imagem'));
+          img.src = String(ev.target.result || '');
+        };
+        reader.onerror = () => reject(new Error('Falha ao carregar ficheiro'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function getInitials(name) {
+      const parts = String(name || 'ÁU').trim().split(/\s+/).filter(Boolean);
+      if (parts.length === 0) return 'ÁU';
+      if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+
+    function renderAvatarMarkup(avatarData, name, sizeClasses = 'h-10 w-10 text-xs') {
+      if (avatarData && String(avatarData).startsWith('data:image/')) {
+        return `<img src="${escapeHtml(avatarData)}" alt="${escapeHtml(name || 'Perfil')}" class="${sizeClasses} rounded-xl object-cover border border-cyanGlow/40" />`;
       }
+      return `<span class="flex ${sizeClasses} items-center justify-center rounded-xl border border-cyanGlow/40 bg-surface font-mono font-bold text-cyanGlow">${escapeHtml(getInitials(name))}</span>`;
+    }
 
-      authScreen.classList.add('hidden');
-      shell.classList.remove('hidden');
-      shell.classList.add('flex');
-      sagaRoot.classList.remove('hidden');
+    function syncUserAvatars() {
+      const avatarData = state.session.avatar || '';
+      const name = state.session.userName || 'Utilizador';
+      const headerBox = document.getElementById('headerUserAvatar');
+      const drawerBox = document.getElementById('drawerUserAvatar');
+      if (headerBox) headerBox.innerHTML = renderAvatarMarkup(avatarData, name, 'h-full w-full text-xs');
+      if (drawerBox) drawerBox.innerHTML = renderAvatarMarkup(avatarData, name, 'h-full w-full text-xs');
+    }
 
-      const { classe, curso, userName, userId, role } = state.session;
-      const tabNames = {
-        academy: 'Áurea Academy',
-        definitivo: 'Estudo Definitivo',
-        lado0: 'Lado 0',
-        turma: `Chat da Turma (${classe})`,
-        manager: 'Áurea Manager',
-        admin: role === 'director2013' ? 'Painel de Direção Total' : 'Painel de Gestão (Contas & Chats)'
+      mem.lastStudentMessage = raw;
+      mem.lastSagaReply = replyText;
+      mem.turnCount += 1;
+      return replyText;
+    }
+
+    function cleanTextForSpeech(text) {
+      return String(text || '')
+        .replace(/\*\*/g, '')
+        .replace(/•/g, ', ')
+        .replace(/\n+/g, '. ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function stopSagaSpeech() {
+      try {
+        if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+        }
+      } catch (err) {
+        // Ignora erro de síntese de voz em ambientes restritos
+      }
+    }
+
+    function speakSagaText(text, force = false) {
+      if (!force && (!state.sagaWidget.voiceEnabled || !state.sagaWidget.autoSpeak)) return;
+      try {
+        if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+        const clean = cleanTextForSpeech(text);
+        if (!clean) return;
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(clean.slice(0, 900));
+        utter.lang = 'pt-PT';
+        const voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
+        const ptVoice = voices.find(v => /pt/i.test(v.lang || ''));
+        if (ptVoice) utter.voice = ptVoice;
+        utter.rate = 1.02;
+        utter.pitch = 1.0;
+        window.speechSynthesis.speak(utter);
+      } catch (err) {
+        // Fallback silencioso caso o navegador bloqueie áudio automático
+      }
+    }
+
+    function startSagaVoiceDictation() {
+      try {
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRec) {
+          showToast('Ditadura por voz não suportada neste navegador; podes escrever normalmente.', 'warn');
+          return;
+        }
+        const rec = new SpeechRec();
+        rec.lang = 'pt-PT';
+        rec.interimResults = false;
+        rec.maxAlternatives = 1;
+      // Atualiza cabeçalho, menu e widget S.A.G.A.
+      applyAppearanceTheme();
+      syncUserAvatars();
+      const roleLabels = {
+        student: 'ALUNO',
+        manager2012: 'GESTÃO • 2012',
+        director2013: 'DIREÇÃO • 2013'
       };
+    function renderTurmaChatTab(container) {
+      const cls = state.session.classe;
+      const messages = state.chats[cls] || [];
+      const canModerate = state.session.role === 'manager2012' || state.session.role === 'director2013';
+      const draftImg = state.draftAttachments?.chatImage || '';
 
-      document.getElementById('topModuleTitle').textContent = tabNames[state.activeTab] || 'Sistema Áurea';
-      document.getElementById('topContextLine').textContent = `${classe} • ${curso}`;
-      document.getElementById('drawerUserName').textContent = userName || 'Utilizador';
-      document.getElementById('drawerUserId').textContent = userId || 'SISTEMA';
-      document.getElementById('drawerClasse').textContent = classe;
-      document.getElementById('drawerCurso').textContent = curso;
-      document.getElementById('drawerTurmaTag').textContent = classe.replace(' Classe', '');
-      document.getElementById('sagaPanelSubtitle').textContent = `${classe} • Currículo Angola`;
+      const box = document.createElement('div');
+      box.className = 'anim-view space-y-4';
 
-      const roleBadge = document.getElementById('topRoleBadge');
-      const staffNav = document.getElementById('staffNavSection');
-      const staffLevelTag = document.getElementById('drawerStaffLevelTag');
-
-      if (role === 'director2013') {
-        roleBadge.textContent = 'DIREÇÃO TOTAL';
-        roleBadge.className = 'hidden sm:inline-block rounded-md border border-amberGlow/45 bg-amber-950/60 px-2 py-0.5 font-mono text-[10px] font-bold uppercase text-amberGlow';
-        staffNav.classList.remove('hidden');
-        staffLevelTag.textContent = 'TOTAL';
-      } else if (role === 'manager2012') {
-        roleBadge.textContent = 'GESTÃO CONTAS/CHATS';
-        roleBadge.className = 'hidden sm:inline-block rounded-md border border-emeraldGlow/45 bg-emerald-950/60 px-2 py-0.5 font-mono text-[10px] font-bold uppercase text-emeraldGlow';
-        staffNav.classList.remove('hidden');
-        staffLevelTag.textContent = 'GESTÃO';
-      } else {
-        roleBadge.textContent = 'ALUNO';
-        roleBadge.className = 'hidden sm:inline-block rounded-md border border-cyanGlow/35 bg-cyanGlow/10 px-2 py-0.5 font-mono text-[10px] font-bold uppercase text-cyanGlow';
-        staffNav.classList.add('hidden');
-      }
-
-      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.tab === state.activeTab);
-      });
-
-      renderSagaWidget();
-      renderCurrentTab();
-    }
-
-    function openTab(tabKey) {
-      if (tabKey === 'admin' && !isStaffSession()) {
-        showToast('Acesso restrito ao modo Gestão / Direção.', 'warn');
-        return;
-      }
-
-      if (!isStaffSession() && (state.systemConfig.lockedModules || []).includes(tabKey)) {
-        showToast('Este módulo encontra-se temporariamente bloqueado pela direção.', 'warn');
-        return;
-      }
-
-      state.activeTab = tabKey;
-      setMenuOpen(false);
-      saveState();
-      syncInterface();
-    }
-
-    /* =======================================================================
-     * RENDERIZAÇÃO DE CADA MÓDULO (FOCO EXCLUSIVO NA ABA ATIVA)
-     * ======================================================================= */
-    function renderCurrentTab() {
-      const root = document.getElementById('activeScreenRoot');
-      if (!root) return;
-      root.innerHTML = '';
-
-      switch (state.activeTab) {
-        case 'academy':
-          renderAcademyView(root);
-          break;
-        case 'definitivo':
-          renderDefinitivoView(root);
-          break;
-        case 'lado0':
-          renderLadoZeroView(root);
-          break;
-        case 'turma':
-          renderTurmaView(root);
-          break;
-        case 'manager':
-          renderManagerView(root);
-          break;
-        case 'admin':
-          renderAdminView(root);
-          break;
-        default:
-          renderAcademyView(root);
-      }
-    }
-
-    /* -----------------------------------------------------------------------
-     * 1. ÁUREA ACADEMY (10 Questões Interativas por Classe)
-     * ----------------------------------------------------------------------- */
-    function renderAcademyView(root) {
-      const classe = state.session.classe;
-      const bank = ACADEMY_QUESTIONS[classe] || ACADEMY_QUESTIONS['10.ª Classe'];
-      const answers = state.academy.answers || {};
-      const submitted = Boolean(state.academy.submitted);
-      const answeredCount = Object.keys(answers).length;
-      const progressPct = Math.round((answeredCount / bank.length) * 100);
-
-      let score = 0;
-      bank.forEach((q, idx) => {
-        if (answers[idx] === q.ans) score++;
-      });
-
-      const wrap = document.createElement('div');
-      wrap.className = 'anim-view space-y-5';
-
-      wrap.innerHTML = `
-        <div class="rounded-2xl border border-borderLine bg-slateDark p-5 space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <span class="rounded-lg bg-cyanGlow/15 border border-cyanGlow/30 px-2.5 py-1 font-mono text-[11px] font-bold text-cyanGlow">
-                Áurea Academy • ${escapeHtml(classe)}
-              </span>
-              <h2 class="mt-2 text-lg sm:text-xl font-bold text-white">Bateria Diária de 10 Questões</h2>
-            </div>
-
-            <div class="rounded-xl border border-borderLine bg-surface px-4 py-2.5 text-left sm:text-right">
-              <span class="block font-mono text-[10px] uppercase text-slate-400">Resultado</span>
-              <span class="text-base font-bold text-cyanGlow">
-                ${submitted ? `${score}/10 (${score * 10}%)` : `${answeredCount}/10 respondidas`}
-              </span>
-            </div>
-          </div>
-
-          <!-- Barra de Progresso -->
-          <div>
-            <div class="mb-1 flex justify-between text-[11px] text-slate-400">
-              <span>Progresso da ficha</span>
-              <span class="font-mono text-slate-200">${progressPct}%</span>
-            </div>
-            <div class="h-2.5 w-full overflow-hidden rounded-full bg-obsidian border border-borderLine">
-              <div class="h-full bg-gradient-to-r from-cyanGlow to-emeraldGlow transition-all duration-300" style="width: ${progressPct}%"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="space-y-4">
-          ${bank.map((item, qIdx) => {
-            const picked = answers[qIdx];
-            const isCorrect = picked === item.ans;
-
-            return `
-              <div class="rounded-2xl border border-borderLine bg-slateDark p-4 sm:p-5">
-                <div class="flex items-center justify-between gap-2">
-                  <span class="font-mono text-[11px] font-bold text-cyanGlow">QUESTÃO ${String(qIdx + 1).padStart(2, '0')}</span>
-                  ${picked !== undefined ? `<span class="text-xs font-bold ${isCorrect ? 'text-emeraldGlow' : 'text-rose-400'}">${isCorrect ? 'Correta' : 'Incorreta'}</span>` : ''}
-                </div>
-                <p class="mt-1.5 text-sm sm:text-base font-semibold text-white">${escapeHtml(item.q)}</p>
-
-                <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  ${item.opts.map((opt, oIdx) => {
-                    const selected = picked === oIdx;
-                    let cls = 'border-borderLine bg-surface text-slate-200 hover:border-cyanGlow/50';
-                    if (picked !== undefined) {
-                      if (oIdx === item.ans) {
-                        cls = 'border-emeraldGlow bg-emerald-950/40 text-emerald-200 font-semibold';
-                      } else if (selected && oIdx !== item.ans) {
-                        cls = 'border-rose-500 bg-rose-950/40 text-rose-200';
-                      }
-                    }
-
-                    return `
-                      <button
-                        type="button"
-                        data-action="academy-pick"
-                        data-q="${qIdx}"
-                        data-o="${oIdx}"
-                        class="tactile-btn flex w-full items-center gap-3 rounded-xl border px-3.5 py-2.5 text-left text-xs sm:text-sm ${cls}"
-                      >
-                        <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-current/30 font-mono text-xs font-bold">
-                          ${String.fromCharCode(65 + oIdx)}
-                        </span>
-                        <span>${escapeHtml(opt)}</span>
-                      </button>
-                    `;
-                  }).join('')}
-                </div>
-
-                ${picked !== undefined ? `
-                  <div class="mt-3 rounded-xl border border-borderLine bg-surface/90 p-3 text-xs text-slate-300">
-                    <strong class="text-cyanGlow">Explicação:</strong> ${escapeHtml(item.exp)}
-                  </div>
-                ` : ''}
-              </div>
-            `;
-          }).join('')}
-        </div>
-
-        <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-borderLine bg-slateDark p-4">
-          <button type="button" data-action="academy-reset" class="tactile-btn rounded-xl border border-borderLine bg-surface px-4 py-2.5 text-xs font-bold text-slate-200 hover:border-cyanGlow/50">
-            Refazer / Novas Questões
-          </button>
-          <button type="button" data-action="academy-finish" class="tactile-btn rounded-xl bg-cyanGlow px-5 py-2.5 text-xs font-bold text-obsidian hover:bg-sky-300">
-            Concluir e Ver Pontuação Final
-          </button>
-        </div>
-      `;
-
-      root.appendChild(wrap);
-    }
-
-    /* -----------------------------------------------------------------------
-     * 2. ESTUDO DEFINITIVO (Bateria de Treino Aprofundada por Tema)
-     * ----------------------------------------------------------------------- */
-    function generateDefinitivoBateria(temaText, nivel, qtd, classe) {
-      const parts = String(temaText || '')
-        .split(/[,;\n]+/)
-        .map(s => s.trim())
-        .filter(Boolean);
-      const baseTopics = parts.length > 0 ? parts : ['Conteúdo Programático'];
-      const total = Math.max(1, Math.min(8, Number(qtd) || 3));
-      const result = [];
-
-      for (let i = 0; i < total; i++) {
-        const topic = baseTopics[i % baseTopics.length];
-        result.push({
-          id: i + 1,
-          topic,
-          nivel,
-          openStep: false,
-          enunciado: `Exercício ${i + 1} (${classe} • ${topic} — ${nivel}): Analise a situação proposta sobre "${topic}", identifique os dados e conceitos essenciais do programa escolar e desenvolva a solução completa passo a passo.`,
-          passos: [
-            `Passo 1 — Levantamento de dados e definição teórica de "${topic}" no contexto da ${classe}.`,
-            `Passo 2 — Aplicação da fórmula, lei ou estrutura argumentativa correspondente ao nível "${nivel}".`,
-            `Passo 3 — Verificação final das unidades, coerência lógica e conclusão fundamentada.`
-          ]
-        });
-      }
-      return result;
-    }
-
-    function renderDefinitivoView(root) {
-      if (!Array.isArray(state.definitivo.bateria) || state.definitivo.bateria.length === 0) {
-        state.definitivo.bateria = generateDefinitivoBateria(
-          state.definitivo.tema,
-          state.definitivo.nivel,
-          state.definitivo.quantidade,
-          state.session.classe
-        );
-        saveState();
-      }
-
-      const wrap = document.createElement('div');
-      wrap.className = 'anim-view space-y-5';
-
-      wrap.innerHTML = `
+      box.innerHTML = `
         <div class="rounded-2xl border border-borderLine bg-slateDark p-5">
-          <span class="rounded-lg bg-cyanGlow/15 border border-cyanGlow/30 px-2.5 py-1 font-mono text-[11px] font-bold text-cyanGlow">
-            Estudo Definitivo • ${escapeHtml(state.session.classe)}
-          </span>
-          <h2 class="mt-2 text-lg sm:text-xl font-bold text-white">Gerador de Bateria de Treino para Provas</h2>
-
-          <form id="formDefinitivo" class="mt-4 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <label for="defTemaInput" class="mb-1.5 block text-xs font-semibold text-slate-300">Tema(s) da Prova</label>
-              <input
-                id="defTemaInput"
-                type="text"
-                required
-                value="${escapeHtml(state.definitivo.tema)}"
-                placeholder="Ex.: Equações do 2.º grau, Contabilidade Básica, História de Angola..."
-                class="min-h-[46px] w-full rounded-xl border border-borderLine bg-surface px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:border-cyanGlow focus:outline-none"
-              />
+              <h2 class="text-lg font-bold text-white">Chat da Turma • ${escapeHtml(cls)}</h2>
+              <p class="text-xs text-slate-400">Canal isolado de ${escapeHtml(cls)} (${escapeHtml(state.session.curso)}).</p>
             </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div>
-                <label for="defNivelSelect" class="mb-1.5 block text-xs font-semibold text-slate-300">Nível</label>
-                <select id="defNivelSelect" class="min-h-[46px] w-full rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-white focus:border-cyanGlow focus:outline-none">
-                  <option value="Intermédio (Revisão)" ${state.definitivo.nivel.includes('Intermédio') ? 'selected' : ''}>Intermédio (Revisão)</option>
-                  <option value="Exigente (Prova Trimestral)" ${state.definitivo.nivel.includes('Exigente') ? 'selected' : ''}>Exigente (Prova Trimestral)</option>
-                  <option value="Exame Final" ${state.definitivo.nivel.includes('Exame') ? 'selected' : ''}>Exame Final</option>
-                </select>
-              </div>
-
-              <div>
-                <label for="defQtdSelect" class="mb-1.5 block text-xs font-semibold text-slate-300">Quantidade</label>
-                <select id="defQtdSelect" class="min-h-[46px] w-full rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-white focus:border-cyanGlow focus:outline-none">
-                  <option value="3" ${Number(state.definitivo.quantidade) === 3 ? 'selected' : ''}>3 Exercícios</option>
-                  <option value="5" ${Number(state.definitivo.quantidade) === 5 ? 'selected' : ''}>5 Exercícios</option>
-                  <option value="6" ${Number(state.definitivo.quantidade) === 6 ? 'selected' : ''}>6 Exercícios</option>
-                </select>
-              </div>
-
-              <div class="flex items-end">
-                <button type="submit" class="tactile-btn w-full rounded-xl bg-cyanGlow px-4 py-3 text-xs font-bold text-obsidian hover:bg-sky-300">
-                  Gerar Bateria de Treino
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <div class="space-y-4">
-          ${state.definitivo.bateria.map(ex => `
-            <div class="rounded-2xl border border-borderLine bg-slateDark p-5">
-              <div class="flex flex-wrap items-center justify-between gap-2">
-                <span class="rounded-md border border-borderLine bg-surface px-2.5 py-1 font-mono text-xs text-cyanGlow">${escapeHtml(ex.topic)}</span>
-                <span class="text-xs text-slate-400">${escapeHtml(ex.nivel)}</span>
-              </div>
-              <p class="mt-3 text-sm leading-relaxed text-white">${escapeHtml(ex.enunciado)}</p>
-
-              <div class="mt-4">
-                <button type="button" data-action="def-toggle-steps" data-id="${ex.id}" class="tactile-btn rounded-xl border border-borderLine bg-surface px-4 py-2 text-xs font-bold text-cyanGlow hover:border-cyanGlow/50">
-                  ${ex.openStep ? 'Ocultar Resolução Passo a Passo' : 'Ver Resolução Passo a Passo'}
-                </button>
-              </div>
-
-              ${ex.openStep ? `
-                <div class="mt-3 space-y-2 rounded-xl border border-cyanGlow/30 bg-cyan-950/20 p-4 text-xs text-cyan-100">
-                  ${ex.passos.map(p => `<p>• ${escapeHtml(p)}</p>`).join('')}
-                </div>
-              ` : ''}
-            </div>
-          `).join('')}
-        </div>
-      `;
-
-      root.appendChild(wrap);
-    }
-
-    /* -----------------------------------------------------------------------
-     * 3. LADO 0 (Pausa Ativa Leve + Percentagem Final Animada)
-     * ----------------------------------------------------------------------- */
-    function initLadoZeroRound() {
-      state.lado0.questions = [...LADO0_BANK].sort(() => Math.random() - 0.5).slice(0, 5);
-      state.lado0.answers = {};
-      state.lado0.completed = false;
-    }
-
-    function renderLadoZeroView(root) {
-      if (!Array.isArray(state.lado0.questions) || state.lado0.questions.length === 0) {
-        initLadoZeroRound();
-        saveState();
-      }
-
-      const qs = state.lado0.questions;
-      const ans = state.lado0.answers || {};
-      const completed = Boolean(state.lado0.completed);
-
-      let hits = 0;
-      qs.forEach((item, idx) => {
-        if (ans[idx] === item.ans) hits++;
-      });
-      const pct = qs.length > 0 ? Math.round((hits / qs.length) * 100) : 0;
-
-      const wrap = document.createElement('div');
-      wrap.className = 'anim-view space-y-5';
-
-      wrap.innerHTML = `
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-borderLine bg-slateDark p-5">
-          <div>
-            <span class="rounded-lg bg-emeraldGlow/15 border border-emeraldGlow/30 px-2.5 py-1 font-mono text-[11px] font-bold text-emeraldGlow">
-              Lado 0 • Pausa Ativa
+            <span class="rounded-lg border border-emeraldGlow/35 bg-emerald-950/30 px-3 py-1 font-mono text-[11px] font-bold text-emeraldGlow">
+              ISOLADO: ${escapeHtml(cls)}
             </span>
-            <h2 class="mt-2 text-lg sm:text-xl font-bold text-white">Cultura Geral &amp; Raciocínio Rápido</h2>
-          </div>
-          <button type="button" data-action="lado0-new" class="tactile-btn rounded-xl border border-borderLine bg-surface px-4 py-2.5 text-xs font-bold text-slate-200 hover:border-emeraldGlow/50">
-            Nova Rodada
-          </button>
-        </div>
-
-        ${completed ? `
-          <div class="anim-view rounded-2xl border border-emeraldGlow/45 bg-emerald-950/30 p-5">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <span class="font-mono text-xs font-bold uppercase text-emeraldGlow">Percentagem Final</span>
-                <p class="mt-1 text-3xl font-extrabold text-white">${pct}% de acertos (${hits}/${qs.length})</p>
-              </div>
-              <div class="w-full sm:w-56">
-                <div class="h-3 w-full overflow-hidden rounded-full bg-obsidian border border-borderLine">
-                  <div class="h-full bg-emeraldGlow transition-all duration-500" style="width: ${pct}%"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ` : ''}
-
-        <div class="space-y-4">
-          ${qs.map((item, qIdx) => {
-            const pick = ans[qIdx];
-            return `
-              <div class="rounded-2xl border border-borderLine bg-slateDark p-4 sm:p-5">
-                <span class="font-mono text-[11px] text-slate-400">DESAFIO 0${qIdx + 1}</span>
-                <p class="mt-1 text-sm sm:text-base font-semibold text-white">${escapeHtml(item.q)}</p>
-                <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  ${item.opts.map((opt, oIdx) => {
-                    let cls = 'border-borderLine bg-surface text-slate-200 hover:border-emeraldGlow/50';
-                    if (completed) {
-                      if (oIdx === item.ans) cls = 'border-emeraldGlow bg-emerald-950/40 text-emerald-200 font-bold';
-                      else if (pick === oIdx) cls = 'border-rose-500 bg-rose-950/40 text-rose-200';
-                    } else if (pick === oIdx) {
-                      cls = 'border-emeraldGlow bg-emeraldGlow/15 text-white font-semibold';
-                    }
-
-                    return `
-                      <button type="button" data-action="lado0-pick" data-q="${qIdx}" data-o="${oIdx}" class="tactile-btn rounded-xl border px-3.5 py-2.5 text-left text-xs sm:text-sm ${cls}">
-                        ${escapeHtml(opt)}
-                      </button>
-                    `;
-                  }).join('')}
-                </div>
-                ${completed ? `<p class="mt-2.5 text-xs text-slate-400">${escapeHtml(item.note)}</p>` : ''}
-              </div>
-            `;
-          }).join('')}
-        </div>
-
-        <div class="flex items-center justify-between gap-3 rounded-2xl border border-borderLine bg-slateDark p-4">
-          <span class="text-xs text-slate-400">Respondidas: ${Object.keys(ans).length}/${qs.length}</span>
-          <button type="button" data-action="lado0-complete" class="tactile-btn rounded-xl bg-emeraldGlow px-5 py-2.5 text-xs font-bold text-obsidian hover:bg-emerald-400">
-            Concluir Pausa Ativa
-          </button>
-        </div>
-      `;
-
-      root.appendChild(wrap);
-    }
-
-    /* -----------------------------------------------------------------------
-     * 4. CHAT DA TURMA (Isolado por Classe + Vista Piscante S.A.G.A. + Edição/Remoção)
-     * ----------------------------------------------------------------------- */
-    function renderTurmaView(root) {
-      const classe = state.session.classe;
-      const list = state.chats[classe] || [];
-      const currentUserId = state.session.userId;
-      const staff = isStaffSession();
-      const scanningHere = state.sagaScanner.active && state.sagaScanner.targetClass === classe;
-
-      const wrap = document.createElement('div');
-      wrap.className = 'anim-view space-y-4';
-
-      wrap.innerHTML = `
-        ${scanningHere ? `
-          <div class="saga-top-blink rounded-2xl border-2 border-cyanGlow bg-surfaceAlt px-4 py-3.5 flex flex-wrap items-center justify-between gap-3">
-            <div class="flex items-center gap-3">
-              <span class="h-3 w-3 rounded-full bg-cyanGlow"></span>
-              <div>
-                <p class="font-mono text-xs font-extrabold uppercase tracking-wider text-cyanGlow">
-                  S.A.G.A. EM LEITURA ATIVA — VARREDURA DE TURMA
-                </p>
-                <p class="text-xs text-slate-200">
-                  Conta em análise: <span class="font-mono font-bold text-amberGlow">${escapeHtml(state.sagaScanner.currentId)}</span> • Tempo restante: <span class="font-mono font-bold text-white">${state.sagaScanner.secondsLeft}s</span>
-                </p>
-              </div>
-            </div>
-            <button type="button" data-action="stop-saga-scan" class="tactile-btn rounded-xl border border-rose-500/45 bg-rose-950/60 px-3.5 py-2 text-xs font-bold text-rose-200">
-              Parar Varredura
-            </button>
-          </div>
-        ` : ''}
-
-        <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-borderLine bg-slateDark p-5">
-          <div>
-            <span class="rounded-lg bg-cyanGlow/15 border border-cyanGlow/30 px-2.5 py-1 font-mono text-[11px] font-bold text-cyanGlow">
-              Chat Isolado • ${escapeHtml(classe)}
-            </span>
-            <h2 class="mt-2 text-lg sm:text-xl font-bold text-white">Sala da Turma — ${escapeHtml(classe)}</h2>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-2">
-            <button type="button" data-action="simulate-classmate-msg" class="tactile-btn rounded-xl border border-borderLine bg-surface px-3.5 py-2 text-xs font-semibold text-slate-200 hover:border-cyanGlow/50">
-              Simular Colega da Turma
-            </button>
-            ${staff ? `
-              <button type="button" data-action="start-saga-scan" data-classe="${escapeHtml(classe)}" class="tactile-btn rounded-xl border border-amberGlow/45 bg-amber-950/40 px-3.5 py-2 font-mono text-xs font-bold text-amberGlow hover:bg-amber-950/60">
-                Varredura S.A.G.A. (10s/conta)
-              </button>
-            ` : ''}
           </div>
         </div>
 
         <div class="rounded-2xl border border-borderLine bg-slateDark p-4 sm:p-5">
-          <div class="max-h-96 space-y-3 overflow-y-auto pr-1">
-            ${list.length === 0 ? `<p class="text-xs text-slate-400">Nenhuma mensagem nesta classe ainda.</p>` : list.map(m => {
-              const canEditOrDelete = !m.deleted && (m.userId === currentUserId || staff);
+          <div class="max-h-96 space-y-2.5 overflow-y-auto pr-1">
+            ${messages.map(m => {
+              const isMine = m.userId === state.session.userId;
+              const canEditOrDelete = isMine || canModerate;
               return `
-                <div class="rounded-xl border ${m.deleted ? 'border-rose-500/35 bg-rose-950/15' : m.flagged ? 'border-amberGlow/45 bg-amber-950/15' : 'border-borderLine bg-surface'} p-3.5">
+                <div class="rounded-xl border ${m.deleted ? 'border-rose-500/30 bg-rose-950/15' : 'border-borderLine bg-surface'} p-3.5">
                   <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
-                    <div class="flex flex-wrap items-center gap-2">
+                    <div class="flex items-center gap-2.5">
+                      ${renderAvatarMarkup(m.avatar, m.author, 'h-8 w-8 text-[10px]')}
                       <span class="font-bold text-cyanGlow">${escapeHtml(m.author)}</span>
-                      ${m.edited && !m.deleted ? `<span class="rounded border border-amberGlow/40 bg-amber-950/50 px-1.5 py-0.5 font-mono text-[10px] text-amberGlow">EDITADA</span>` : ''}
-                      ${m.deleted ? `<span class="rounded border border-rose-500/45 bg-rose-950/60 px-1.5 py-0.5 font-mono text-[10px] text-rose-300">ELIMINADA</span>` : ''}
-                      ${m.flagged ? `<span class="rounded border border-rose-500/45 bg-rose-950/50 px-1.5 py-0.5 font-mono text-[10px] text-rose-200">ALERTA</span>` : ''}
                     </div>
-                    <span class="font-mono text-[11px] text-slate-400">${escapeHtml(m.time)}</span>
+                    <div class="flex items-center gap-2 font-mono text-[11px] text-slate-400">
+                      ${m.edited && !m.deleted ? '<span class="text-amberGlow">[editada]</span>' : ''}
+                      ${m.deleted ? '<span class="text-rose-300">[apagada]</span>' : ''}
+                      <span>${escapeHtml(m.time)}</span>
+                    </div>
                   </div>
-
-                  <p class="mt-1.5 text-xs sm:text-sm ${m.deleted ? 'italic text-rose-200/85' : 'text-slate-100'} leading-relaxed">
-                    ${escapeHtml(m.text)}
-                  </p>
-
-                  ${canEditOrDelete ? `
-                    <div class="mt-2.5 flex items-center gap-2">
-                      <button type="button" data-action="chat-edit" data-id="${m.id}" class="tactile-btn min-h-[36px] rounded-lg border border-borderLine bg-obsidian px-3 py-1 text-[11px] font-semibold text-slate-200 hover:border-cyanGlow/50">
+                  <p class="mt-2 text-sm ${m.deleted ? 'italic text-rose-200/80' : 'text-slate-100'}">${escapeHtml(m.text)}</p>
+                  ${m.image && !m.deleted ? `
+                    <div class="mt-2.5">
+                      <img src="${escapeHtml(m.image)}" alt="Imagem enviada no chat" class="max-h-60 w-auto max-w-full rounded-xl border border-borderLine object-contain bg-obsidian" />
+                    </div>
+                  ` : ''}
+                  ${canEditOrDelete && !m.deleted ? `
+                    <div class="mt-2.5 flex gap-2">
+                      <button type="button" data-action="edit-chat-msg" data-msgid="${m.id}" class="tactile-btn rounded-lg border border-borderLine bg-obsidian px-3 py-1.5 text-[11px] font-semibold text-slate-200 hover:border-cyanGlow/50">
                         Editar
                       </button>
-                      <button type="button" data-action="chat-delete" data-id="${m.id}" class="tactile-btn min-h-[36px] rounded-lg border border-rose-500/35 bg-obsidian px-3 py-1 text-[11px] font-semibold text-rose-300 hover:bg-rose-950/40">
+                      <button type="button" data-action="delete-chat-msg" data-msgid="${m.id}" class="tactile-btn rounded-lg border border-rose-500/35 bg-rose-950/30 px-3 py-1.5 text-[11px] font-semibold text-rose-200 hover:bg-rose-900/50">
                         Apagar
                       </button>
                     </div>
@@ -1464,106 +1017,147 @@
             }).join('')}
           </div>
 
-          <form id="formTurmaChat" class="mt-4 flex flex-col sm:flex-row gap-2.5">
-            <input
-              id="turmaChatInput"
-              type="text"
-              placeholder="Escreva uma mensagem para a ${escapeHtml(classe)}..."
-              class="min-h-[46px] flex-1 rounded-xl border border-borderLine bg-surface px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:border-cyanGlow focus:outline-none"
-            />
-            <button type="submit" class="tactile-btn rounded-xl bg-cyanGlow px-5 py-2.5 text-xs font-bold text-obsidian hover:bg-sky-300">
-              Enviar Mensagem
-            </button>
+          <form id="formTurmaChat" class="mt-4 space-y-2.5">
+            ${draftImg ? `
+              <div class="flex items-center justify-between gap-3 rounded-xl border border-cyanGlow/35 bg-obsidian p-2.5">
+                <div class="flex items-center gap-2.5">
+                  <img src="${escapeHtml(draftImg)}" alt="Pré-visualização" class="h-12 w-12 rounded-lg object-cover border border-borderLine" />
+                  <span class="text-xs text-slate-300">Imagem anexada pronta para enviar</span>
+                </div>
+                <button type="button" data-action="clear-chat-image" class="tactile-btn rounded-lg border border-rose-500/35 bg-rose-950/30 px-3 py-1.5 text-xs font-bold text-rose-200">
+                  Remover
+                </button>
+              </div>
+            ` : ''}
+
+            <div class="flex flex-col sm:flex-row gap-2">
+              <label for="chatImageFileInput" class="tactile-btn flex items-center justify-center rounded-xl border border-borderLine bg-obsidian px-3.5 py-2.5 text-xs font-bold text-cyanGlow hover:border-cyanGlow/50 shrink-0">
+                + Foto / Imagem
+              </label>
+              <input id="chatImageFileInput" type="file" accept="image/*" class="hidden" />
+
+              <input
+                id="turmaChatInput"
+                type="text"
+                placeholder="Escreva uma mensagem para a ${escapeHtml(cls)}..."
+                class="min-h-[48px] flex-1 rounded-xl border border-borderLine bg-obsidian px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:border-cyanGlow focus:outline-none"
+              />
+              <button type="submit" class="tactile-btn accent-solid rounded-xl px-5 py-2.5 text-sm font-bold hover:opacity-95 shrink-0">
+                Enviar
+              </button>
+            </div>
           </form>
         </div>
       `;
 
-      root.appendChild(wrap);
+      container.appendChild(box);
     }
 
-    /* -----------------------------------------------------------------------
-     * 5. ÁUREA MANAGER (Gestão Empresarial Simulada — Foco 10.ª CEJ)
-     * ----------------------------------------------------------------------- */
-    function renderManagerView(root) {
+    function renderManagerTab(container) {
       const m = state.manager;
       const receitas = m.movimentos.filter(x => x.tipo === 'receita').reduce((s, x) => s + x.valor, 0);
       const despesas = m.movimentos.filter(x => x.tipo === 'despesa').reduce((s, x) => s + x.valor, 0);
       const resultado = receitas - despesas;
-      const saldo = m.capitalInicial + resultado;
-      const margemPct = receitas > 0 ? Math.round((resultado / receitas) * 100) : 0;
-      const estavel = saldo >= m.capitalInicial * 0.85;
+      const capitalAtual = m.capitalInicial + resultado;
+      const saudavel = capitalAtual >= m.capitalInicial * 0.85;
+      const draftMgrImg = state.draftAttachments?.managerImage || '';
 
-      const wrap = document.createElement('div');
-      wrap.className = 'anim-view space-y-5';
+      const box = document.createElement('div');
+      box.className = 'anim-view space-y-5';
 
-      wrap.innerHTML = `
-        <div class="rounded-2xl border border-borderLine bg-slateDark p-5 flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <span class="rounded-lg bg-amberGlow/15 border border-amberGlow/35 px-2.5 py-1 font-mono text-[11px] font-bold text-amberGlow">
-              Áurea Manager • 10.ª Classe (CEJ)
+      box.innerHTML = `
+        <div class="rounded-2xl border border-borderLine bg-slateDark p-5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 class="text-lg font-bold text-white">Áurea Manager • 10.ª Classe (CEJ)</h2>
+              <p class="text-xs text-slate-400">${escapeHtml(m.empresa)} • Simulação de pequena empresa com capital estável</p>
+            </div>
+            <span class="rounded-lg border ${saudavel ? 'border-emeraldGlow/40 bg-emerald-950/30 text-emeraldGlow' : 'border-rose-500/40 bg-rose-950/30 text-rose-200'} px-3 py-1 font-mono text-[11px] font-bold">
+              ${saudavel ? 'CAPITAL ESTÁVEL' : 'CAPITAL SOB ALERTA'}
             </span>
-            <h2 class="mt-2 text-lg sm:text-xl font-bold text-white">${escapeHtml(m.empresa)} — Controlo Trimestral</h2>
           </div>
-          <span class="rounded-xl border ${estavel ? 'border-emeraldGlow/40 bg-emerald-950/30 text-emeraldGlow' : 'border-rose-500/40 bg-rose-950/30 text-rose-300'} px-3 py-1.5 text-xs font-bold">
-            ${estavel ? 'Capital Estável (≥ 85%)' : 'Alerta de Capital'}
-          </span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           <div class="rounded-2xl border border-borderLine bg-slateDark p-4">
-            <span class="text-xs text-slate-400">Capital Inicial Estável</span>
-            <p class="mt-1 text-lg font-bold text-white">${formatKz(m.capitalInicial)}</p>
+            <span class="text-xs text-slate-400">Capital Base</span>
+            <p class="mt-1 font-mono text-lg font-bold text-white">${formatKz(m.capitalInicial)}</p>
           </div>
           <div class="rounded-2xl border border-borderLine bg-slateDark p-4">
-            <span class="text-xs text-slate-400">Total Receitas</span>
-            <p class="mt-1 text-lg font-bold text-emeraldGlow">+ ${formatKz(receitas)}</p>
+            <span class="text-xs text-slate-400">Receitas</span>
+            <p class="mt-1 font-mono text-lg font-bold text-emeraldGlow">+${formatKz(receitas)}</p>
           </div>
           <div class="rounded-2xl border border-borderLine bg-slateDark p-4">
-            <span class="text-xs text-slate-400">Total Despesas</span>
-            <p class="mt-1 text-lg font-bold text-rose-400">- ${formatKz(despesas)}</p>
+            <span class="text-xs text-slate-400">Despesas</span>
+            <p class="mt-1 font-mono text-lg font-bold text-rose-300">-${formatKz(despesas)}</p>
           </div>
           <div class="rounded-2xl border border-cyanGlow/40 bg-surface p-4">
-            <span class="text-xs text-cyanGlow">Saldo Atual / Margem</span>
-            <p class="mt-1 text-lg font-bold text-white">${formatKz(saldo)}</p>
-            <span class="text-[11px] text-slate-300">Margem operacional: ${margemPct}%</span>
+            <span class="text-xs text-cyanGlow">Saldo / Capital Atual</span>
+            <p class="mt-1 font-mono text-lg font-bold text-white">${formatKz(capitalAtual)}</p>
           </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div class="rounded-2xl border border-borderLine bg-slateDark p-5">
-            <h3 class="text-base font-bold text-white">Registar Receita / Despesa</h3>
-            <form id="formManagerTx" class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              <input id="mgrDescInput" type="text" required placeholder="Descrição" class="min-h-[46px] sm:col-span-2 rounded-xl border border-borderLine bg-surface px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:border-cyanGlow focus:outline-none" />
-              <select id="mgrTipoSelect" class="min-h-[46px] rounded-xl border border-borderLine bg-surface px-3 py-2 text-xs text-white focus:border-cyanGlow focus:outline-none">
-                <option value="receita">Receita (+)</option>
-                <option value="despesa">Despesa (-)</option>
-              </select>
-              <input id="mgrValorInput" type="number" min="1" required placeholder="Valor em Kz" class="min-h-[46px] sm:col-span-2 rounded-xl border border-borderLine bg-surface px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:border-cyanGlow focus:outline-none" />
-              <button type="submit" class="tactile-btn rounded-xl bg-cyanGlow px-4 py-2.5 text-xs font-bold text-obsidian hover:bg-sky-300">
-                Lançar
+            <h3 class="text-sm font-bold text-white">Registar Movimento</h3>
+            <form id="formManagerTx" class="mt-3 space-y-3">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <input id="mgrDescInput" type="text" required placeholder="Descrição" class="min-h-[48px] sm:col-span-2 rounded-xl border border-borderLine bg-surface px-3.5 py-2 text-xs text-white focus:border-cyanGlow focus:outline-none" />
+                <select id="mgrTipoSelect" class="min-h-[48px] rounded-xl border border-borderLine bg-surface px-3 py-2 text-xs text-white focus:border-cyanGlow focus:outline-none">
+                  <option value="receita">Receita (+)</option>
+                  <option value="despesa">Despesa (-)</option>
+                </select>
+                <input id="mgrValorInput" type="number" required min="1" step="100" placeholder="Valor (Kz)" class="min-h-[48px] sm:col-span-2 rounded-xl border border-borderLine bg-surface px-3.5 py-2 font-mono text-xs text-white focus:border-cyanGlow focus:outline-none" />
+                <label for="mgrImageFileInput" class="tactile-btn flex items-center justify-center rounded-xl border border-borderLine bg-surface px-3 py-2 text-xs font-bold text-cyanGlow hover:border-cyanGlow/50">
+                  + Comprovativo/Foto
+                </label>
+                <input id="mgrImageFileInput" type="file" accept="image/*" class="hidden" />
+              </div>
+
+              ${draftMgrImg ? `
+                <div class="flex items-center justify-between gap-2 rounded-xl border border-borderLine bg-surface p-2">
+                  <div class="flex items-center gap-2">
+                    <img src="${escapeHtml(draftMgrImg)}" alt="Anexo" class="h-10 w-10 rounded-lg object-cover" />
+                    <span class="text-xs text-slate-300">Imagem anexada ao lançamento</span>
+                  </div>
+                  <button type="button" data-action="clear-manager-image" class="tactile-btn rounded-lg border border-rose-500/35 bg-rose-950/30 px-2.5 py-1 text-xs font-bold text-rose-200">
+                    Remover
+                  </button>
+                </div>
+              ` : ''}
+
+              <button type="submit" class="tactile-btn accent-solid w-full rounded-xl px-4 py-2.5 text-xs font-bold hover:opacity-95">
+                Lançar Movimento
               </button>
             </form>
 
             <div class="mt-4 max-h-60 space-y-2 overflow-y-auto pr-1">
-              ${m.movimentos.map(tx => `
-                <div class="flex items-center justify-between rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-xs">
-                  <span class="font-medium text-slate-100">${escapeHtml(tx.desc)}</span>
-                  <span class="font-mono font-bold ${tx.tipo === 'receita' ? 'text-emeraldGlow' : 'text-rose-400'}">
-                    ${tx.tipo === 'receita' ? '+' : '-'} ${formatKz(tx.valor)}
-                  </span>
+              ${m.movimentos.map(item => `
+                <div class="rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-xs">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="font-medium text-white">${escapeHtml(item.desc)}</span>
+                    <span class="font-mono font-bold ${item.tipo === 'receita' ? 'text-emeraldGlow' : 'text-rose-300'}">
+                      ${item.tipo === 'receita' ? '+' : '-'}${formatKz(item.valor)}
+                    </span>
+                  </div>
+                  ${item.image ? `
+                    <div class="mt-2">
+                      <img src="${escapeHtml(item.image)}" alt="Anexo do movimento" class="max-h-36 w-auto rounded-lg border border-borderLine object-contain bg-obsidian" />
+                    </div>
+                  ` : ''}
                 </div>
               `).join('')}
             </div>
           </div>
 
           <div class="rounded-2xl border border-borderLine bg-slateDark p-5">
-            <h3 class="text-base font-bold text-white">Checklist de Tarefas Trimestrais</h3>
-            <div class="mt-4 space-y-2.5">
+            <h3 class="text-sm font-bold text-white">Tarefas Trimestrais (10.ª CEJ)</h3>
+            <div class="mt-3 space-y-2.5">
               ${m.tarefas.map(tk => `
-                <button type="button" data-action="mgr-toggle-task" data-id="${tk.id}" class="tactile-btn flex w-full items-center justify-between gap-3 rounded-xl border border-borderLine bg-surface px-4 py-3 text-left text-xs hover:border-cyanGlow/50">
-                  <span class="${tk.done ? 'line-through text-slate-400' : 'font-semibold text-white'}">${escapeHtml(tk.label)}</span>
-                  <span class="rounded-md px-2 py-0.5 font-mono text-[10px] font-bold ${tk.done ? 'bg-emerald-950 text-emeraldGlow' : 'bg-obsidian text-slate-300'}">
-                    ${tk.done ? 'CONCLUÍDA' : 'PENDENTE'}
+                <button type="button" data-action="toggle-mgr-task" data-taskid="${tk.id}" class="tactile-btn flex w-full items-center justify-between gap-3 rounded-xl border border-borderLine bg-surface p-3.5 text-left text-xs hover:border-cyanGlow/40">
+                  <span class="${tk.done ? 'line-through text-slate-400' : 'font-medium text-white'}">${escapeHtml(tk.label)}</span>
+                  <span class="rounded px-2 py-0.5 font-mono text-[10px] font-bold ${tk.done ? 'bg-emerald-950 text-emeraldGlow' : 'bg-obsidian text-slate-300'}">
+                    ${tk.done ? 'FEITO' : 'PENDENTE'}
                   </span>
                 </button>
               `).join('')}
@@ -1572,402 +1166,170 @@
         </div>
       `;
 
-      root.appendChild(wrap);
+      container.appendChild(box);
     }
 
-    /* -----------------------------------------------------------------------
-     * 6. PAINEL DE GESTÃO / DIREÇÃO (Passes 2012 e 2013 + Varredura S.A.G.A.)
-     * ----------------------------------------------------------------------- */
-    function renderAdminView(root) {
-      if (!isStaffSession()) {
-        openTab('academy');
-        return;
-      }
+    function renderPerfilCoresTab(container) {
+      const app = state.appearance || { presetName: 'Ciano Oceano', accentHex: '#38bdf8', surfaceTheme: 'obsidian' };
+      const currentAvatar = state.draftAttachments?.perfilAvatar || state.session.avatar || '';
 
-      const isDirector = state.session.role === 'director2013';
-      const scan = state.sagaScanner;
-      const filterCls = scan.targetClass || '10.ª Classe';
+      const box = document.createElement('div');
+      box.className = 'anim-view space-y-5';
 
-      const wrap = document.createElement('div');
-      wrap.className = 'anim-view space-y-5';
-
-      wrap.innerHTML = `
-        <div class="rounded-2xl border ${isDirector ? 'border-amberGlow/45' : 'border-emeraldGlow/45'} bg-slateDark p-5 flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <span class="rounded-lg ${isDirector ? 'bg-amber-950/70 border-amberGlow/40 text-amberGlow' : 'bg-emerald-950/70 border-emeraldGlow/40 text-emeraldGlow'} border px-2.5 py-1 font-mono text-[11px] font-bold">
-              ${isDirector ? 'DIREÇÃO • CONTROLO TOTAL DO SISTEMA' : 'GESTÃO • CONTAS & SUPERVISÃO DE CHATS'}
-            </span>
-            <h2 class="mt-2 text-lg sm:text-xl font-bold text-white">
-              ${isDirector ? 'Central de Comando & Inteligência S.A.G.A.' : 'Supervisão de Contas e Varredura de Chats'}
-            </h2>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-2">
-            <select id="adminClassSelector" class="min-h-[46px] rounded-xl border border-borderLine bg-surface px-3.5 py-2 text-xs font-semibold text-white focus:border-cyanGlow focus:outline-none">
-              ${Object.keys(COURSES_BY_CLASS).map(c => `<option value="${escapeHtml(c)}" ${c === filterCls ? 'selected' : ''}>${escapeHtml(c)}</option>`).join('')}
-            </select>
-
-            ${!scan.active ? `
-              <button type="button" data-action="start-saga-scan" data-classe="${escapeHtml(filterCls)}" class="tactile-btn rounded-xl bg-cyanGlow px-4 py-2.5 font-mono text-xs font-bold text-obsidian hover:bg-sky-300">
-                Iniciar Varredura S.A.G.A. (10s/conta)
-              </button>
-            ` : `
-              <button type="button" data-action="stop-saga-scan" class="tactile-btn rounded-xl border border-rose-500/45 bg-rose-950/60 px-4 py-2.5 font-mono text-xs font-bold text-rose-200">
-                Parar (${scan.secondsLeft}s)
-              </button>
-            `}
-          </div>
+      box.innerHTML = `
+        <div class="rounded-2xl border border-borderLine bg-slateDark p-5">
+          <h2 class="text-lg font-bold text-white">Perfil, Foto e Escolha de Cores</h2>
+          <p class="text-xs text-slate-400">Personalize a sua foto de perfil, o nome exibido e as cores principais do Sistema Áurea.</p>
         </div>
 
-        <!-- Formulário em Tempo Real preenchido pelo S.A.G.A. durante os 10s por conta -->
-        <div class="rounded-2xl border border-cyanGlow/35 bg-slateDark p-5 space-y-4">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="h-2.5 w-2.5 rounded-full bg-cyanGlow ${scan.active ? 'saga-top-blink' : 'beacon-dot'}"></span>
-              <h3 class="font-mono text-xs font-bold uppercase tracking-wider text-cyanGlow">
-                Formulário &amp; Tabela de Inteligência S.A.G.A. (${scan.active ? `A analisar ${scan.currentId} • ${scan.secondsLeft}s` : 'Em espera'})
-              </h3>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <!-- Foto de Perfil e Identidade -->
+          <div class="rounded-2xl border border-borderLine bg-slateDark p-5 space-y-4">
+            <h3 class="text-sm font-bold text-white">Foto de Perfil</h3>
+
+            <div class="flex flex-col sm:flex-row items-center gap-4 rounded-xl border border-borderLine bg-surface p-4">
+              <div id="perfilAvatarPreview" class="shrink-0">
+                ${renderAvatarMarkup(currentAvatar, state.session.userName, 'h-20 w-20 text-lg')}
+              </div>
+              <div class="flex-1 space-y-2 text-center sm:text-left">
+                <p class="text-sm font-bold text-white">${escapeHtml(state.session.userName || 'Utilizador')}</p>
+                <p class="font-mono text-xs text-slate-400">${escapeHtml(state.session.userId || 'SEM-ID')} • ${escapeHtml(state.session.classe)}</p>
+                <div class="flex flex-wrap justify-center sm:justify-start gap-2 pt-1">
+                  <label for="perfilAvatarFileInput" class="tactile-btn accent-solid inline-flex items-center rounded-xl px-3.5 py-2 text-xs font-bold">
+                    Carregar Foto
+                  </label>
+                  <input id="perfilAvatarFileInput" type="file" accept="image/*" class="hidden" />
+                  <button type="button" data-action="remove-perfil-avatar" class="tactile-btn rounded-xl border border-borderLine bg-obsidian px-3.5 py-2 text-xs font-semibold text-slate-200 hover:border-rose-500/50">
+                    Remover Foto
+                  </button>
+                </div>
+              </div>
             </div>
-            <button type="button" data-action="inspect-target-chat" class="tactile-btn min-h-[38px] rounded-xl border border-borderLine bg-surface px-3 py-1.5 text-xs font-semibold text-slate-200 hover:border-cyanGlow/50">
-              Abrir Chat da Turma
+
+            <div>
+              <label for="perfilNameInput" class="mb-1.5 block text-xs font-semibold text-slate-300">Nome de Exibição</label>
+              <input id="perfilNameInput" type="text" value="${escapeHtml(state.session.userName || '')}" class="min-h-[48px] w-full rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-sm text-white focus:border-cyanGlow focus:outline-none" />
+            </div>
+
+            <button type="button" data-action="save-profile-info" class="tactile-btn accent-solid w-full rounded-xl px-4 py-2.5 text-xs font-bold">
+              Guardar Perfil e Foto
             </button>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 rounded-xl border border-borderLine bg-obsidian p-3.5 text-xs">
-            <div>
-              <span class="block font-mono text-[10px] uppercase text-slate-400">ID da Conta</span>
-              <input id="sagaLiveId" type="text" readonly value="${escapeHtml(scan.liveDraft.id)}" placeholder="—" class="mt-1 w-full rounded-lg border border-borderLine bg-surface px-2.5 py-1.5 font-mono text-xs text-cyanGlow" />
-            </div>
-            <div>
-              <span class="block font-mono text-[10px] uppercase text-slate-400">Classe</span>
-              <input id="sagaLiveClasse" type="text" readonly value="${escapeHtml(scan.liveDraft.classe)}" placeholder="—" class="mt-1 w-full rounded-lg border border-borderLine bg-surface px-2.5 py-1.5 text-xs text-white" />
-            </div>
-            <div>
-              <span class="block font-mono text-[10px] uppercase text-slate-400">Tópicos Detetados</span>
-              <input id="sagaLiveTopics" type="text" readonly value="${escapeHtml(scan.liveDraft.topics)}" placeholder="—" class="mt-1 w-full rounded-lg border border-borderLine bg-surface px-2.5 py-1.5 text-xs text-white" />
-            </div>
-            <div>
-              <span class="block font-mono text-[10px] uppercase text-slate-400">Editadas / Eliminadas</span>
-              <input id="sagaLiveCounts" type="text" readonly value="${escapeHtml(`${scan.liveDraft.edits} ed. / ${scan.liveDraft.deletions} elim.`)}" class="mt-1 w-full rounded-lg border border-borderLine bg-surface px-2.5 py-1.5 font-mono text-xs text-amberGlow" />
-            </div>
-            <div>
-              <span class="block font-mono text-[10px] uppercase text-slate-400">Padrões / Alertas</span>
-              <input id="sagaLiveAlerts" type="text" readonly value="${escapeHtml(scan.liveDraft.alerts)}" placeholder="—" class="mt-1 w-full rounded-lg border border-borderLine bg-surface px-2.5 py-1.5 text-xs text-rose-300" />
-            </div>
-          </div>
+          <!-- Escolha de Cores e Fundo -->
+          <div class="rounded-2xl border border-borderLine bg-slateDark p-5 space-y-4">
+            <h3 class="text-sm font-bold text-white">Cores do Sistema</h3>
 
-          <!-- Tabela Consolidada por ID -->
-          <div class="overflow-x-auto rounded-xl border border-borderLine bg-surface">
-            <table class="w-full border-collapse text-left text-xs">
-              <thead>
-                <tr class="border-b border-borderLine bg-obsidian font-mono text-[11px] uppercase text-slate-400">
-                  <th class="px-3.5 py-2.5">ID Conta</th>
-                  <th class="px-3.5 py-2.5">Classe</th>
-                  <th class="px-3.5 py-2.5">Tópicos Detetados</th>
-                  <th class="px-3.5 py-2.5">Editadas</th>
-                  <th class="px-3.5 py-2.5">Eliminadas</th>
-                  <th class="px-3.5 py-2.5">Padrões Estranhos / Alertas</th>
-                  <th class="px-3.5 py-2.5">Estado</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-borderLine/70">
-                ${scan.intelligenceTable.map(row => {
-                  const isAlert = row.status !== 'ESTÁVEL';
+            <div>
+              <span class="mb-2 block text-xs font-semibold text-slate-300">Cores Rápidas de Destaque</span>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                ${COLOR_PRESETS.map(p => {
+                  const active = app.accentHex.toLowerCase() === p.hex.toLowerCase();
                   return `
-                    <tr class="${isAlert ? 'bg-amber-950/15' : ''}">
-                      <td class="px-3.5 py-2.5 font-mono font-bold text-cyanGlow whitespace-nowrap">${escapeHtml(row.userId)}</td>
-                      <td class="px-3.5 py-2.5 text-slate-300 whitespace-nowrap">${escapeHtml(row.classe)}</td>
-                      <td class="px-3.5 py-2.5 text-white">${escapeHtml(row.topics)}</td>
-                      <td class="px-3.5 py-2.5 font-mono text-slate-200">${row.edits}</td>
-                      <td class="px-3.5 py-2.5 font-mono text-slate-200">${row.deletions}</td>
-                      <td class="px-3.5 py-2.5 text-slate-300">${escapeHtml(row.alerts)}</td>
-                      <td class="px-3.5 py-2.5 whitespace-nowrap">
-                        <span class="rounded px-2 py-0.5 font-mono text-[10px] font-bold ${isAlert ? 'border border-amberGlow/45 bg-amber-950 text-amberGlow' : 'border border-emeraldGlow/35 bg-emerald-950 text-emeraldGlow'}">
-                          ${escapeHtml(row.status)}
-                        </span>
-                      </td>
-                    </tr>
+                    <button type="button" data-action="select-color-preset" data-hex="${p.hex}" data-preset="${escapeHtml(p.name)}" class="tactile-btn flex items-center gap-2.5 rounded-xl border ${active ? 'border-white bg-surfaceAlt' : 'border-borderLine bg-surface'} px-3 py-2 text-left text-xs font-bold text-white">
+                      <span class="h-4 w-4 shrink-0 rounded-full border border-white/30" style="background-color:${p.hex}"></span>
+                      <span class="truncate">${escapeHtml(p.name)}</span>
+                    </button>
                   `;
                 }).join('')}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Gestão de Contas (Disponível para Gestão 2012 e Direção 2013) -->
-        <div class="rounded-2xl border border-borderLine bg-slateDark p-5 space-y-3">
-          <h3 class="text-base font-bold text-white">Gestão de Contas de Alunos</h3>
-          <div class="space-y-2.5">
-            ${state.users.map(u => `
-              <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-borderLine bg-surface px-4 py-3 text-xs">
-                <div>
-                  <span class="font-mono font-bold text-cyanGlow">${escapeHtml(u.id)}</span>
-                  <span class="ml-2 font-bold text-white">${escapeHtml(u.name)}</span>
-                  <span class="ml-2 text-slate-400">• ${escapeHtml(u.classe)} (${escapeHtml(u.curso)})</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="rounded px-2 py-0.5 font-mono text-[10px] font-bold uppercase ${u.status === 'ativo' ? 'bg-emerald-950 text-emeraldGlow' : 'bg-rose-950 text-rose-300'}">
-                    ${escapeHtml(u.status)}
-                  </span>
-                  <button type="button" data-action="user-toggle-status" data-id="${escapeHtml(u.id)}" class="tactile-btn min-h-[38px] rounded-lg border border-borderLine bg-obsidian px-3 py-1.5 text-[11px] font-semibold text-slate-200 hover:border-cyanGlow/50">
-                    ${u.status === 'ativo' ? 'Suspender' : 'Reativar'}
-                  </button>
-                  <button type="button" data-action="user-remove" data-id="${escapeHtml(u.id)}" class="tactile-btn min-h-[38px] rounded-lg border border-rose-500/35 bg-obsidian px-3 py-1.5 text-[11px] font-semibold text-rose-300 hover:bg-rose-950/40">
-                    Remover
-                  </button>
-                </div>
               </div>
-            `).join('')}
-          </div>
-        </div>
+            </div>
 
-        <!-- Controlo Total do Sistema (Exclusivo Direção 2013) -->
-        ${isDirector ? `
-          <div class="rounded-2xl border border-amberGlow/40 bg-slateDark p-5 space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <span class="font-mono text-[11px] font-bold uppercase text-amberGlow">Exclusivo Direção Total</span>
-                <h3 class="text-base font-bold text-white">Controlo Global de Módulos &amp; Reset</h3>
+                <label for="customAccentPicker" class="mb-1.5 block text-xs font-semibold text-slate-300">Cor Livre (Seletor)</label>
+                <div class="flex items-center gap-2 rounded-xl border border-borderLine bg-surface p-2">
+                  <input id="customAccentPicker" type="color" value="${escapeHtml(app.accentHex)}" class="h-9 w-12 cursor-pointer rounded border-0 bg-transparent" />
+                  <span id="customAccentHexLabel" class="font-mono text-xs text-slate-200">${escapeHtml(app.accentHex.toUpperCase())}</span>
+                </div>
               </div>
-              <button type="button" data-action="system-full-reset" class="tactile-btn rounded-xl border border-rose-500/45 bg-rose-950/50 px-4 py-2 text-xs font-bold text-rose-200 hover:bg-rose-900/60">
-                Repor Dados de Fábrica
-              </button>
+
+              <div>
+                <label for="surfaceThemeSelect" class="mb-1.5 block text-xs font-semibold text-slate-300">Superfície Escura</label>
+                <select id="surfaceThemeSelect" class="min-h-[48px] w-full rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-xs font-semibold text-white focus:border-cyanGlow focus:outline-none">
+                  ${Object.entries(SURFACE_THEMES).map(([key, cfg]) => `
+                    <option value="${key}" ${app.surfaceTheme === key ? 'selected' : ''}>${escapeHtml(cfg.label)}</option>
+                  `).join('')}
+                </select>
+              </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
-              ${['academy', 'definitivo', 'lado0', 'turma', 'manager'].map(modKey => {
-                const locked = (state.systemConfig.lockedModules || []).includes(modKey);
-                return `
-                  <button type="button" data-action="toggle-module-lock" data-mod="${modKey}" class="tactile-btn flex items-center justify-between rounded-xl border border-borderLine bg-surface px-4 py-3 font-semibold text-white hover:border-amberGlow/50">
-                    <span class="uppercase font-mono text-[11px]">${escapeHtml(modKey)}</span>
-                    <span class="rounded px-2 py-0.5 font-mono text-[10px] ${locked ? 'bg-rose-950 text-rose-300' : 'bg-emerald-950 text-emeraldGlow'}">
-                      ${locked ? 'BLOQUEADO' : 'LIBERADO'}
-                    </span>
-                  </button>
-                `;
-              }).join('')}
-            </div>
+            <button type="button" data-action="reset-appearance" class="tactile-btn w-full rounded-xl border border-borderLine bg-surface px-4 py-2.5 text-xs font-semibold text-slate-200 hover:border-cyanGlow/50">
+              Restaurar Cores Padrão
+            </button>
           </div>
-        ` : ''}
+        </div>
       `;
 
-      root.appendChild(wrap);
+      container.appendChild(box);
     }
 
-    /* =======================================================================
-     * VARREDURA S.A.G.A. (EXATOS 10 SEGUNDOS POR CONTA + ESCRITA AO VIVO)
-     * ======================================================================= */
-    function analyzeUserInClass(userId, classe) {
-      const msgs = (state.chats[classe] || []).filter(m => m.userId === userId);
-      const topics = [...new Set(msgs.map(m => m.topic).filter(Boolean))];
-      const edits = msgs.filter(m => m.edited).length;
-      const deletions = msgs.filter(m => m.deleted).length;
-      const strange = msgs.filter(m => m.flagged || detectStrangePattern(m.text) || detectStrangePattern(m.originalText || '')).length;
-
-      const alertParts = [];
-      if (deletions > 0) alertParts.push(`${deletions} eliminada(s)`);
-      if (edits > 0) alertParts.push(`${edits} editada(s)`);
-      if (strange > 0) alertParts.push('padrão estranho detetado');
-
-      return {
-        userId,
-        classe,
-        topics: topics.length > 0 ? topics.join(', ') : `Sem mensagens (${classe})`,
-        edits,
-        deletions,
-        alerts: alertParts.length > 0 ? alertParts.join(' • ') : 'Sem anomalias.',
-        status: alertParts.length > 0 ? 'ALERTA' : 'ESTÁVEL'
-      };
+      switch (tab) {
+        case 'academy':
+          renderAcademyTab(root);
+          break;
+        case 'definitivo':
+          renderDefinitivoTab(root);
+          break;
+        case 'lado0':
+          renderLado0Tab(root);
+          break;
+        case 'turma':
+          renderTurmaChatTab(root);
+          break;
+        case 'manager':
+          renderManagerTab(root);
+          break;
+        case 'perfil':
+          renderPerfilCoresTab(root);
+          break;
+        case 'admin':
+          renderAdminTab(root);
+          break;
+        default:
+          renderAcademyTab(root);
+      }
     }
 
-    function animateLiveDraftWriting(report) {
-      if (liveWriteTimer) clearInterval(liveWriteTimer);
-      state.sagaScanner.liveDraft = {
-        id: '',
-        classe: report.classe,
-        topics: '',
-        edits: String(report.edits),
-        deletions: String(report.deletions),
-        alerts: ''
-      };
+    document.addEventListener('pointerdown', (event) => {
+      const btn = event.target && event.target.closest ? event.target.closest('button, [role="button"], label[for]') : null;
+      if (!btn) return;
+      btn.classList.add('is-pressed');
+      spawnTactileRipple(btn, event.clientX, event.clientY);
+      triggerHapticFeedback(10);
+      setTimeout(() => {
+        btn.classList.remove('is-pressed');
+      }, 170);
+    }, { passive: true });
 
-      let step = 0;
-      const maxChars = Math.max(report.userId.length, report.topics.length, report.alerts.length);
-
-      liveWriteTimer = setInterval(() => {
-        step++;
-        state.sagaScanner.liveDraft.id = report.userId.slice(0, step);
-        state.sagaScanner.liveDraft.topics = report.topics.slice(0, step);
-        state.sagaScanner.liveDraft.alerts = report.alerts.slice(0, step);
-
-        const idField = document.getElementById('sagaLiveId');
-        const topField = document.getElementById('sagaLiveTopics');
-        const alField = document.getElementById('sagaLiveAlerts');
-        if (idField) idField.value = state.sagaScanner.liveDraft.id;
-        if (topField) topField.value = state.sagaScanner.liveDraft.topics;
-        if (alField) alField.value = state.sagaScanner.liveDraft.alerts;
-
-        if (step >= maxChars) {
-          clearInterval(liveWriteTimer);
-          liveWriteTimer = null;
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        const btn = event.target && event.target.closest ? event.target.closest('button, [role="button"]') : null;
+        if (btn) {
+          btn.classList.add('is-pressed');
+          setTimeout(() => btn.classList.remove('is-pressed'), 160);
         }
-      }, 45);
-    }
-
-    function startTarget10sWindow(targetId) {
-      const scan = state.sagaScanner;
-      scan.currentId = targetId;
-      scan.secondsLeft = 10; // Exatos 10 segundos por conta
-
-      const report = analyzeUserInClass(targetId, scan.targetClass);
-      animateLiveDraftWriting(report);
-
-      const existingIdx = scan.intelligenceTable.findIndex(r => r.userId === report.userId && r.classe === report.classe);
-      if (existingIdx >= 0) {
-        scan.intelligenceTable[existingIdx] = report;
-      } else {
-        scan.intelligenceTable.unshift(report);
       }
-      saveState();
+    }, { passive: true });
 
-      if (state.activeTab === 'admin' || state.activeTab === 'turma') {
-        renderCurrentTab();
-      }
-    }
-
-    function startSagaScan(classe) {
-      stopSagaScan(true);
-
-      const studentsInClass = state.users.filter(u => u.classe === classe).map(u => u.id);
-      const chatIdsInClass = (state.chats[classe] || []).map(m => m.userId).filter(Boolean);
-      const queue = [...new Set([...studentsInClass, ...chatIdsInClass])];
-      if (queue.length === 0) queue.push('AUR-2026-1042');
-
-      const scan = state.sagaScanner;
-      scan.active = true;
-      scan.targetClass = classe;
-      scan.queue = queue;
-      scan.index = 0;
-
-      showToast(`Varredura S.A.G.A. iniciada na ${classe} (10s por conta).`, 'info');
-      startTarget10sWindow(queue[0]);
-
-      scanTimer = setInterval(() => {
-        if (!state.sagaScanner.active) {
-          clearInterval(scanTimer);
-          scanTimer = null;
-          return;
-        }
-
-        if (state.sagaScanner.secondsLeft > 1) {
-          state.sagaScanner.secondsLeft -= 1;
-          if (state.activeTab === 'admin' || state.activeTab === 'turma') {
-            renderCurrentTab();
-          }
-          return;
-        }
-
-        const next = state.sagaScanner.index + 1;
-        if (next < state.sagaScanner.queue.length) {
-          state.sagaScanner.index = next;
-          startTarget10sWindow(state.sagaScanner.queue[next]);
-        } else {
-          stopSagaScan(false);
-          showToast(`Varredura S.A.G.A. concluída (${queue.length} conta(s)).`, 'success');
-        }
-      }, 1000);
-    }
-
-    function stopSagaScan(silent = false) {
-      if (scanTimer) {
-        clearInterval(scanTimer);
-        scanTimer = null;
-      }
-      if (liveWriteTimer) {
-        clearInterval(liveWriteTimer);
-        liveWriteTimer = null;
-      }
-      state.sagaScanner.active = false;
-      state.sagaScanner.secondsLeft = 0;
-      state.sagaScanner.currentId = '';
-      saveState();
-
-      if (!silent && (state.activeTab === 'admin' || state.activeTab === 'turma')) {
-        renderCurrentTab();
-      }
-    }
-
-    /* =======================================================================
-     * WIDGET FLUTUANTE S.A.G.A. (CANTO INFERIOR DIREITO)
-     * ======================================================================= */
-    function renderSagaWidget() {
-      const panel = document.getElementById('sagaPanel');
-      const feed = document.getElementById('sagaChatFeed');
-      if (!panel || !feed) return;
-
-      panel.classList.toggle('hidden', !state.sagaWidget.open);
-
-      feed.innerHTML = (state.sagaWidget.messages || []).map(m => {
-        const isSaga = m.sender === 'saga';
-        return `
-          <div class="rounded-xl border ${isSaga ? 'border-cyanGlow/30 bg-surface' : 'border-borderLine bg-obsidian'} p-2.5">
-            <div class="mb-1 flex items-center justify-between text-[10px]">
-              <span class="font-mono font-bold ${isSaga ? 'text-cyanGlow' : 'text-emeraldGlow'}">${isSaga ? 'S.A.G.A.' : 'VOCÊ'}</span>
-              <span class="font-mono text-slate-500">${escapeHtml(m.time)}</span>
-            </div>
-            <p class="whitespace-pre-line text-xs leading-relaxed text-slate-100">${escapeHtml(m.text)}</p>
-          </div>
-        `;
-      }).join('');
-
-      feed.scrollTop = feed.scrollHeight;
-    }
-
-    function askSagaAssistant(text) {
-      const clean = String(text || '').trim();
-      if (!clean) return;
-      const classe = state.session.classe;
-      const curso = state.session.curso;
-      const time = new Date().toLocaleTimeString('pt-AO', { hour: '2-digit', minute: '2-digit' });
-
-      state.sagaWidget.messages.push({ sender: 'user', time, text: clean });
-
-      const lower = clean.toLowerCase();
-      let reply = '';
-      if (lower.includes('questão') || lower.includes('pergunta') || lower.includes('treino')) {
-        const bank = ACADEMY_QUESTIONS[classe] || ACADEMY_QUESTIONS['10.ª Classe'];
-        const q = bank[Math.floor(Math.random() * bank.length)];
-        reply = `Questão (${classe}):\n${q.q}\n\nOpções: ${q.opts.join(' | ')}\n\nNota: ${q.exp}`;
-      } else {
-        reply = `S.A.G.A. (${classe} • ${curso}):\nSobre "${clean}", revê primeiro o conceito-base do tema e aplica-o num exercício resolvido. Clica em "+ Questão" se quiseres testar agora.`;
-      }
-
-      state.sagaWidget.messages.push({ sender: 'saga', time, text: reply });
-      saveState();
-      renderSagaWidget();
-    }
-
-    /* =======================================================================
-     * DELEGAÇÃO CENTRALIZADA DE CLIQUES / TOQUES E FORMULÁRIOS
-     * ======================================================================= */
     document.addEventListener('click', (event) => {
-      const authTabBtn = event.target.closest('[data-auth-tab]');
+      const target = event.target;
+      if (!target || !target.closest) return;
+
+      const authTabBtn = target.closest('[data-auth-tab]');
       if (authTabBtn) {
-        event.preventDefault();
-        switchAuthTab(authTabBtn.dataset.authTab);
+        setAuthTab(authTabBtn.dataset.authTab);
         return;
       }
 
-      const tabBtn = event.target.closest('[data-tab]');
-      if (tabBtn) {
-        event.preventDefault();
-        openTab(tabBtn.dataset.tab);
+      const navTabBtn = target.closest('[data-tab]');
+      if (navTabBtn) {
+        setActiveTab(navTabBtn.dataset.tab);
         return;
       }
 
-      const actionBtn = event.target.closest('[data-action]');
+      const actionBtn = target.closest('[data-action]');
       if (!actionBtn) return;
-
       const action = actionBtn.dataset.action;
 
       switch (action) {
@@ -1979,39 +1341,45 @@
             userId: demo.id,
             userName: demo.name,
             classe: demo.classe,
-            curso: demo.curso
+            curso: demo.curso,
+            avatar: demo.avatar || ''
           };
           state.activeTab = 'academy';
           saveState();
-          showToast(`Bem-vindo, ${demo.name} (${demo.id}).`, 'success');
+          showToast(`Entrou como ${demo.name} (${demo.id}).`, 'success');
           syncInterface();
           break;
         }
 
-        case 'toggle-menu':
-          setMenuOpen(!state.menuOpen);
-          break;
-
-        case 'close-menu':
-          setMenuOpen(false);
-          break;
-
         case 'logout':
-          stopSagaScan(true);
           state.session.loggedIn = false;
           state.session.role = 'student';
+          state.menuOpen = false;
           state.sagaWidget.open = false;
+          if (state.sagaScanner.active) {
+            stopSagaAccountScanner('Sessão terminada.');
+          }
           saveState();
           showToast('Sessão encerrada.', 'info');
           syncInterface();
           break;
 
+        case 'toggle-menu':
+          state.menuOpen = !state.menuOpen;
+          syncDrawer();
+          break;
+
+        case 'close-menu':
+          state.menuOpen = false;
+          syncDrawer();
+          break;
+
         case 'open-context-modal': {
           const modal = document.getElementById('contextModal');
-          const clsSel = document.getElementById('ctxClasseSelect');
-          const curSel = document.getElementById('ctxCursoSelect');
-          clsSel.value = state.session.classe;
-          fillCourseOptions(curSel, state.session.classe, state.session.curso);
+          const cSel = document.getElementById('ctxClasseSelect');
+          const crSel = document.getElementById('ctxCursoSelect');
+          cSel.value = state.session.classe;
+          fillCourseOptions(crSel, state.session.classe, state.session.curso);
           modal.classList.remove('hidden');
           modal.classList.add('flex');
           break;
@@ -2025,6 +1393,7 @@
         }
 
         case 'academy-pick': {
+          if (state.academy.submitted) return;
           const qIdx = Number(actionBtn.dataset.q);
           const oIdx = Number(actionBtn.dataset.o);
           state.academy.answers[qIdx] = oIdx;
@@ -2033,182 +1402,200 @@
           break;
         }
 
+        case 'academy-submit':
+          state.academy.submitted = true;
+          saveState();
+          showToast('Teste da Áurea Academy corrigido.', 'success');
+          renderCurrentTab();
+          break;
+
         case 'academy-reset':
           state.academy.answers = {};
           state.academy.submitted = false;
           saveState();
-          showToast('Questões reiniciadas.', 'info');
+          showToast('Novo treino iniciado.', 'info');
           renderCurrentTab();
           break;
 
-        case 'academy-finish':
-          state.academy.submitted = true;
-          saveState();
-          showToast('Avaliação concluída!', 'success');
-          renderCurrentTab();
+        case 'def-toggle-hint': {
+          const el = document.getElementById(`def-hint-${actionBtn.dataset.id}`);
+          if (el) el.classList.toggle('hidden');
           break;
+        }
 
-        case 'def-toggle-steps': {
-          const id = Number(actionBtn.dataset.id);
-          const item = (state.definitivo.bateria || []).find(x => x.id === id);
-          if (item) {
-            item.openStep = !item.openStep;
-            saveState();
-            renderCurrentTab();
-          }
+        case 'def-toggle-sol': {
+          const el = document.getElementById(`def-sol-${actionBtn.dataset.id}`);
+          if (el) el.classList.toggle('hidden');
           break;
         }
 
         case 'lado0-pick': {
-          const q = Number(actionBtn.dataset.q);
-          const o = Number(actionBtn.dataset.o);
-          state.lado0.answers[q] = o;
+          if (state.lado0.completed) return;
+          state.lado0.answers[Number(actionBtn.dataset.q)] = Number(actionBtn.dataset.o);
           saveState();
           renderCurrentTab();
           break;
         }
 
-        case 'lado0-complete':
+        case 'lado0-finish':
           state.lado0.completed = true;
           saveState();
-          showToast('Pausa ativa concluída!', 'success');
+          showToast('Pausa leve concluída.', 'success');
           renderCurrentTab();
           break;
 
         case 'lado0-new':
-          initLadoZeroRound();
+          initLado0Pool(true);
+          saveState();
+          showToast('Nova sequência do Lado 0.', 'info');
+          renderCurrentTab();
+          break;
+
+        case 'clear-chat-image':
+          state.draftAttachments.chatImage = '';
           saveState();
           renderCurrentTab();
           break;
 
-        case 'simulate-classmate-msg': {
-          const cls = state.session.classe;
-          if (!state.chats[cls]) state.chats[cls] = [];
-          const samples = [
-            'Alguém pode confirmar a fórmula principal desta matéria?',
-            'Já concluí os 10 exercícios diários na Áurea Academy!',
-            'Vamos rever este tópico antes do teste da semana.'
-          ];
-          const text = samples[Math.floor(Math.random() * samples.length)];
-          const simId = `AUR-2026-${Math.floor(2000 + Math.random() * 7000)}`;
-          state.chats[cls].push({
-            id: Date.now(),
-            userId: simId,
-            author: `Colega da Turma • ${simId}`,
-            time: new Date().toLocaleTimeString('pt-AO', { hour: '2-digit', minute: '2-digit' }),
-            text,
-            topic: classifyTopic(text, cls),
-            edited: false,
-            deleted: false,
-            flagged: false
-          });
+        case 'clear-manager-image':
+          state.draftAttachments.managerImage = '';
           saveState();
+          renderCurrentTab();
+          break;
+
+        case 'edit-chat-msg': {
+          const msgId = Number(actionBtn.dataset.msgid);
+          const cls = state.session.classe;
+          const list = state.chats[cls] || [];
+          const msg = list.find(x => x.id === msgId);
+          if (!msg || msg.deleted) return;
+          const updatedText = `${msg.text} (revisto)`;
+          msg.text = updatedText;
+          msg.edited = true;
+          msg.topic = classifyTopic(updatedText, cls);
+          saveState();
+          showToast('Mensagem editada e registada na auditoria.', 'info');
           renderCurrentTab();
           break;
         }
 
-        case 'chat-edit': {
+        case 'delete-chat-msg': {
+          const msgId = Number(actionBtn.dataset.msgid);
           const cls = state.session.classe;
-          const msgId = Number(actionBtn.dataset.id);
-          const target = (state.chats[cls] || []).find(m => m.id === msgId);
-          if (target && !target.deleted) {
-            target.originalText = target.originalText || target.text;
-            target.text = `${target.text} (editado às ${new Date().toLocaleTimeString('pt-AO', { hour: '2-digit', minute: '2-digit' })})`;
-            target.edited = true;
-            saveState();
-            showToast('Mensagem editada.', 'info');
-            renderCurrentTab();
-          }
+          const list = state.chats[cls] || [];
+          const msg = list.find(x => x.id === msgId);
+          if (!msg) return;
+          if (!msg.originalText) msg.originalText = msg.text;
+          msg.deleted = true;
+          msg.flagged = true;
+          msg.text = '[MENSAGEM APAGADA DO CHAT]';
+          saveState();
+          showToast('Mensagem marcada como apagada para auditoria.', 'warn');
+          renderCurrentTab();
           break;
         }
 
-        case 'chat-delete': {
-          const cls = state.session.classe;
-          const msgId = Number(actionBtn.dataset.id);
-          const target = (state.chats[cls] || []).find(m => m.id === msgId);
-          if (target && !target.deleted) {
-            target.originalText = target.originalText || target.text;
-            target.text = '[MENSAGEM ELIMINADA PELO UTILIZADOR]';
-            target.deleted = true;
-            target.flagged = true;
-            saveState();
-            showToast('Mensagem eliminada e registada para auditoria.', 'warn');
-            renderCurrentTab();
-          }
-          break;
-        }
-
-        case 'mgr-toggle-task': {
-          const tid = actionBtn.dataset.id;
-          const task = state.manager.tarefas.find(t => t.id === tid);
-          if (task) {
-            task.done = !task.done;
+        case 'toggle-mgr-task': {
+          const tk = state.manager.tarefas.find(t => t.id === actionBtn.dataset.taskid);
+          if (tk) {
+            tk.done = !tk.done;
             saveState();
             renderCurrentTab();
           }
           break;
         }
 
-        case 'start-saga-scan': {
-          const sel = document.getElementById('adminClassSelector');
-          const cls = actionBtn.dataset.classe || (sel ? sel.value : state.session.classe);
-          startSagaScan(cls);
+        case 'select-color-preset': {
+          state.appearance.accentHex = actionBtn.dataset.hex || '#38bdf8';
+          state.appearance.presetName = actionBtn.dataset.preset || 'Personalizada';
+          applyAppearanceTheme();
+          saveState();
+          showToast(`Cor aplicada: ${state.appearance.presetName}.`, 'info');
+          renderCurrentTab();
           break;
         }
 
-        case 'stop-saga-scan':
-          stopSagaScan(false);
-          showToast('Varredura S.A.G.A. interrompida.', 'info');
-          break;
-
-        case 'inspect-target-chat': {
-          const sel = document.getElementById('adminClassSelector');
-          if (sel) state.session.classe = sel.value;
-          openTab('turma');
+        case 'reset-appearance': {
+          state.appearance = { presetName: 'Ciano Oceano', accentHex: '#38bdf8', surfaceTheme: 'obsidian' };
+          applyAppearanceTheme();
+          saveState();
+          showToast('Cores restauradas para o padrão.', 'info');
+          renderCurrentTab();
           break;
         }
 
-        case 'user-toggle-status': {
-          const uid = actionBtn.dataset.id;
+        case 'remove-perfil-avatar': {
+          state.draftAttachments.perfilAvatar = '';
+          state.session.avatar = '';
+          const u = state.users.find(x => x.id === state.session.userId);
+          if (u) u.avatar = '';
+          syncUserAvatars();
+          saveState();
+          showToast('Foto de perfil removida.', 'info');
+          renderCurrentTab();
+          break;
+        }
+
+        case 'save-profile-info': {
+          const nameInput = document.getElementById('perfilNameInput');
+          const nextName = (nameInput ? nameInput.value : '').trim() || state.session.userName;
+          const nextAvatar = state.draftAttachments.perfilAvatar || state.session.avatar || '';
+          state.session.userName = nextName;
+          state.session.avatar = nextAvatar;
+          state.draftAttachments.perfilAvatar = '';
+          const u = state.users.find(x => x.id === state.session.userId);
+          if (u) {
+            u.name = nextName;
+            u.avatar = nextAvatar;
+          }
+          syncInterface();
+          saveState();
+          showToast('Perfil e foto atualizados.', 'success');
+          break;
+        }
+
+        case 'admin-toggle-user': {
+          if (state.session.role !== 'manager2012' && state.session.role !== 'director2013') return;
+          const uid = actionBtn.dataset.uid;
           const u = state.users.find(x => x.id === uid);
           if (u) {
             u.status = u.status === 'ativo' ? 'suspenso' : 'ativo';
             saveState();
-            showToast(`Conta ${u.id} agora está ${u.status}.`, 'info');
+            showToast(`Conta ${uid}: ${u.status}.`, 'info');
             renderCurrentTab();
           }
           break;
         }
 
-        case 'user-remove': {
-          const uid = actionBtn.dataset.id;
-          state.users = state.users.filter(x => x.id !== uid);
-          saveState();
-          showToast(`Conta ${uid} removida.`, 'warn');
-          renderCurrentTab();
+        case 'admin-start-saga-scan': {
+          if (state.session.role !== 'director2013') {
+            showToast('Apenas a direção total pode iniciar a varredura S.A.G.A.', 'warn');
+            return;
+          }
+          const sel = document.getElementById('adminClassSelector');
+          const targetClass = sel ? sel.value : (state.sagaScanner.targetClass || state.session.classe);
+          startSagaAccountScanner(targetClass);
           break;
         }
 
-        case 'toggle-module-lock': {
-          const mod = actionBtn.dataset.mod;
-          const locked = state.systemConfig.lockedModules || [];
-          if (locked.includes(mod)) {
-            state.systemConfig.lockedModules = locked.filter(x => x !== mod);
+        case 'admin-stop-saga-scan':
+          stopSagaAccountScanner('Varredura interrompida pela direção.');
+          break;
+
+        case 'admin-toggle-lado0-lock': {
+          if (state.session.role !== 'director2013') return;
+          const idx = state.systemConfig.lockedModules.indexOf('lado0');
+          if (idx >= 0) {
+            state.systemConfig.lockedModules.splice(idx, 1);
+            showToast('Lado 0 desbloqueado para alunos.', 'success');
           } else {
-            state.systemConfig.lockedModules = [...locked, mod];
+            state.systemConfig.lockedModules.push('lado0');
+            showToast('Lado 0 bloqueado para alunos.', 'warn');
           }
           saveState();
           renderCurrentTab();
           break;
         }
-
-        case 'system-full-reset':
-          stopSagaScan(true);
-          state = buildInitialState();
-          saveState();
-          showToast('Sistema reposto para os dados iniciais.', 'info');
-          syncInterface();
-          break;
 
         case 'saga-toggle':
           state.sagaWidget.open = !state.sagaWidget.open;
@@ -2220,11 +1607,41 @@
           state.sagaWidget.open = true;
           askSagaAssistant('Gera uma questão prática agora');
           break;
+
+        case 'saga-voice-toggle': {
+          const next = !(state.sagaWidget.voiceEnabled && state.sagaWidget.autoSpeak);
+          state.sagaWidget.voiceEnabled = next;
+          state.sagaWidget.autoSpeak = next;
+          if (!next) stopSagaSpeech();
+          saveState();
+          renderSagaWidget();
+          showToast(next ? 'Voz do S.A.G.A. ativada.' : 'Voz do S.A.G.A. silenciada.', 'info');
+          break;
+        }
+
+        case 'saga-voice-stop':
+          stopSagaSpeech();
+          showToast('Leitura por voz interrompida.', 'info');
+          break;
+
+        case 'saga-speak-msg': {
+          const idx = Number(actionBtn.dataset.idx);
+          const msg = state.sagaWidget.messages?.[idx];
+          if (msg && msg.text) {
+            state.sagaWidget.voiceEnabled = true;
+            speakSagaText(msg.text, true);
+          }
+          break;
+        }
+
+        case 'saga-mic-start':
+          startSagaVoiceDictation();
+          break;
       }
     });
 
     /* =======================================================================
-     * SUBMISSÃO DE FORMULÁRIOS E ALTERAÇÃO DE SELECTS
+     * SUBMISSÃO DE FORMULÁRIOS E ALTERAÇÃO DE INPUTS / SELECTS / FOTOS
      * ======================================================================= */
     document.addEventListener('submit', (event) => {
       const form = event.target;
@@ -2252,7 +1669,8 @@
             userId: found.id,
             userName: found.name,
             classe: found.classe,
-            curso: found.curso
+            curso: found.curso,
+            avatar: found.avatar || ''
           };
           state.activeTab = 'academy';
           saveState();
@@ -2266,6 +1684,7 @@
           const password = document.getElementById('regPassword').value;
           const classe = document.getElementById('regClasse').value;
           const curso = document.getElementById('regCurso').value;
+          const avatar = state.draftAttachments?.regAvatar || '';
 
           if (!name || !password) {
             showToast('Preencha o nome e a palavra-passe.', 'warn');
@@ -2279,16 +1698,19 @@
             password,
             classe,
             curso,
+            avatar,
             status: 'ativo'
           });
 
+          state.draftAttachments.regAvatar = '';
           state.session = {
             loggedIn: true,
             role: 'student',
             userId: newId,
             userName: name,
             classe,
-            curso
+            curso,
+            avatar
           };
           state.activeTab = 'academy';
           state.academy = { answers: {}, submitted: false };
@@ -2314,7 +1736,8 @@
             userId: is2013 ? 'DIR-2026-001' : 'GST-2026-002',
             userName: staffName,
             classe: state.session.classe || '10.ª Classe',
-            curso: state.session.curso || 'Ciências Económicas e Jurídicas - CEJ'
+            curso: state.session.curso || 'Ciências Económicas e Jurídicas - CEJ',
+            avatar: state.session.avatar || ''
           };
           state.activeTab = 'admin';
           document.getElementById('staffPassInput').value = '';
@@ -2364,23 +1787,28 @@
         case 'formTurmaChat': {
           const input = document.getElementById('turmaChatInput');
           const text = input.value.trim();
-          if (!text) return;
+          const img = state.draftAttachments?.chatImage || '';
+          if (!text && !img) return;
 
           const cls = state.session.classe;
           if (!state.chats[cls]) state.chats[cls] = [];
 
+          const finalText = text || '[Imagem anexada]';
           state.chats[cls].push({
             id: Date.now(),
             userId: state.session.userId,
             author: `${state.session.userName} • ${state.session.userId}`,
+            avatar: state.session.avatar || '',
+            image: img,
             time: new Date().toLocaleTimeString('pt-AO', { hour: '2-digit', minute: '2-digit' }),
-            text,
-            topic: classifyTopic(text, cls),
+            text: finalText,
+            topic: classifyTopic(finalText, cls),
             edited: false,
             deleted: false,
-            flagged: detectStrangePattern(text)
+            flagged: detectStrangePattern(finalText)
           });
           input.value = '';
+          state.draftAttachments.chatImage = '';
           saveState();
           renderCurrentTab();
           break;
@@ -2390,14 +1818,17 @@
           const desc = document.getElementById('mgrDescInput').value.trim();
           const tipo = document.getElementById('mgrTipoSelect').value;
           const valor = Number(document.getElementById('mgrValorInput').value);
+          const img = state.draftAttachments?.managerImage || '';
           if (!desc || valor <= 0) return;
 
           state.manager.movimentos.unshift({
             id: Date.now(),
             desc,
             tipo,
-            valor
+            valor,
+            image: img
           });
+          state.draftAttachments.managerImage = '';
           saveState();
           showToast('Movimento financeiro registado.', 'success');
           renderCurrentTab();
@@ -2415,7 +1846,7 @@
       }
     });
 
-    document.addEventListener('change', (event) => {
+    document.addEventListener('change', async (event) => {
       const target = event.target;
       if (!target) return;
 
@@ -2426,11 +1857,64 @@
       } else if (target.id === 'adminClassSelector') {
         state.sagaScanner.targetClass = target.value;
         saveState();
+      } else if (target.id === 'customAccentPicker') {
+        state.appearance.accentHex = target.value;
+        state.appearance.presetName = 'Personalizada';
+        applyAppearanceTheme();
+        saveState();
+        const hexLbl = document.getElementById('customAccentHexLabel');
+        if (hexLbl) hexLbl.textContent = target.value.toUpperCase();
+      } else if (target.id === 'surfaceThemeSelect') {
+        state.appearance.surfaceTheme = target.value;
+        applyAppearanceTheme();
+        saveState();
+        showToast('Tema escuro atualizado.', 'info');
+      } else if (target.id === 'regAvatarFile' && target.files && target.files[0]) {
+        try {
+          const compressed = await compressImageFile(target.files[0], 240, 0.78);
+          state.draftAttachments.regAvatar = compressed;
+          const prev = document.getElementById('regAvatarPreviewBox');
+          if (prev) prev.innerHTML = renderAvatarMarkup(compressed, 'Aluno', 'h-full w-full text-base');
+          showToast('Foto carregada para a nova conta.', 'success');
+        } catch (err) {
+          showToast('Não foi possível processar a imagem.', 'warn');
+        }
+      } else if (target.id === 'perfilAvatarFileInput' && target.files && target.files[0]) {
+        try {
+          const compressed = await compressImageFile(target.files[0], 260, 0.8);
+          state.draftAttachments.perfilAvatar = compressed;
+          const prev = document.getElementById('perfilAvatarPreview');
+          if (prev) prev.innerHTML = renderAvatarMarkup(compressed, state.session.userName, 'h-20 w-20 text-lg');
+          showToast('Nova foto pronta. Clique em "Guardar Perfil e Foto".', 'info');
+        } catch (err) {
+          showToast('Não foi possível processar a foto.', 'warn');
+        }
+      } else if (target.id === 'chatImageFileInput' && target.files && target.files[0]) {
+        try {
+          const compressed = await compressImageFile(target.files[0], 640, 0.76);
+          state.draftAttachments.chatImage = compressed;
+          saveState();
+          renderCurrentTab();
+          showToast('Imagem anexada ao chat.', 'success');
+        } catch (err) {
+          showToast('Não foi possível anexar a imagem.', 'warn');
+        }
+      } else if (target.id === 'mgrImageFileInput' && target.files && target.files[0]) {
+        try {
+          const compressed = await compressImageFile(target.files[0], 640, 0.76);
+          state.draftAttachments.managerImage = compressed;
+          saveState();
+          renderCurrentTab();
+          showToast('Imagem anexada ao lançamento.', 'success');
+        } catch (err) {
+          showToast('Não foi possível anexar a imagem.', 'warn');
+        }
       }
     });
 
     function bootstrapApp() {
       try {
+        applyAppearanceTheme();
         const regClasse = document.getElementById('regClasse');
         const regCurso = document.getElementById('regCurso');
         if (regClasse && regCurso) {
@@ -2439,6 +1923,7 @@
         syncInterface();
       } catch (err) {
         state = buildInitialState();
+        applyAppearanceTheme();
         syncInterface();
       }
     }
