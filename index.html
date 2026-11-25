@@ -64,9 +64,15 @@
       cursor: pointer;
     }
     .pro-card {
-      background: rgba(10, 18, 32, 0.9);
+      background: rgba(10, 18, 32, 0.92);
       border: 1px solid rgba(148, 163, 184, 0.16);
       box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+    }
+    .how-to-box {
+      background: rgba(4, 8, 17, 0.88);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      border-radius: 0.75rem;
+      padding: 0.75rem 0.9rem;
     }
     .star-mark {
       color: #f6dc7c;
@@ -88,16 +94,16 @@
 
   <!-- Modal de Login Académico -->
   <div id="loginModal" class="hidden fixed inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-    <div class="w-full max-w-lg pro-card rounded-2xl p-6 space-y-4">
+    <div class="w-full max-w-xl pro-card rounded-2xl p-6 space-y-4 max-h-[92vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div>
           <span class="font-mono text-[11px] uppercase tracking-widest text-sky-400">Credencial Académica</span>
-          <h2 class="font-display text-3xl font-bold text-white">Acesso do Estudante</h2>
+          <h2 class="font-display text-3xl font-bold text-white">Acesso &amp; Preferências do Estudante</h2>
         </div>
         <button type="button" id="btnCloseLogin" class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300">✕</button>
       </div>
 
-      <form id="loginForm" class="space-y-3.5">
+      <form id="loginForm" class="space-y-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label for="loginNameInput" class="block text-xs font-semibold text-slate-300 mb-1">Nome Completo</label>
@@ -143,13 +149,8 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
           <div>
-            <label for="profileColorSelect" class="block text-xs font-semibold text-slate-300 mb-1">Cor das Mensagens do Usuário</label>
-            <select id="profileColorSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white">
-              <option value="steelBlue">Azul Aço (#1e3a5f)</option>
-              <option value="slateGraphite">Grafite Escuro (#1e293b)</option>
-              <option value="forestDark">Verde Pinheiro (#132a24)</option>
-              <option value="bronzeEarth">Castanho Sóbrio (#2c2118)</option>
-            </select>
+            <label for="profileColorSelect" class="block text-xs font-semibold text-slate-300 mb-1">Cor das Mensagens do Usuário (20 Opções)</label>
+            <select id="profileColorSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-sky-400 focus:outline-none text-sm text-white"></select>
           </div>
           <div>
             <label for="profileAvatarInput" class="block text-xs font-semibold text-slate-300 mb-1">Foto de Perfil</label>
@@ -157,9 +158,11 @@
           </div>
         </div>
 
+        <div id="colorSwatchesPreview" class="grid grid-cols-5 sm:grid-cols-10 gap-1.5 pt-1"></div>
+
         <div class="flex justify-end gap-2 pt-2">
           <button type="button" id="btnCancelLogin" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-300">Cancelar</button>
-          <button type="submit" class="px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Entrar no Sistema</button>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Guardar &amp; Entrar</button>
         </div>
       </form>
     </div>
@@ -194,6 +197,7 @@
             <div class="flex items-center gap-2 flex-wrap">
               <span class="font-display text-xl md:text-2xl font-bold tracking-wide text-white">EXorg MT — Sistema Áurea</span>
               <span id="networkStatusPill" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">REDE ATIVA</span>
+              <span id="sagaBridgeStatusPill" class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">S.A.G.A. PENDENTE</span>
             </div>
             <p class="text-xs text-slate-400">Complexo Escolar Privado Madre Trindade</p>
           </div>
@@ -210,11 +214,11 @@
         </div>
       </div>
 
-      <!-- Navegação: abas restritas ocultas por padrão para alunos -->
+      <!-- Navegação principal: abas restritas ocultas por padrão para alunos -->
       <nav aria-label="Módulos principais" class="max-w-6xl mx-auto px-4 pb-3 flex items-center gap-2 overflow-x-auto" id="mainNavTabs">
         <button type="button" data-tab="saga" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-500 text-slate-950 whitespace-nowrap transition">S.A.G.A.</button>
         <button type="button" data-tab="chat" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">Chat da Turma &amp; DMs</button>
-        <button type="button" data-tab="cej" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">CEJ &amp; Saúde Mental</button>
+        <button type="button" data-tab="cej" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">CEJ, Saúde Mental &amp; Bem-Estar</button>
         <button type="button" data-tab="exam" data-restricted-tab="exam" class="nav-tab hidden px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">Avaliação Cronometrada</button>
         <button type="button" data-tab="governance" data-restricted-tab="governance" class="nav-tab hidden px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition">Governança &amp; IA Infiltrada</button>
       </nav>
@@ -222,7 +226,7 @@
 
     <main class="max-w-6xl w-full mx-auto px-4 py-6 space-y-6 flex-1">
 
-      <!-- 1. NÚCLEO S.A.G.A. + CALCULADORA -->
+      <!-- 1. NÚCLEO S.A.G.A. + OPÇÃO NOVA "ESTUDAR COISAS NOVAS" (COM SELO NEW) + CALCULADORA LIGADA -->
       <section id="panel-saga" class="module-sec space-y-5">
         <div class="pro-card rounded-2xl p-5 md:p-6 space-y-4">
           <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
@@ -249,9 +253,29 @@
             </div>
           </div>
 
+          <!-- Opção Nova: Estudar Coisas Novas com selo NEW em cima -->
+          <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="relative inline-block pt-4">
+                <span class="absolute top-0 left-0 px-2 py-0.5 rounded text-[10px] font-mono font-extrabold uppercase tracking-wider bg-amber-400 text-slate-950 shadow">
+                  NEW
+                </span>
+                <button type="button" id="btnStudyNewThings" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-sky-400/40 text-xs font-bold text-white transition">
+                  Estudar Coisas Novas
+                </button>
+              </div>
+              <span id="newStudyAvailabilityBadge" class="text-[11px] font-mono px-3 py-1.5 rounded-lg bg-slate-900 border border-amber-400/35 text-amber-300 self-start sm:self-center">
+                Disponível quando resolvermos o S.A.G.A.
+              </span>
+            </div>
+            <div class="how-to-box text-xs text-slate-400">
+              <strong class="text-slate-200">Como usar:</strong> este botão abre conteúdos e desafios novos fora do roteiro padrão. Já está visível aqui, mas só fica totalmente operacional quando concluirmos a ligação final do <strong class="text-sky-300">S.A.G.A.</strong>
+            </div>
+          </div>
+
           <div id="sagaStream" class="space-y-3 max-h-96 overflow-y-auto p-4 rounded-xl bg-slate-950/85 border border-slate-800">
-            <div class="p-3.5 rounded-xl bg-[#101c31] border border-sky-500/25 text-sm text-slate-100 leading-relaxed">
-              <div class="text-[11px] font-mono text-sky-400 mb-1">S.A.G.A.</div>
+            <div class="p-3.5 rounded-xl bg-[#0e192d] border border-sky-400/35 text-sm text-slate-100 leading-relaxed">
+              <div class="text-[11px] font-mono text-sky-400 mb-1">S.A.G.A. • Núcleo Inteligente</div>
               Pronto para trabalhar contigo, Sófocles. Pode ser estudo de CFB, CEJ ou CH, criação e gestão de empresa, histórias com problemas reais ou apoio emocional. Se a rede cair, assumo direto como calculadora simples, científica e financeira.
             </div>
           </div>
@@ -262,16 +286,23 @@
           </form>
         </div>
 
+        <!-- Calculadora Simples, Científica e Financeira (contacta diretamente com CEJ e Gráficos) -->
         <div id="offlineCalculatorCard" class="pro-card rounded-2xl p-5 md:p-6 space-y-4">
           <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
             <div>
               <h3 class="font-display text-2xl font-bold text-white">Calculadora Simples, Científica &amp; Financeira</h3>
-              <p id="calcNetworkNote" class="text-xs text-slate-400">Disponível a qualquer momento e ativada automaticamente pelo S.A.G.A. quando a rede falha.</p>
+              <p id="calcNetworkNote" class="text-xs text-slate-400">
+                Ativada automaticamente quando a rede falha e ligada às missões e gráficos do CEJ.
+              </p>
             </div>
-            <div class="flex gap-1.5">
+            <div class="flex gap-1.5 flex-wrap">
               <button type="button" data-calc-mode="sci" class="calc-mode-btn px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 text-xs font-bold">Simples / Científica</button>
               <button type="button" data-calc-mode="fin" class="calc-mode-btn px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 border border-slate-700 text-xs font-semibold">Financeira</button>
             </div>
+          </div>
+
+          <div class="how-to-box text-xs text-slate-400">
+            <strong class="text-slate-200">Como usar:</strong> faz contas simples, científicas (<code class="font-mono text-sky-300">sqrt(144)</code>, <code class="font-mono text-sky-300">sin(30)</code>, <code class="font-mono text-sky-300">log10(1000)</code>) ou financeiras (juro simples/composto) e envia o valor calculado direto para as <strong>Missões CEJ</strong> ou para <strong>Gerar Gráficos</strong>.
           </div>
 
           <div id="calcSciPanel" class="space-y-3">
@@ -288,7 +319,13 @@
               <button type="button" data-fn="ln(" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">ln()</button>
               <button type="button" data-fn="^" class="calc-fn-btn px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-slate-200">x^y</button>
             </div>
-            <div id="calcSciOutput" class="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-sm text-sky-300">Resultado: —</div>
+            <div class="flex flex-wrap items-center justify-between gap-2 p-3 rounded-xl bg-slate-950 border border-slate-800">
+              <div id="calcSciOutput" class="font-mono text-sm text-sky-300">Resultado: —</div>
+              <div class="flex gap-2 flex-wrap">
+                <button type="button" id="btnCalcToMission" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-[11px] font-semibold text-amber-300">Enviar p/ Missão CEJ</button>
+                <button type="button" id="btnCalcToChart" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-[11px] font-semibold text-emerald-300">Enviar p/ Gráfico CEJ</button>
+              </div>
+            </div>
           </div>
 
           <div id="calcFinPanel" class="hidden space-y-3">
@@ -306,7 +343,10 @@
                 <input id="finPeriodsInput" type="number" step="1" placeholder="12" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
               </div>
             </div>
-            <button type="button" id="btnEvalFin" class="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Calcular Juro Simples &amp; Composto</button>
+            <div class="flex flex-wrap gap-2">
+              <button type="button" id="btnEvalFin" class="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Calcular Juro Simples &amp; Composto</button>
+              <button type="button" id="btnSendFinToCej" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-semibold text-sky-300">Enviar Montante p/ CEJ</button>
+            </div>
             <div id="calcFinOutput" class="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-sky-300 space-y-1">
               <div>Juro Simples / Composto: aguarda valores.</div>
             </div>
@@ -314,7 +354,7 @@
         </div>
       </section>
 
-      <!-- 2. CHAT DA TURMA & DMs -->
+      <!-- 2. CHAT DA TURMA & DMs (20 CORES DISTINTAS DO S.A.G.A.) -->
       <section id="panel-chat" class="module-sec hidden space-y-5">
         <div class="pro-card rounded-2xl p-5 md:p-6 space-y-4">
           <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
@@ -336,6 +376,10 @@
             </div>
           </div>
 
+          <div class="how-to-box text-xs text-slate-400">
+            <strong class="text-slate-200">Como usar:</strong> seleciona <strong class="text-slate-200">Canal da Turma</strong> ou <strong class="text-slate-200">DM Privada</strong>. Cada utilizador pode escolher entre 20 cores distintas (como Dourado Queimado, Roxo Real, Violeta Imperial, Cobalto Real ou Esmeralda Escuro), sempre separadas do visual do S.A.G.A.
+          </div>
+
           <div id="chatStreamBox" class="space-y-2.5 max-h-96 overflow-y-auto p-4 rounded-xl bg-slate-950/85 border border-slate-800"></div>
 
           <form id="chatMessageForm" class="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center">
@@ -350,15 +394,67 @@
         </div>
       </section>
 
-      <!-- 3. CEJ & SAÚDE MENTAL -->
-      <section id="panel-cej" class="module-sec hidden space-y-5">
+      <!-- 3. CEJ (MISSÕES SEPARADAS DE GERAR GRÁFICOS), SAÚDE MENTAL SEPARADA DE BEM-ESTAR -->
+      <section id="panel-cej" class="module-sec hidden space-y-6">
+
+        <!-- Bloco A: Missões CEJ (separado) + Gerar Gráficos (separado, alimentado pelas missões + calculadora) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <!-- Botão e Bloco de Missões CEJ -->
           <div class="pro-card rounded-2xl p-6 space-y-4">
-            <h3 class="font-display text-3xl font-bold text-white">CEJ — Indicadores &amp; Gráficos Empresariais</h3>
-            <p class="text-xs text-slate-400">Simulação de receitas, custos e margem líquida para análise empresarial no curso CEJ.</p>
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <h3 class="font-display text-3xl font-bold text-white">Missões CEJ</h3>
+              <button type="button" id="btnRunCejMission" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">
+                Concluir Missão CEJ
+              </button>
+            </div>
+
+            <div class="how-to-box text-xs text-slate-400">
+              <strong class="text-slate-200">Como usar:</strong> escolhe uma missão empresarial do CEJ e o valor apurado (ou trazido da calculadora). Ao clicar em <strong class="text-sky-300">Concluir Missão CEJ</strong>, o resultado soma-se aos indicadores e envia os dados para <strong>Gerar Gráficos</strong>.
+            </div>
+
+            <div class="space-y-3">
+              <div>
+                <label for="cejMissionSelect" class="block text-xs font-semibold text-slate-300 mb-1">Missão Prática (Gerência de Empresa)</label>
+                <select id="cejMissionSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white">
+                  <option value="Fluxo de Caixa Mensal">Fluxo de Caixa Mensal (Receita Operacional)</option>
+                  <option value="Controlo de Custos Diretos">Controlo de Custos Diretos &amp; Fornecedores</option>
+                  <option value="Provisão Fiscal & Tributos">Provisão Fiscal &amp; Tributos</option>
+                  <option value="Margem de Expansão CEJ">Margem de Expansão &amp; Capital de Giro</option>
+                </select>
+              </div>
+              <div>
+                <label for="cejMissionValueInput" class="block text-xs font-semibold text-slate-300 mb-1">Valor da Missão (Kz / Unidade)</label>
+                <input id="cejMissionValueInput" type="number" step="any" value="120000" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
+              </div>
+            </div>
+
+            <div id="cejMissionHistoryBox" class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 space-y-1 max-h-36 overflow-y-auto">
+              <div>Nenhuma missão CEJ concluída ainda.</div>
+            </div>
+          </div>
+
+          <!-- Botão e Bloco Separado: Gerar Gráficos (vinculado às Missões CEJ e à Calculadora) -->
+          <div class="pro-card rounded-2xl p-6 space-y-4">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <h3 class="font-display text-3xl font-bold text-white">Gerar Gráficos</h3>
+              <div class="flex items-center gap-2">
+                <select id="cejChartStyleSelect" class="px-2.5 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-slate-200">
+                  <option value="bar">Barras Comparativas</option>
+                  <option value="line">Linha de Evolução</option>
+                </select>
+                <button type="button" id="btnGenerateCejChart" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs">
+                  Gerar Gráficos
+                </button>
+              </div>
+            </div>
+
+            <div class="how-to-box text-xs text-slate-400">
+              <strong class="text-slate-200">Como usar:</strong> este bloco recebe os resultados das <strong>Missões CEJ</strong> e da <strong>Calculadora</strong>. Escolhe o estilo do gráfico e clica em <strong class="text-emerald-300">Gerar Gráficos</strong> para atualizar a análise de receitas, custos, impostos e resultado líquido.
+            </div>
+
             <div class="grid grid-cols-3 gap-2">
               <div>
-                <label for="cejRevInput" class="block text-[11px] text-slate-400 mb-1">Receita</label>
+                <label for="cejRevInput" class="block text-[11px] text-slate-400 mb-1">Receita / Missões</label>
                 <input id="cejRevInput" type="number" value="450000" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
               </div>
               <div>
@@ -370,17 +466,30 @@
                 <input id="cejTaxInput" type="number" value="45000" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white" />
               </div>
             </div>
-            <button type="button" id="btnRenderCejChart" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Atualizar Gráfico</button>
-            <canvas id="cejBusinessChart" width="520" height="210" class="w-full rounded-xl bg-slate-950 border border-slate-800"></canvas>
+
+            <canvas id="cejBusinessChart" width="520" height="205" class="w-full rounded-xl bg-slate-950 border border-slate-800"></canvas>
             <div id="cejKpiSummary" class="text-xs font-mono text-sky-300"></div>
           </div>
+        </div>
 
+        <!-- Bloco B: Saúde Mental (separada) e Bem-Estar (separado), cada um com botão próprio e quadrado "Como usar" -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <!-- Saúde Mental (Botão próprio + Quadrado Como usar) -->
           <div class="pro-card rounded-2xl p-6 space-y-4">
-            <h3 class="font-display text-3xl font-bold text-white">Indicador de Saúde Mental (%)</h3>
-            <p class="text-xs text-slate-400">Avalia o equilíbrio entre sono, carga de estudo, pressão e tranquilidade diária.</p>
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <h3 class="font-display text-3xl font-bold text-white">Saúde Mental</h3>
+              <button type="button" id="btnCalcMentalHealth" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">
+                Calcular Saúde Mental
+              </button>
+            </div>
+
+            <div class="how-to-box text-xs text-slate-400">
+              <strong class="text-slate-200">Como usar:</strong> ajusta os três indicadores abaixo (sono, tranquilidade e alívio de pressão) e clica em <strong class="text-sky-300">Calcular Saúde Mental</strong> para ver a percentagem atual e a orientação de ritmo.
+            </div>
+
             <div class="space-y-3 text-xs">
               <div>
-                <div class="flex justify-between mb-1"><span>Qualidade do Sono &amp; Descanso</span><span id="mhSleepVal" class="font-mono text-sky-300">70%</span></div>
+                <div class="flex justify-between mb-1"><span>Sono &amp; Descanso</span><span id="mhSleepVal" class="font-mono text-sky-300">70%</span></div>
                 <input id="mhSleepRange" type="range" min="0" max="100" value="70" class="w-full" />
               </div>
               <div>
@@ -388,14 +497,48 @@
                 <input id="mhCalmRange" type="range" min="0" max="100" value="65" class="w-full" />
               </div>
               <div>
-                <div class="flex justify-between mb-1"><span>Alívio de Pressão Académica (100 = sem sobrecarga)</span><span id="mhLoadVal" class="font-mono text-sky-300">60%</span></div>
+                <div class="flex justify-between mb-1"><span>Alívio de Pressão Académica</span><span id="mhLoadVal" class="font-mono text-sky-300">60%</span></div>
                 <input id="mhLoadRange" type="range" min="0" max="100" value="60" class="w-full" />
               </div>
             </div>
-            <button type="button" id="btnCalcMentalHealth" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs">Calcular Percentagem</button>
+
             <div id="mentalHealthResultBox" class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-              <div class="font-mono text-lg text-sky-300" id="mentalHealthPctText">Percentagem: 65%</div>
+              <div class="font-mono text-lg text-sky-300" id="mentalHealthPctText">Saúde Mental: 65%</div>
               <p class="text-xs text-slate-400" id="mentalHealthAdviceText">Ritmo moderado. Mantém pausas regulares.</p>
+            </div>
+          </div>
+
+          <!-- Bem-Estar (Botão próprio separado + Quadrado Como usar) -->
+          <div class="pro-card rounded-2xl p-6 space-y-4">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <h3 class="font-display text-3xl font-bold text-white">Bem-Estar</h3>
+              <button type="button" id="btnRegisterWellbeing" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs">
+                Registar Bem-Estar
+              </button>
+            </div>
+
+            <div class="how-to-box text-xs text-slate-400">
+              <strong class="text-slate-200">Como usar:</strong> este módulo é separado da Saúde Mental. Escolhe uma rotina prática de recuperação diária, escreve uma nota se quiseres e clica em <strong class="text-amber-300">Registar Bem-Estar</strong> para manter o histórico.
+            </div>
+
+            <div class="space-y-3">
+              <div>
+                <label for="wellbeingRoutineSelect" class="block text-xs font-semibold text-slate-300 mb-1">Rotina de Recuperação</label>
+                <select id="wellbeingRoutineSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white">
+                  <option value="Pausa de Ecrã (15 min)">Pausa de Ecrã (15 min)</option>
+                  <option value="Hidratação & Alongamento">Hidratação &amp; Alongamento</option>
+                  <option value="Respiração & Foco Calmo">Respiração &amp; Foco Calmo</option>
+                  <option value="Caminhada Leve ao Ar Livre">Caminhada Leve ao Ar Livre</option>
+                </select>
+              </div>
+              <div>
+                <label for="wellbeingNoteInput" class="block text-xs font-semibold text-slate-300 mb-1">Observação Pessoal</label>
+                <input id="wellbeingNoteInput" type="text" placeholder="Ex.: Terminei os exercícios e vou descansar 15 min" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white" />
+              </div>
+            </div>
+
+            <div id="wellbeingLogBox" class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 space-y-1 max-h-36 overflow-y-auto">
+              <div>Nenhum registo de bem-estar ainda.</div>
             </div>
           </div>
         </div>
@@ -516,12 +659,58 @@
         ADMIN_2012: digestSecret('2012'),
       };
 
-      const USER_COLOR_MAP = {
-        steelBlue: { bg: 'bg-[#172d4a]', border: 'border-sky-500/30' },
-        slateGraphite: { bg: 'bg-[#1c2432]', border: 'border-slate-600/40' },
-        forestDark: { bg: 'bg-[#122621]', border: 'border-emerald-600/30' },
-        bronzeEarth: { bg: 'bg-[#261d16]', border: 'border-amber-700/30' },
-      };
+      // 20 opções variadas de cor para o usuário (dourado, roxo, violeta, esmeralda, cobre, índigo, etc.)
+      const USER_PALETTE_20 = [
+        { key: 'burnishedGold', name: 'Dourado Queimado', hex: '#4f3810', bg: 'bg-[#3d2b0c]', border: 'border-amber-400/45' },
+        { key: 'deepRoyalPurple', name: 'Roxo Real', hex: '#311a4d', bg: 'bg-[#25133b]', border: 'border-purple-400/45' },
+        { key: 'imperialViolet', name: 'Violeta Imperial', hex: '#401c59', bg: 'bg-[#311545]', border: 'border-fuchsia-400/40' },
+        { key: 'steelBlue', name: 'Azul Aço', hex: '#1e3a5f', bg: 'bg-[#172d4a]', border: 'border-sky-400/40' },
+        { key: 'royalCobalt', name: 'Cobalto Real', hex: '#1b3661', bg: 'bg-[#152a4c]', border: 'border-blue-400/40' },
+        { key: 'darkEmerald', name: 'Esmeralda Escuro', hex: '#123b34', bg: 'bg-[#0e2d28]', border: 'border-emerald-400/40' },
+        { key: 'forestPine', name: 'Verde Pinheiro', hex: '#153629', bg: 'bg-[#10291f]', border: 'border-teal-400/40' },
+        { key: 'copperRust', name: 'Cobre Sóbrio', hex: '#4a2513', bg: 'bg-[#391c0e]', border: 'border-orange-400/40' },
+        { key: 'antiqueBronze', name: 'Bronze Antigo', hex: '#423017', bg: 'bg-[#332511]', border: 'border-yellow-500/40' },
+        { key: 'midnightIndigo', name: 'Índigo Meia-Noite', hex: '#1d2452', bg: 'bg-[#161c3f]', border: 'border-indigo-400/40' },
+        { key: 'slateGraphite', name: 'Grafite Escuro', hex: '#1e293b', bg: 'bg-[#182130]', border: 'border-slate-400/40' },
+        { key: 'charcoalIron', name: 'Ferro Carbono', hex: '#242933', bg: 'bg-[#1c2028]', border: 'border-zinc-400/40' },
+        { key: 'mahoganyWood', name: 'Mogno Escuro', hex: '#401e17', bg: 'bg-[#311711]', border: 'border-red-400/40' },
+        { key: 'crimsonWine', name: 'Vinho Carmesim', hex: '#471626', bg: 'bg-[#36101c]', border: 'border-rose-400/40' },
+        { key: 'deepBurgundy', name: 'Borgonha Profundo', hex: '#381321', bg: 'bg-[#2b0e19]', border: 'border-pink-500/35' },
+        { key: 'stormSlateBlue', name: 'Ardósia Azulada', hex: '#1d334d', bg: 'bg-[#16273b]', border: 'border-cyan-400/40' },
+        { key: 'oliveDrab', name: 'Oliva Escuro', hex: '#2b3317', bg: 'bg-[#212711]', border: 'border-lime-400/40' },
+        { key: 'plumShadow', name: 'Ameixa Sombrio', hex: '#33193d', bg: 'bg-[#27132f]', border: 'border-purple-500/40' },
+        { key: 'graniteGrey', name: 'Granito', hex: '#292e38', bg: 'bg-[#20242c]', border: 'border-neutral-400/40' },
+        { key: 'obsidianNavy', name: 'Marinho Obsidiana', hex: '#10213d', bg: 'bg-[#0b182e]', border: 'border-sky-500/40' },
+      ];
+
+      function getUserColorTheme(key) {
+        return USER_PALETTE_20.find((c) => c.key === key) || USER_PALETTE_20[0];
+      }
+
+      function populateColorSelectAndSwatches() {
+        const sel = document.getElementById('profileColorSelect');
+        const grid = document.getElementById('colorSwatchesPreview');
+        if (sel) {
+          sel.innerHTML = USER_PALETTE_20
+            .map((c, idx) => `<option value="${c.key}">${idx + 1}. ${c.name}</option>`)
+            .join('');
+        }
+        if (grid) {
+          grid.innerHTML = USER_PALETTE_20
+            .map(
+              (c) =>
+                `<button type="button" data-pick-color="${c.key}" title="${c.name}" class="h-6 rounded-md border border-white/20 transition transform hover:scale-105" style="background:${c.hex};"></button>`
+            )
+            .join('');
+          grid.querySelectorAll('[data-pick-color]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+              state.msgColor = btn.dataset.pickColor;
+              if (sel) sel.value = state.msgColor;
+              renderChatMessages();
+            });
+          });
+        }
+      }
 
       const state = {
         nome: 'Sófocles',
@@ -529,11 +718,12 @@
         classe: '7.ª Classe',
         turma: 'Turma A',
         curso: 'Geral (1.º Ciclo)',
-        msgColor: 'steelBlue',
+        msgColor: 'burnishedGold',
         avatarDataUrl: '',
         role: 'STUDENT',
         photoUnlockedBelow11: false,
         sagaBlockedByExam: false,
+        sagaApiLinked: false, // Só fica true quando concluirmos a ligação final do S.A.G.A.
         lastSagaText: 'Pronto para trabalhar contigo.',
         voiceMode: 'male',
         exam: null,
@@ -541,6 +731,9 @@
         notices: ['Sistema Áurea em operação profissional no Complexo Escolar Privado Madre Trindade.'],
         conductAlerts: [],
         silentLogs: [],
+        wellbeingLogs: [],
+        cejMissions: [],
+        chartSeriesHistory: [320000, 385000, 450000],
         chatsByScope: {},
       };
 
@@ -687,6 +880,9 @@
         } catch {}
       }
 
+      // --- CALCULADORA SIMPLES, CIENTÍFICA E FINANCEIRA (CONTACTA COM MISSÕES CEJ & GRÁFICOS) ---
+      let lastCalcNumericResult = null;
+
       function evaluateScientific(exprRaw) {
         let e = String(exprRaw || '').trim();
         if (!e) return 'Introduz uma expressão.';
@@ -706,6 +902,7 @@
         try {
           const val = Function(`"use strict"; return (${safe})`)();
           if (typeof val !== 'number' || !Number.isFinite(val)) return 'Resultado indefinido.';
+          lastCalcNumericResult = Number(val.toFixed(2));
           return Number.isInteger(val) ? String(val) : String(Number(val.toFixed(6)));
         } catch {
           return 'Erro na expressão.';
@@ -741,6 +938,22 @@
         if (out) out.textContent = `Resultado: ${evaluateScientific(raw)}`;
       });
 
+      document.getElementById('btnCalcToMission')?.addEventListener('click', () => {
+        if (lastCalcNumericResult === null || Number.isNaN(lastCalcNumericResult)) return;
+        const mInp = document.getElementById('cejMissionValueInput');
+        if (mInp) mInp.value = String(lastCalcNumericResult);
+        switchTab('cej');
+      });
+
+      document.getElementById('btnCalcToChart')?.addEventListener('click', () => {
+        if (lastCalcNumericResult === null || Number.isNaN(lastCalcNumericResult)) return;
+        const revInp = document.getElementById('cejRevInput');
+        if (revInp) revInp.value = String(lastCalcNumericResult);
+        state.chartSeriesHistory.push(lastCalcNumericResult);
+        drawCejChart();
+        switchTab('cej');
+      });
+
       document.getElementById('btnEvalFin')?.addEventListener('click', () => {
         const c = parseFloat(document.getElementById('finCapitalInput')?.value || '0');
         const i = parseFloat(document.getElementById('finRateInput')?.value || '0') / 100;
@@ -755,10 +968,36 @@
         const mSimples = c + jSimples;
         const mComposto = c * Math.pow(1 + i, n);
         const jComposto = mComposto - c;
+        lastCalcNumericResult = Number(mComposto.toFixed(2));
         out.innerHTML = `
           <div>Juro Simples: ${jSimples.toFixed(2)} | Montante Simples: ${mSimples.toFixed(2)}</div>
           <div>Juro Composto: ${jComposto.toFixed(2)} | Montante Composto: ${mComposto.toFixed(2)}</div>
         `;
+      });
+
+      document.getElementById('btnSendFinToCej')?.addEventListener('click', () => {
+        const cap = parseFloat(document.getElementById('finCapitalInput')?.value || '');
+        const targetVal = !Number.isNaN(cap) && cap > 0 ? cap : lastCalcNumericResult;
+        if (targetVal === null || Number.isNaN(targetVal)) return;
+        const revInp = document.getElementById('cejRevInput');
+        if (revInp) revInp.value = String(targetVal);
+        state.chartSeriesHistory.push(targetVal);
+        drawCejChart();
+        switchTab('cej');
+      });
+
+      // --- BOTÃO NOVO: ESTUDAR COISAS NOVAS (COM SELO NEW, ATIVO QUANDO RESOLVERMOS O S.A.G.A.) ---
+      document.getElementById('btnStudyNewThings')?.addEventListener('click', () => {
+        switchTab('saga');
+        if (!state.sagaApiLinked) {
+          appendSagaMessage(
+            'S.A.G.A.',
+            'A opção "Estudar Coisas Novas" (NEW) já está na interface, mas fica totalmente disponível assim que concluirmos a ligação final do S.A.G.A.',
+            false
+          );
+          return;
+        }
+        handleSagaSubmit('Apresenta um tópico novo, atual e desafiador de estudo adaptado à minha classe e curso.');
       });
 
       function syncNetworkStatus() {
@@ -788,12 +1027,12 @@
 
       function appendSagaMessage(sender, text, isUser = false) {
         if (!sagaStream) return;
-        const cTheme = USER_COLOR_MAP[state.msgColor] || USER_COLOR_MAP.steelBlue;
+        const uTheme = getUserColorTheme(state.msgColor);
         const div = document.createElement('div');
         div.className = isUser
-          ? `p-3.5 rounded-xl ${cTheme.bg} border ${cTheme.border} text-sm text-slate-100 ml-auto max-w-[92%]`
-          : 'p-3.5 rounded-xl bg-[#101c31] border border-sky-500/25 text-sm text-slate-100 leading-relaxed whitespace-pre-line';
-        div.innerHTML = `<div class="text-[11px] font-mono ${isUser ? 'text-slate-300' : 'text-sky-400'} mb-1">${sender}</div>${text}`;
+          ? `p-3.5 rounded-xl ${uTheme.bg} border-2 ${uTheme.border} text-sm text-white ml-auto max-w-[90%] shadow-md`
+          : 'p-3.5 rounded-xl bg-[#0e192d] border border-sky-400/35 text-sm text-slate-100 leading-relaxed whitespace-pre-line mr-auto max-w-[95%]';
+        div.innerHTML = `<div class="text-[11px] font-mono ${isUser ? 'text-amber-200/90' : 'text-sky-400'} mb-1">${sender}</div>${text}`;
         sagaStream.appendChild(div);
         sagaStream.scrollTop = sagaStream.scrollHeight;
       }
@@ -803,7 +1042,7 @@
           appendSagaMessage('S.A.G.A.', 'O S.A.G.A. encontra-se bloqueado durante a avaliação em curso.', false);
           return;
         }
-        appendSagaMessage(state.nome, rawText, true);
+        appendSagaMessage(`${state.nome} • ${getUserColorTheme(state.msgColor).name}`, rawText, true);
 
         if (!navigator.onLine) {
           const calcAns = evaluateScientific(rawText);
@@ -853,7 +1092,8 @@
 
       function applyUserUI() {
         const badge = document.getElementById('userContextBadge');
-        if (badge) badge.textContent = `${state.nome} • ${state.classe} • ${state.turma} • ${state.curso}`;
+        const cTheme = getUserColorTheme(state.msgColor);
+        if (badge) badge.textContent = `${state.nome} • ${state.classe} • ${state.turma} • ${state.curso} • ${cTheme.name}`;
         const av = document.getElementById('headerAvatarImg');
         if (av) {
           if (state.avatarDataUrl) {
@@ -868,7 +1108,7 @@
         }
         const scopeSum = document.getElementById('chatScopeSummary');
         if (scopeSum) {
-          scopeSum.textContent = `Espaço: ${state.classe} • ${state.turma} • ${state.curso} | Fotos: ${canUploadChatPhoto() ? 'Liberadas' : 'A partir da 11.ª Classe'}`;
+          scopeSum.textContent = `Espaço: ${state.classe} • ${state.turma} • ${state.curso} | Cor: ${cTheme.name} | Fotos: ${canUploadChatPhoto() ? 'Liberadas' : 'A partir da 11.ª Classe'}`;
         }
         const photoBtn = document.getElementById('btnTogglePhotoGate11');
         if (photoBtn) {
@@ -895,6 +1135,22 @@
           lockBadge.className = state.sagaBlockedByExam
             ? 'text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40'
             : 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30';
+        }
+        const availBadge = document.getElementById('newStudyAvailabilityBadge');
+        const bridgePill = document.getElementById('sagaBridgeStatusPill');
+        if (availBadge) {
+          availBadge.textContent = state.sagaApiLinked
+            ? 'Disponível • S.A.G.A. Resolvido'
+            : 'Disponível quando resolvermos o S.A.G.A.';
+          availBadge.className = state.sagaApiLinked
+            ? 'text-[11px] font-mono px-3 py-1.5 rounded-lg bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 self-start sm:self-center'
+            : 'text-[11px] font-mono px-3 py-1.5 rounded-lg bg-slate-900 border border-amber-400/35 text-amber-300 self-start sm:self-center';
+        }
+        if (bridgePill) {
+          bridgePill.textContent = state.sagaApiLinked ? 'S.A.G.A. ATIVO' : 'S.A.G.A. PENDENTE';
+          bridgePill.className = state.sagaApiLinked
+            ? 'text-[10px] font-mono px-2 py-0.5 rounded bg-sky-500/15 text-sky-300 border border-sky-500/30'
+            : 'text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30';
         }
         enforceRestrictedVisibility();
       }
@@ -930,7 +1186,7 @@
         state.classe = document.getElementById('loginClassSelect')?.value || '7.ª Classe';
         state.turma = document.getElementById('loginSectionSelect')?.value || 'Turma A';
         state.curso = document.getElementById('loginTrackSelect')?.value || 'CFB';
-        state.msgColor = document.getElementById('profileColorSelect')?.value || 'steelBlue';
+        state.msgColor = document.getElementById('profileColorSelect')?.value || 'burnishedGold';
         applyUserUI();
         renderChatMessages();
         loginModal?.classList.add('hidden');
@@ -1144,11 +1400,11 @@
         }
         box.innerHTML = '';
         list.forEach((m) => {
-          const theme = USER_COLOR_MAP[m.colorKey] || USER_COLOR_MAP.steelBlue;
+          const theme = getUserColorTheme(m.colorKey);
           const card = document.createElement('div');
-          card.className = `p-3 rounded-xl ${theme.bg} border ${theme.border} text-xs text-slate-100 space-y-1.5`;
+          card.className = `p-3 rounded-xl ${theme.bg} border-2 ${theme.border} text-xs text-slate-100 space-y-1.5`;
           const meta = m.mode === 'DM' ? ` • DM → ${m.recipient || 'Destinatário'}` : ` • ${m.turma}`;
-          card.innerHTML = `<div class="font-bold text-slate-200">${m.sender}<span class="font-normal text-slate-400">${meta}</span></div><div>${m.text}</div>`;
+          card.innerHTML = `<div class="font-bold text-slate-200">${m.sender}<span class="font-normal text-slate-400">${meta} • ${theme.name}</span></div><div>${m.text}</div>`;
           if (m.imageUrl) {
             const img = document.createElement('img');
             img.src = m.imageUrl;
@@ -1219,9 +1475,11 @@
         e.target.value = '';
       });
 
+      // --- MISSÕES CEJ (VINCULADAS AO GERADOR DE GRÁFICOS) ---
       function drawCejChart() {
         const cnv = document.getElementById('cejBusinessChart');
         const kpi = document.getElementById('cejKpiSummary');
+        const styleMode = document.getElementById('cejChartStyleSelect')?.value || 'bar';
         if (!cnv) return;
         const cCtx = cnv.getContext('2d');
         if (!cCtx) return;
@@ -1232,32 +1490,94 @@
         const net = rev - cost - tax;
 
         cCtx.clearRect(0, 0, cnv.width, cnv.height);
-        const bars = [
-          { label: 'Receita', val: rev, color: '#38bdf8' },
-          { label: 'Custos', val: cost, color: '#f59e0b' },
-          { label: 'Impostos', val: tax, color: '#94a3b8' },
-          { label: 'Resultado Líq.', val: Math.max(0, net), color: net >= 0 ? '#10b981' : '#f43f5e' },
-        ];
-        const maxVal = Math.max(1, ...bars.map((b) => b.val));
 
-        bars.forEach((b, idx) => {
-          const x = 45 + idx * 120;
-          const barH = Math.max(6, Math.round((b.val / maxVal) * 125));
-          const y = 165 - barH;
-          cCtx.fillStyle = b.color;
-          cCtx.fillRect(x, y, 64, barH);
-          cCtx.fillStyle = '#cbd5e1';
-          cCtx.font = '11px "Plus Jakarta Sans", sans-serif';
-          cCtx.fillText(b.label, x, 186);
-        });
+        if (styleMode === 'line') {
+          const series = state.chartSeriesHistory.length ? state.chartSeriesHistory.slice(-6) : [rev];
+          const maxL = Math.max(1, ...series);
+          cCtx.strokeStyle = '#38bdf8';
+          cCtx.lineWidth = 3;
+          cCtx.beginPath();
+          series.forEach((v, idx) => {
+            const x = series.length === 1 ? 260 : 55 + (idx * (cnv.width - 110)) / (series.length - 1);
+            const y = 160 - Math.max(8, Math.round((Math.max(0, v) / maxL) * 120));
+            if (idx === 0) cCtx.moveTo(x, y);
+            else cCtx.lineTo(x, y);
+          });
+          cCtx.stroke();
+
+          series.forEach((v, idx) => {
+            const x = series.length === 1 ? 260 : 55 + (idx * (cnv.width - 110)) / (series.length - 1);
+            const y = 160 - Math.max(8, Math.round((Math.max(0, v) / maxL) * 120));
+            cCtx.fillStyle = '#f6dc7c';
+            cCtx.beginPath();
+            cCtx.arc(x, y, 4.5, 0, Math.PI * 2);
+            cCtx.fill();
+            cCtx.fillStyle = '#cbd5e1';
+            cCtx.font = '10px "JetBrains Mono", monospace';
+            cCtx.fillText(`#${idx + 1}`, x - 8, 182);
+          });
+        } else {
+          const bars = [
+            { label: 'Receita/Missões', val: rev, color: '#38bdf8' },
+            { label: 'Custos', val: cost, color: '#f59e0b' },
+            { label: 'Impostos', val: tax, color: '#94a3b8' },
+            { label: 'Resultado Líq.', val: Math.max(0, net), color: net >= 0 ? '#10b981' : '#f43f5e' },
+          ];
+          const maxVal = Math.max(1, ...bars.map((b) => b.val));
+
+          bars.forEach((b, idx) => {
+            const x = 35 + idx * 122;
+            const barH = Math.max(6, Math.round((b.val / maxVal) * 120));
+            const y = 160 - barH;
+            cCtx.fillStyle = b.color;
+            cCtx.fillRect(x, y, 68, barH);
+            cCtx.fillStyle = '#cbd5e1';
+            cCtx.font = '11px "Plus Jakarta Sans", sans-serif';
+            cCtx.fillText(b.label, x, 182);
+          });
+        }
 
         const marginPct = rev > 0 ? ((net / rev) * 100).toFixed(1) : '0.0';
-        if (kpi) kpi.textContent = `Resultado Líquido: ${net.toFixed(2)} | Margem Líquida: ${marginPct}%`;
+        if (kpi) {
+          kpi.textContent = `Resultado Líquido: ${net.toFixed(2)} | Margem Líquida: ${marginPct}% | Missões: ${state.cejMissions.length}`;
+        }
       }
 
-      document.getElementById('btnRenderCejChart')?.addEventListener('click', drawCejChart);
+      document.getElementById('btnRunCejMission')?.addEventListener('click', () => {
+        const mission = document.getElementById('cejMissionSelect')?.value || 'Missão CEJ';
+        const val = parseFloat(document.getElementById('cejMissionValueInput')?.value || '0');
+        if (Number.isNaN(val)) return;
+
+        state.cejMissions.push({ mission, val, at: new Date().toLocaleTimeString() });
+        const hist = document.getElementById('cejMissionHistoryBox');
+        if (hist) {
+          hist.innerHTML = state.cejMissions
+            .slice(-10)
+            .map((m) => `<div>• [${m.at}] ${m.mission}: +${m.val.toFixed(2)}</div>`)
+            .join('');
+        }
+
+        const revInp = document.getElementById('cejRevInput');
+        const nextRev = revInp ? Math.max(0, parseFloat(revInp.value || '0') + val) : val;
+        if (revInp) revInp.value = String(nextRev.toFixed(2));
+        state.chartSeriesHistory.push(Number(nextRev.toFixed(2)));
+
+        drawCejChart();
+        recordSilent(`Missão CEJ concluída: ${mission} (${val.toFixed(2)}) → gráfico atualizado.`);
+      });
+
+      document.getElementById('btnGenerateCejChart')?.addEventListener('click', () => {
+        const rev = parseFloat(document.getElementById('cejRevInput')?.value || '0');
+        if (!Number.isNaN(rev)) {
+          state.chartSeriesHistory.push(Number(rev.toFixed(2)));
+        }
+        drawCejChart();
+      });
+
+      document.getElementById('cejChartStyleSelect')?.addEventListener('change', drawCejChart);
       drawCejChart();
 
+      // --- SAÚDE MENTAL (SEPARADA) & BEM-ESTAR (SEPARADO) ---
       ['mhSleepRange', 'mhCalmRange', 'mhLoadRange'].forEach((id) => {
         document.getElementById(id)?.addEventListener('input', () => {
           const s = document.getElementById('mhSleepRange')?.value || '70';
@@ -1279,17 +1599,32 @@
         const pct = Math.round((s + c + l) / 3);
         const pctEl = document.getElementById('mentalHealthPctText');
         const advEl = document.getElementById('mentalHealthAdviceText');
-        if (pctEl) pctEl.textContent = `Percentagem: ${pct}%`;
+        if (pctEl) pctEl.textContent = `Saúde Mental: ${pct}%`;
         if (advEl) {
           advEl.textContent =
             pct >= 75
               ? 'Indicador favorável de equilíbrio mental e disponibilidade para estudo.'
               : pct >= 50
               ? 'Indicador moderado. Recomenda-se pausas planeadas e revisão leve.'
-              : 'Indicador baixo. Reduz a carga imediata, prioriza descanso e conversa com o S.A.G.A.';
+              : 'Indicador baixo. Reduz a carga imediata, prioriza descanso e usa o módulo de Bem-Estar.';
         }
       });
 
+      document.getElementById('btnRegisterWellbeing')?.addEventListener('click', () => {
+        const routine = document.getElementById('wellbeingRoutineSelect')?.value || 'Pausa de Ecrã';
+        const note = (document.getElementById('wellbeingNoteInput')?.value || '').trim();
+        const line = `[${new Date().toLocaleTimeString()}] ${routine}${note ? ` — ${note}` : ''}`;
+        state.wellbeingLogs.push(line);
+        const box = document.getElementById('wellbeingLogBox');
+        if (box) {
+          box.innerHTML = state.wellbeingLogs.slice(-10).map((item) => `<div>• ${item}</div>`).join('');
+        }
+        const inp = document.getElementById('wellbeingNoteInput');
+        if (inp) inp.value = '';
+        recordSilent(`Registo de Bem-Estar guardado: ${routine}.`);
+      });
+
+      // --- APROVEITAMENTO & AVISOS ---
       document.getElementById('btnAddGradeAndSync')?.addEventListener('click', () => {
         const val = parseFloat(document.getElementById('gradeEntryInput')?.value || '');
         if (Number.isNaN(val) || val < 0 || val > 20) return;
@@ -1318,11 +1653,12 @@
         recordSilent(`Aviso publicado por ${state.role}.`);
       });
 
+      populateColorSelectAndSwatches();
       applyUserUI();
       renderChatMessages();
       renderActiveExamView();
       renderNotices();
-      recordSilent('Sistema Áurea inicializado com abas restritas ocultas para alunos.');
+      recordSilent('Sistema Áurea inicializado com separação de módulos, 20 cores e ligação CEJ/Calculadora.');
     })();
   </script>
 </body>
