@@ -231,17 +231,17 @@
           </div>
         </div>
 
-        <!-- Coluna Direita: Três Abas de Acesso -->
+        <!-- Coluna Direita: Três Abas de Acesso (Login, Cadastro, Recuperar/Acesso Rápido + ADM) -->
         <div class="rounded-3xl border border-borderLine bg-slateDark p-6 sm:p-8 lg:col-span-7">
           <div class="grid grid-cols-3 gap-2 rounded-2xl border border-borderLine bg-obsidian p-1.5" role="tablist">
             <button type="button" data-auth-tab="login" class="auth-tab-btn tactile-btn accent-solid rounded-xl px-2 py-2.5 text-xs font-bold">
-              Entrar (Aluno)
+              Entrar
             </button>
             <button type="button" data-auth-tab="register" class="auth-tab-btn tactile-btn rounded-xl px-2 py-2.5 text-xs font-bold text-slate-300 hover:text-white">
               Criar Conta
             </button>
-            <button type="button" data-auth-tab="mgmt" class="auth-tab-btn tactile-btn rounded-xl px-2 py-2.5 text-xs font-bold text-slate-300 hover:text-white">
-              Gestão / Direção
+            <button type="button" data-auth-tab="recovery" class="auth-tab-btn tactile-btn rounded-xl px-2 py-2.5 text-xs font-bold text-slate-300 hover:text-white">
+              Recuperar / ADM
             </button>
           </div>
 
@@ -344,27 +344,42 @@
             </button>
           </form>
 
-          <!-- Aba 3: Gestão / Direção (Validação silenciosa dos passes 2012 e 2013) -->
-          <form id="mgmtAuthForm" class="auth-panel anim-view hidden mt-6 space-y-4">
-            <div>
-              <h2 class="text-lg font-bold text-white">Acesso de Gestão / Direção (ADM)</h2>
-              <p class="text-xs text-slate-400">Introduz a tua identificação e o passe autorizado de gestão ou direção.</p>
-            </div>
+          <!-- Aba 3: Recuperar / Acesso Rápido + Gestão / Direção (ADM) -->
+          <div id="recoveryPanel" class="auth-panel anim-view hidden mt-6 space-y-5">
+            <form id="quickRecoverForm" class="space-y-3 rounded-2xl border border-borderLine bg-surface/60 p-4">
+              <div>
+                <h2 class="text-sm font-bold text-white">Recuperar Conta / Acesso Rápido de Estudante</h2>
+                <p class="text-[11px] text-slate-400">Localiza o teu ID ou nome no registo local para entrar sem bloqueios.</p>
+              </div>
+              <div class="flex flex-col sm:flex-row gap-2">
+                <input id="recoverQueryInput" type="text" placeholder="ID (AUR-2026-1042) ou nome" class="min-h-[44px] flex-1 rounded-xl border border-borderLine bg-obsidian px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:border-accent focus:outline-none" />
+                <button type="submit" class="tactile-btn rounded-xl border border-accent bg-surfaceAlt px-4 py-2 text-xs font-bold accent-soft-text">
+                  Entrar Rápido
+                </button>
+              </div>
+            </form>
 
-            <div>
-              <label for="mgmtOperatorInput" class="mb-1.5 block text-xs font-semibold text-slate-300">Identificação do Responsável</label>
-              <input id="mgmtOperatorInput" type="text" required placeholder="Ex.: Sófocles Hilinawa ou Responsável" class="min-h-[46px] w-full rounded-xl border border-borderLine bg-surface px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:border-accent focus:outline-none" />
-            </div>
+            <form id="mgmtAuthForm" class="space-y-3.5 rounded-2xl border border-borderLine bg-obsidian/70 p-4">
+              <div>
+                <h2 class="text-base font-bold text-white">Acesso de Gestão / Direção (ADM)</h2>
+                <p class="text-xs text-slate-400">Introduz a tua identificação e o passe autorizado de gestão ou direção.</p>
+              </div>
 
-            <div>
-              <label for="mgmtPassInput" class="mb-1.5 block text-xs font-semibold text-slate-300">Passe de Acesso</label>
-              <input id="mgmtPassInput" type="password" required placeholder="••••" class="min-h-[46px] w-full rounded-xl border border-borderLine bg-surface px-4 py-2.5 font-mono text-sm text-white placeholder-slate-500 focus:border-accent focus:outline-none" />
-            </div>
+              <div>
+                <label for="mgmtOperatorInput" class="mb-1 block text-xs font-semibold text-slate-300">Identificação do Responsável</label>
+                <input id="mgmtOperatorInput" type="text" required placeholder="Ex.: Sófocles Hilinawa ou Responsável" class="min-h-[44px] w-full rounded-xl border border-borderLine bg-surface px-4 py-2 text-sm text-white placeholder-slate-500 focus:border-accent focus:outline-none" />
+              </div>
 
-            <button type="submit" class="tactile-btn accent-solid w-full rounded-xl px-5 py-3 text-sm font-extrabold">
-              Validar Passe e Entrar
-            </button>
-          </form>
+              <div>
+                <label for="mgmtPassInput" class="mb-1 block text-xs font-semibold text-slate-300">Passe de Acesso</label>
+                <input id="mgmtPassInput" type="password" required placeholder="••••" class="min-h-[44px] w-full rounded-xl border border-borderLine bg-surface px-4 py-2 font-mono text-sm text-white placeholder-slate-500 focus:border-accent focus:outline-none" />
+              </div>
+
+              <button type="submit" class="tactile-btn accent-solid w-full rounded-xl px-5 py-3 text-sm font-extrabold">
+                Validar Passe e Entrar
+              </button>
+            </form>
+          </div>
         </div>
 
       </div>
@@ -586,11 +601,12 @@
      * =========================================================================
      */
 
-    const STORAGE_KEY = 'aurea_ecossistema_v2';
-    const PERMANENT_RECOVERY_KEY = 'aurea_permanent_recovery_v2';
+    const STORAGE_KEY = 'aurea_ecossistema_v3';
+    const PERMANENT_RECOVERY_KEY = 'aurea_permanent_recovery_v3';
     const PASS_MANAGER_2012 = '2012';
     const PASS_DIRECTOR_2013 = '2013';
     const ABSENCE_LIMIT_SECONDS = 90; // 01:30 minutos fora da tela/site -> nota 0 automática
+    const API_TIMEOUT_MS = 6500; // Timeout não bloqueante para não travar UI ou Safari/WebView
 
     const MEMORY_STORAGE = {};
     function safeGetStorage(key) {
@@ -766,7 +782,7 @@
       clearTimeout(toastTimeoutId);
       toastTimeoutId = setTimeout(() => {
         banner.classList.add('hidden');
-      }, 3600);
+      }, 4200);
     }
 
     function triggerTactilePulse(el) {
@@ -944,10 +960,10 @@
         },
         apiConfig: {
           geminiApiKey: '',
-          geminiModel: 'gemini-2.5-flash',
-          localToken: 'AUREA-LOCAL-EXORG-MT-2026',
-          endpointUrl: 'https://api.local-aurea.exorg-mt.ao/v1/webhook',
-          lastStatus: 'Motor local pronto • Sem chave externa configurada'
+          geminiModel: 'gemini-2.5-flash-lite',
+          testing: false,
+          lastStatus: 'Motor local pronto • Sem chave externa configurada',
+          lastErrorDetail: 'Nenhuma falha registada'
         },
         draftRegisterPhoto: '',
         academy: {
@@ -1079,11 +1095,13 @@
         saga: {
           voiceEnabled: true,
           lastTopic: '',
+          lastSource: 'Motor Local',
           lastReply: 'Olá! Estou aqui contigo para ajudar nos estudos, cálculos, dúvidas da escola ou no que precisares no dia a dia.',
           messages: [
             {
               id: 1,
               sender: 'saga',
+              source: 'Motor Local',
               time: 'Agora',
               text: 'Olá! Sou o S.A.G.A. Estou aqui para te acompanhar com calma nos estudos, contas, dúvidas da tua classe ou temas gerais. Como te posso ajudar hoje?'
             }
@@ -1094,8 +1112,8 @@
 
     function loadState() {
       const base = buildDefaultState();
-      const raw = safeGetStorage(STORAGE_KEY);
-      const permanentRaw = safeGetStorage(PERMANENT_RECOVERY_KEY);
+      const raw = safeGetStorage(STORAGE_KEY) || safeGetStorage('aurea_ecossistema_v2');
+      const permanentRaw = safeGetStorage(PERMANENT_RECOVERY_KEY) || safeGetStorage('aurea_permanent_recovery_v2');
 
       let parsedPermanent = [];
       if (permanentRaw) {
@@ -1133,7 +1151,11 @@
             studentAnswers: { ...base.exam.studentAnswers, ...((parsed.exam && parsed.exam.studentAnswers) || {}) },
             liveAccounts: { ...base.exam.liveAccounts, ...((parsed.exam && parsed.exam.liveAccounts) || {}) }
           },
-          apiConfig: { ...base.apiConfig, ...(parsed.apiConfig || {}) },
+          apiConfig: {
+            ...base.apiConfig,
+            ...(parsed.apiConfig || {}),
+            testing: false
+          },
           academy: { ...base.academy, ...(parsed.academy || {}) },
           definitivo: { ...base.definitivo, ...(parsed.definitivo || {}) },
           lado0: { ...base.lado0, ...(parsed.lado0 || {}) },
@@ -1354,7 +1376,6 @@
 
         state.exam.remainingSeconds = Math.max(0, Number(state.exam.remainingSeconds || 0) - 1);
 
-        // Vigilância simultânea contínua do S.A.G.A. em todas as contas ativas até ao término
         syncLiveExamAccounts();
         Object.keys(state.exam.liveAccounts).forEach(uid => {
           const item = state.exam.liveAccounts[uid];
@@ -2751,6 +2772,8 @@
         return;
       }
 
+      const hasErrDetail = Boolean(state.apiConfig.lastErrorDetail && state.apiConfig.lastErrorDetail !== 'Nenhuma falha registada');
+
       div.innerHTML = `
         <div class="rounded-3xl border border-borderLine bg-slateDark p-5 flex flex-wrap items-center justify-between gap-3">
           <div>
@@ -2773,32 +2796,37 @@
           </div>
         </div>
 
-        <!-- Secção Direta na Aba ADM: Aqui a API Key -->
+        <!-- Secção Direta na Aba ADM: Aqui a API Key (Não Bloqueante + Diagnóstico Visível) -->
         <div class="rounded-3xl border-2 border-accent/60 bg-slateDark p-5 space-y-4">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div>
+          <div class="flex flex-wrap items-start justify-between gap-2">
+            <div class="space-y-1">
               <span class="rounded-full border accent-pill px-3 py-0.5 font-mono text-[11px] font-bold">
                 CONFIGURAÇÃO DE IA • GOOGLE AI STUDIO (GEMINI)
               </span>
               <h2 class="mt-1.5 text-lg font-extrabold text-white">Aqui a API Key (Conexão do S.A.G.A.)</h2>
               <p class="text-xs text-slate-300">
-                Cola aqui a tua chave de API para o <strong>S.A.G.A.</strong> responder com mais profundidade. A chave fica guardada apenas no teu navegador (<code class="font-mono">localStorage</code>) e é enviada pelo cabeçalho <code class="font-mono">x-goog-api-key</code>, com fallback automático para o motor local se não houver chave, faltar rede ou atingir limite gratuito.
+                Cola aqui a tua chave de API para o <strong>S.A.G.A.</strong>. Fica guardada apenas no teu navegador (<code class="font-mono">localStorage</code>), é enviada pelo cabeçalho <code class="font-mono">x-goog-api-key</code> com timeout não bloqueante de ${Math.round(API_TIMEOUT_MS / 1000)}s e faz fallback automático para o motor local sem nunca travar a tela.
               </p>
             </div>
-            <span class="rounded-xl border border-borderLine bg-surface px-3 py-1.5 font-mono text-[11px] font-bold text-emeraldGlow">
+            <span class="rounded-xl border border-borderLine bg-surface px-3 py-1.5 font-mono text-[11px] font-bold ${hasErrDetail ? 'text-amberGlow' : 'text-emeraldGlow'}">
               ${escapeHtml(state.apiConfig.lastStatus || 'Pronto')}
             </span>
           </div>
 
+          <div class="rounded-2xl border ${hasErrDetail ? 'border-amberGlow/40 bg-amber-950/20' : 'border-borderLine bg-surface/70'} px-3.5 py-2.5 text-xs">
+            <span class="font-mono font-bold ${hasErrDetail ? 'text-amberGlow' : 'accent-soft-text'}">Diagnóstico de ligação:</span>
+            <span class="ml-1.5 font-mono text-slate-100">${escapeHtml(state.apiConfig.lastErrorDetail || 'Nenhuma falha registada')}</span>
+          </div>
+
           <form id="admGeminiKeyForm" class="grid grid-cols-1 gap-3 sm:grid-cols-12">
-            <div class="sm:col-span-6">
+            <div class="sm:col-span-5">
               <label for="admGeminiKeyInput" class="mb-1 block text-xs font-bold text-white">Aqui a API Key</label>
               <input
                 id="admGeminiKeyInput"
                 type="password"
                 autocomplete="off"
                 value="${escapeHtml(state.apiConfig.geminiApiKey || '')}"
-                placeholder="Cola aqui a tua API Key (ex.: AQ.... ou chave do Google AI Studio)"
+                placeholder="Cola aqui a tua API Key (guardada só neste navegador)"
                 class="min-h-[46px] w-full rounded-xl border border-borderLine bg-surface px-4 py-2 font-mono text-xs text-white placeholder-slate-500 focus:border-accent focus:outline-none"
               />
             </div>
@@ -2806,17 +2834,17 @@
             <div class="sm:col-span-3">
               <label for="admGeminiModelSelect" class="mb-1 block text-xs font-semibold text-slate-300">Modelo</label>
               <select id="admGeminiModelSelect" class="min-h-[46px] w-full rounded-xl border border-borderLine bg-surface px-3 py-2 font-mono text-xs text-white focus:border-accent focus:outline-none">
-                <option value="gemini-2.5-flash" ${state.apiConfig.geminiModel === 'gemini-2.5-flash' ? 'selected' : ''}>gemini-2.5-flash</option>
                 <option value="gemini-2.5-flash-lite" ${state.apiConfig.geminiModel === 'gemini-2.5-flash-lite' ? 'selected' : ''}>gemini-2.5-flash-lite</option>
+                <option value="gemini-2.5-flash" ${state.apiConfig.geminiModel === 'gemini-2.5-flash' ? 'selected' : ''}>gemini-2.5-flash</option>
               </select>
             </div>
 
-            <div class="sm:col-span-3 flex items-end gap-2">
+            <div class="sm:col-span-4 flex items-end gap-2">
               <button type="submit" class="tactile-btn accent-solid flex-1 rounded-xl px-4 py-2.5 text-xs font-extrabold">
                 Guardar Key
               </button>
-              <button type="button" data-action="test-gemini-key" class="tactile-btn rounded-xl border border-borderLine bg-surface px-3 py-2.5 text-xs font-bold text-emeraldGlow hover:border-emeraldGlow">
-                Testar
+              <button type="button" ${state.apiConfig.testing ? 'disabled' : ''} data-action="test-gemini-key" class="tactile-btn rounded-xl border border-borderLine bg-surface px-3.5 py-2.5 text-xs font-bold text-emeraldGlow hover:border-emeraldGlow disabled:opacity-50">
+                ${state.apiConfig.testing ? 'A testar...' : 'Testar'}
               </button>
               <button type="button" data-action="clear-gemini-key" class="tactile-btn rounded-xl border border-rose-500/35 bg-rose-950/30 px-3 py-2.5 text-xs font-bold text-rose-200">
                 Limpar
@@ -2825,7 +2853,7 @@
           </form>
 
           <p class="text-[11px] text-amberGlow">
-            Aviso de segurança: não coloques chaves privadas dentro do código-fonte de ficheiros partilhados publicamente. Se partilhaste uma chave num chat, revoga e gera outra no Google AI Studio.
+            Aviso de segurança: não coloques chaves privadas dentro do código-fonte enviado ao GitHub. Se partilhaste uma chave num chat, revoga e gera outra no Google AI Studio.
           </p>
         </div>
 
@@ -2938,7 +2966,7 @@
           </div>
         </div>
 
-        <!-- Contas Ativas e Moderação de Chats -->
+        <!-- Relatório de Auditoria e Contas Ativas -->
         <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
           <div class="rounded-2xl border border-borderLine bg-slateDark p-5 space-y-3">
             <h2 class="text-base font-bold text-white">Contas Registadas (${state.users.length})</h2>
@@ -2960,24 +2988,13 @@
           </div>
 
           <div class="rounded-2xl border border-borderLine bg-slateDark p-5 space-y-3">
-            <h2 class="text-base font-bold text-white">Controlo de Chats por Classe</h2>
-            <div class="space-y-3 max-h-72 overflow-y-auto pr-1">
-              ${channelKeys.map(ck => {
-                const cMsgs = (state.classChats[ck] || []).filter(m => !m.deleted);
-                return `
-                  <div class="rounded-xl border border-borderLine bg-surface p-3 space-y-2">
-                    <p class="font-mono text-xs font-bold accent-soft-text">${escapeHtml(ck.replace('__', ' • '))} (${cMsgs.length})</p>
-                    ${cMsgs.length === 0 ? `<p class="text-[11px] text-slate-400">Sem mensagens ativas.</p>` : cMsgs.map(m => `
-                      <div class="flex items-center justify-between gap-2 rounded-lg bg-obsidian px-2.5 py-1.5 text-xs">
-                        <span class="truncate text-slate-200"><strong class="text-white">${escapeHtml(m.userName)}:</strong> ${escapeHtml(m.text)}</span>
-                        <button type="button" data-action="admin-del-msg" data-ck="${escapeHtml(ck)}" data-id="${m.id}" class="tactile-btn rounded border border-rose-500/35 bg-rose-950/30 px-2 py-0.5 text-[10px] font-bold text-rose-200 shrink-0">
-                          Remover
-                        </button>
-                      </div>
-                    `).join('')}
-                  </div>
-                `;
-              }).join('')}
+            <h2 class="text-base font-bold text-white">Relatórios &amp; Registo de Auditoria</h2>
+            <div class="space-y-2 max-h-72 overflow-y-auto pr-1">
+              ${(state.auditLogs || []).slice(0, 14).map(log => `
+                <div class="rounded-xl border border-borderLine bg-surface px-3 py-2 text-xs text-slate-200">
+                  ${escapeHtml(log)}
+                </div>
+              `).join('')}
             </div>
           </div>
         </div>
@@ -2987,7 +3004,7 @@
     }
 
     // =========================================================================
-    // ASSISTENTE FLUTUANTE S.A.G.A. (GEMINI API + VOZ + MEMÓRIA + FALLBACK)
+    // ASSISTENTE FLUTUANTE S.A.G.A. (NÃO BLOQUEANTE + DIAGNÓSTICO + ORIGEM)
     // =========================================================================
     function renderSagaMessages() {
       const minBtn = document.getElementById('sagaMinimizedBtn');
@@ -3017,9 +3034,9 @@
         if (state.exam.active && state.exam.sagaBlocked) {
           voiceLine.textContent = `Bloqueado em avaliação (${formatTimerMMSS(state.exam.remainingSeconds)})`;
         } else if (state.apiConfig.geminiApiKey) {
-          voiceLine.textContent = `Ligado ao Gemini (${state.apiConfig.geminiModel}) • Voz pronta`;
+          voiceLine.textContent = `${state.saga.lastSource || 'Motor Local'} • ${state.apiConfig.geminiModel}`;
         } else {
-          voiceLine.textContent = 'Pronto para conversar e ouvir contigo';
+          voiceLine.textContent = 'Motor Local ativo • Voz pronta';
         }
       }
 
@@ -3027,10 +3044,14 @@
       const msgs = state.saga.messages || [];
       box.innerHTML = msgs.map(m => {
         const isSaga = m.sender === 'saga';
+        const srcBadge = isSaga ? (m.source || 'Motor Local') : 'TU';
+        const isApi = isSaga && String(srcBadge).toLowerCase().includes('gemini');
         return `
           <div class="rounded-2xl border ${isSaga ? 'border-borderLine bg-surface mr-4' : 'border-accent bg-surfaceAlt ml-4'} p-3 space-y-1">
-            <div class="flex items-center justify-between text-[10px]">
-              <span class="font-mono font-bold ${isSaga ? 'accent-soft-text' : 'text-emeraldGlow'}">${isSaga ? 'S.A.G.A.' : 'TU'}</span>
+            <div class="flex items-center justify-between gap-2 text-[10px]">
+              <span class="font-mono font-bold ${!isSaga ? 'text-emeraldGlow' : isApi ? 'text-emeraldGlow' : 'accent-soft-text'}">
+                ${isSaga ? `S.A.G.A. • ${escapeHtml(srcBadge)}` : 'TU'}
+              </span>
               <span class="font-mono text-slate-400">${escapeHtml(m.time)}</span>
             </div>
             <p class="leading-relaxed text-slate-100 whitespace-pre-line">${escapeHtml(m.text)}</p>
@@ -3071,7 +3092,7 @@
             if (line) line.textContent = 'S.A.G.A. a falar contigo...';
           };
           utter.onend = () => {
-            if (line) line.textContent = 'Pronto para conversar e ouvir contigo';
+            if (line) line.textContent = `${state.saga.lastSource || 'Motor Local'} • Pronto`;
           };
           window.speechSynthesis.speak(utter);
         }
@@ -3098,14 +3119,14 @@
         if (line) line.textContent = 'A ouvir a tua voz... fala à vontade.';
         rec.onresult = (ev) => {
           const spoken = ev.results && ev.results[0] && ev.results[0][0] ? ev.results[0][0].transcript : '';
-          if (line) line.textContent = 'Pronto para conversar e ouvir contigo';
+          if (line) line.textContent = `${state.saga.lastSource || 'Motor Local'} • Pronto`;
           if (spoken) handleSagaPrompt(spoken);
         };
         rec.onerror = () => {
           if (line) line.textContent = 'Não consegui captar a voz. Tenta falar de novo.';
         };
         rec.onend = () => {
-          if (line) line.textContent = 'Pronto para conversar e ouvir contigo';
+          if (line) line.textContent = `${state.saga.lastSource || 'Motor Local'} • Pronto`;
         };
         rec.start();
       } catch (e) {
@@ -3143,12 +3164,36 @@
       return null;
     }
 
+    async function fetchWithTimeout(url, options = {}, timeoutMs = API_TIMEOUT_MS) {
+      const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      const timer = setTimeout(() => {
+        if (controller) {
+          try { controller.abort(); } catch (e) {}
+        }
+      }, timeoutMs);
+
+      try {
+        const resp = await fetch(url, {
+          ...options,
+          signal: controller ? controller.signal : undefined
+        });
+        return resp;
+      } catch (err) {
+        if (err && err.name === 'AbortError') {
+          throw new Error(`Timeout após ${Math.round(timeoutMs / 1000)}s (rede lenta ou bloqueada)`);
+        }
+        throw new Error(`Falha de rede/CORS: ${err && err.message ? err.message : 'sem ligação direta'}`);
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
     async function fetchLiveOpenKnowledge(promptText) {
       const lower = promptText.toLowerCase();
 
       if (/(câmbio|cambio|euro|dólar|dolar|eur|usd)/i.test(lower)) {
         try {
-          const resp = await fetch('https://api.frankfurter.app/latest?from=EUR&to=USD,GBP');
+          const resp = await fetchWithTimeout('https://api.frankfurter.app/latest?from=EUR&to=USD,GBP', {}, 3500);
           if (resp.ok) {
             const data = await resp.json();
             const usd = data && data.rates ? data.rates.USD : null;
@@ -3166,12 +3211,12 @@
         const cityMatch = promptText.match(/\b(?:em|de|para)\s+([A-ZÁÉÍÓÚÂÊÔÃÕÇ][a-záéíóúâêôãõç]+(?:\s+[A-ZÁÉÍÓÚÂÊÔÃÕÇ][a-záéíóúâêôãõç]+)?)/);
         if (cityMatch && cityMatch[1]) city = cityMatch[1];
         try {
-          const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=pt`);
+          const geoRes = await fetchWithTimeout(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=pt`, {}, 3500);
           if (geoRes.ok) {
             const geoData = await geoRes.json();
             const place = geoData && geoData.results && geoData.results[0];
             if (place) {
-              const wRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m`);
+              const wRes = await fetchWithTimeout(`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m`, {}, 3500);
               if (wRes.ok) {
                 const wData = await wRes.json();
                 const cur = wData && wData.current;
@@ -3194,7 +3239,7 @@
       if (cleanQuery.length >= 2) {
         try {
           const wUrl = `https://pt.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(cleanQuery)}`;
-          const res = await fetch(wUrl);
+          const res = await fetchWithTimeout(wUrl, {}, 3500);
           if (res.ok) {
             const data = await res.json();
             if (data && data.extract) {
@@ -3210,11 +3255,13 @@
       return null;
     }
 
-    async function callGeminiWithHeader(promptText, greetingName) {
-      const apiKey = (state.apiConfig && state.apiConfig.geminiApiKey ? state.apiConfig.geminiApiKey : '').trim();
-      if (!apiKey) return null;
+    async function callGeminiWithHeader(promptText, greetingName, overrideKey = null, overrideModel = null) {
+      const apiKey = String(overrideKey !== null ? overrideKey : (state.apiConfig && state.apiConfig.geminiApiKey ? state.apiConfig.geminiApiKey : '')).trim();
+      if (!apiKey) {
+        throw new Error('API Key vazia');
+      }
 
-      const model = (state.apiConfig && state.apiConfig.geminiModel) || 'gemini-2.5-flash';
+      const model = String(overrideModel || (state.apiConfig && state.apiConfig.geminiModel) || 'gemini-2.5-flash-lite').trim();
       const systemInstruction = [
         `Tu és o S.A.G.A., assistente próximo e humano do ecossistema escolar Sistema Áurea (Projeto EXorg MT).`,
         `Fala sempre em português natural, claro, acolhedor e sem excesso de formalidade. Trata o utilizador por ${greetingName} quando fizer sentido.`,
@@ -3227,8 +3274,12 @@
         parts: [{ text: String(m.text || '') }]
       }));
 
+      if (!recentMsgs.length || recentMsgs[recentMsgs.length - 1].role !== 'user') {
+        recentMsgs.push({ role: 'user', parts: [{ text: promptText }] });
+      }
+
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
-      const resp = await fetch(url, {
+      const resp = await fetchWithTimeout(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -3240,16 +3291,26 @@
           },
           contents: recentMsgs
         })
-      });
+      }, API_TIMEOUT_MS);
 
-      if (!resp.ok) {
-        throw new Error(`HTTP ${resp.status}`);
+      let data = null;
+      try {
+        data = await resp.json();
+      } catch (e) {
+        data = null;
       }
 
-      const data = await resp.json();
+      if (!resp.ok) {
+        const apiMsg = data && data.error && data.error.message ? data.error.message : `HTTP ${resp.status}`;
+        throw new Error(`HTTP ${resp.status}: ${apiMsg}`);
+      }
+
       const parts = data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts;
       const replyText = Array.isArray(parts) ? parts.map(p => p.text || '').join('\n').trim() : '';
-      return replyText || null;
+      if (!replyText) {
+        throw new Error('Resposta vazia da API Gemini');
+      }
+      return replyText;
     }
 
     async function buildLocalFallbackReply(text, greetingName) {
@@ -3299,6 +3360,7 @@
       state.saga.messages.push({
         id: Date.now(),
         sender: 'user',
+        source: 'TU',
         time: nowTimeStr(),
         text
       });
@@ -3306,9 +3368,11 @@
       if (state.exam.active && state.exam.sagaBlocked) {
         const blockMsg = `Modo de Avaliação Cronometrada ativo (${state.exam.launchId}). O auxílio do S.A.G.A. está bloqueado durante a prova. Tempo restante: ${formatTimerMMSS(state.exam.remainingSeconds)} • Ausência acumulada: ${formatTimerMMSS(state.exam.awaySeconds)} (limite 01:30).`;
         state.saga.lastReply = blockMsg;
+        state.saga.lastSource = 'Vigilância Avaliação';
         state.saga.messages.push({
           id: Date.now() + 1,
           sender: 'saga',
+          source: 'Vigilância Avaliação',
           time: nowTimeStr(),
           text: blockMsg
         });
@@ -3318,28 +3382,33 @@
       }
 
       let reply = '';
+      let sourceLabel = 'Motor Local';
+
       if (state.apiConfig && state.apiConfig.geminiApiKey) {
         try {
-          const apiReply = await callGeminiWithHeader(text, greetingName);
-          if (apiReply) {
-            reply = apiReply;
-            state.saga.lastTopic = text;
-            state.apiConfig.lastStatus = `Online (${state.apiConfig.geminiModel})`;
-          } else {
-            reply = await buildLocalFallbackReply(text, greetingName);
-          }
+          reply = await callGeminiWithHeader(text, greetingName);
+          sourceLabel = `Gemini (${state.apiConfig.geminiModel})`;
+          state.saga.lastTopic = text;
+          state.apiConfig.lastStatus = `Online (${state.apiConfig.geminiModel})`;
+          state.apiConfig.lastErrorDetail = 'Nenhuma falha registada';
         } catch (err) {
-          state.apiConfig.lastStatus = 'Fallback local ativo (chave/limite/rede)';
+          const detail = err && err.message ? err.message : 'Erro desconhecido';
+          state.apiConfig.lastStatus = 'Fallback local ativo';
+          state.apiConfig.lastErrorDetail = detail;
+          sourceLabel = 'Motor Local (Fallback)';
           reply = await buildLocalFallbackReply(text, greetingName);
         }
       } else {
+        sourceLabel = 'Motor Local';
         reply = await buildLocalFallbackReply(text, greetingName);
       }
 
       state.saga.lastReply = reply;
+      state.saga.lastSource = sourceLabel;
       state.saga.messages.push({
         id: Date.now() + 1,
         sender: 'saga',
+        source: sourceLabel,
         time: nowTimeStr(),
         text: reply
       });
@@ -3372,7 +3441,7 @@
         });
         document.getElementById('loginForm').classList.toggle('hidden', tab !== 'login');
         document.getElementById('registerForm').classList.toggle('hidden', tab !== 'register');
-        document.getElementById('mgmtAuthForm').classList.toggle('hidden', tab !== 'mgmt');
+        document.getElementById('recoveryPanel').classList.toggle('hidden', tab !== 'recovery');
         return;
       }
 
@@ -3528,21 +3597,6 @@
             state.auditLogs.unshift(`Mensagem removida no chat ${ck} às ${nowTimeStr()}.`);
             saveState();
             showToast('Mensagem removida com registo de auditoria.', 'info');
-            renderActiveTab();
-          }
-          break;
-        }
-
-        case 'admin-del-msg': {
-          const ck = btn.dataset.ck;
-          const msgId = Number(btn.dataset.id);
-          const target = (state.classChats[ck] || []).find(m => m.id === msgId);
-          if (target) {
-            target.deleted = true;
-            target.auditNote = `Moderada às ${nowTimeStr()}`;
-            state.auditLogs.unshift(`Moderação em ${ck}: mensagem removida às ${nowTimeStr()}.`);
-            saveState();
-            showToast('Mensagem removida pelo painel de gestão.', 'info');
             renderActiveTab();
           }
           break;
@@ -3721,45 +3775,61 @@
 
         case 'clear-gemini-key': {
           state.apiConfig.geminiApiKey = '';
+          state.apiConfig.testing = false;
           state.apiConfig.lastStatus = 'Motor local pronto • Sem chave externa';
+          state.apiConfig.lastErrorDetail = 'Nenhuma falha registada';
           const inp = document.getElementById('admGeminiKeyInput');
           if (inp) inp.value = '';
           saveState();
           showToast('API Key removida do navegador.', 'info');
           renderActiveTab();
+          renderSagaMessages();
           break;
         }
 
         case 'test-gemini-key': {
+          if (state.apiConfig.testing) return;
           const inp = document.getElementById('admGeminiKeyInput');
           const sel = document.getElementById('admGeminiModelSelect');
-          if (inp) state.apiConfig.geminiApiKey = inp.value.trim();
-          if (sel) state.apiConfig.geminiModel = sel.value;
+          const candidateKey = inp ? inp.value.trim() : (state.apiConfig.geminiApiKey || '').trim();
+          const candidateModel = sel ? sel.value : (state.apiConfig.geminiModel || 'gemini-2.5-flash-lite');
 
-          if (!state.apiConfig.geminiApiKey) {
+          state.apiConfig.geminiApiKey = candidateKey;
+          state.apiConfig.geminiModel = candidateModel;
+
+          if (!candidateKey) {
+            state.apiConfig.lastStatus = 'Sem chave';
+            state.apiConfig.lastErrorDetail = 'Cola uma API Key em "Aqui a API Key" antes de testar.';
+            saveState();
             showToast('Cola primeiro uma API Key no campo "Aqui a API Key".', 'warn');
+            renderActiveTab();
             return;
           }
 
-          showToast('A testar ligação com a API Key...', 'info');
-          callGeminiWithHeader('Responde apenas "OK" em uma palavra para testar a ligação.', 'Sófocles')
+          state.apiConfig.testing = true;
+          state.apiConfig.lastStatus = `A testar (${candidateModel})...`;
+          saveState();
+          renderActiveTab();
+
+          callGeminiWithHeader('Responde apenas "OK" em uma palavra.', 'Sófocles', candidateKey, candidateModel)
             .then(res => {
-              if (res) {
-                state.apiConfig.lastStatus = `Ligação OK (${state.apiConfig.geminiModel})`;
-                saveState();
-                showToast('Ligação testada com sucesso! S.A.G.A. pronto.', 'success');
-              } else {
-                state.apiConfig.lastStatus = 'Sem resposta • Fallback local ativo';
-                saveState();
-                showToast('Sem resposta da API; fallback local continua ativo.', 'warn');
-              }
-              renderActiveTab();
-            })
-            .catch(() => {
-              state.apiConfig.lastStatus = 'Fallback local ativo (verifica chave/rede/quota)';
+              state.apiConfig.testing = false;
+              state.apiConfig.lastStatus = `Online (${candidateModel})`;
+              state.apiConfig.lastErrorDetail = `Nenhuma falha registada (resposta: "${String(res).slice(0, 40)}")`;
               saveState();
-              showToast('Não foi possível validar agora; o motor local garante resposta contínua.', 'warn');
+              showToast(`Ligação OK com ${candidateModel}!`, 'success');
               renderActiveTab();
+              renderSagaMessages();
+            })
+            .catch(err => {
+              const reason = err && err.message ? err.message : 'Falha desconhecida';
+              state.apiConfig.testing = false;
+              state.apiConfig.lastStatus = 'Fallback local ativo';
+              state.apiConfig.lastErrorDetail = reason;
+              saveState();
+              showToast(`Falha na API (${reason}). Motor local ativo.`, 'warn');
+              renderActiveTab();
+              renderSagaMessages();
             });
           break;
         }
@@ -3828,6 +3898,34 @@
           state.ui.navOpen = false;
           saveState();
           showToast(`Bem-vindo, ${found.name}!`, 'success');
+          syncShell();
+          break;
+        }
+
+        case 'quickRecoverForm': {
+          const q = (document.getElementById('recoverQueryInput').value || '').trim().toLowerCase();
+          if (!q) {
+            showToast('Digita um ID ou nome para localizar a conta.', 'warn');
+            return;
+          }
+          const found = state.users.find(u => u.id.toLowerCase() === q || u.name.toLowerCase().includes(q));
+          if (!found) {
+            showToast('Conta não encontrada no registo local.', 'warn');
+            return;
+          }
+          state.session = {
+            authenticated: true,
+            role: 'student',
+            userId: found.id,
+            userName: found.name,
+            classe: found.classe,
+            curso: found.curso,
+            avatar: found.avatar || ''
+          };
+          state.ui.activeTab = 'overview';
+          state.ui.navOpen = false;
+          saveState();
+          showToast(`Acesso rápido concluído: ${found.name}.`, 'success');
           syncShell();
           break;
         }
@@ -3942,10 +4040,11 @@
 
         case 'admGeminiKeyForm': {
           const keyVal = (document.getElementById('admGeminiKeyInput').value || '').trim();
-          const modelVal = document.getElementById('admGeminiModelSelect').value || 'gemini-2.5-flash';
+          const modelVal = document.getElementById('admGeminiModelSelect').value || 'gemini-2.5-flash-lite';
           state.apiConfig.geminiApiKey = keyVal;
           state.apiConfig.geminiModel = modelVal;
           state.apiConfig.lastStatus = keyVal ? `Guardada (${modelVal})` : 'Motor local pronto • Sem chave externa';
+          state.apiConfig.lastErrorDetail = 'Nenhuma falha registada';
           state.auditLogs.unshift(`Configuração de API Key atualizada na aba ADM às ${nowTimeStr()}.`);
           saveState();
           showToast(keyVal ? 'API Key guardada com sucesso neste navegador!' : 'Configuração limpa.', 'success');
