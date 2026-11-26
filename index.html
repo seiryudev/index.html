@@ -1,2559 +1,1817 @@
 <!DOCTYPE html>
-<html lang="pt-AO" class="dark">
+<html lang="pt-AO">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>Sistema Áurea — Ecossistema Escolar (EXorg MT)</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace']
-          },
-          colors: {
-            obsidian: 'var(--bg-obsidian, #070b12)',
-            slateDark: 'var(--bg-slate-dark, #0d131f)',
-            surface: 'var(--bg-surface, #141d2e)',
-            surfaceAlt: 'var(--bg-surface-alt, #1c283e)',
-            borderLine: 'var(--border-line, #26354f)',
-            accent: 'var(--accent-hex, #38bdf8)',
-            accentSoft: 'var(--accent-soft, #7dd3fc)',
-            emeraldGlow: '#34d399',
-            amberGlow: '#fbbf24',
-            roseGlow: '#fb7185'
-          }
-        }
-      }
-    };
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Sistema Áurea — EXorg MT</title>
   <style>
     :root {
-      color-scheme: dark;
-      --bg-obsidian: #070b12;
-      --bg-slate-dark: #0d131f;
-      --bg-surface: #141d2e;
-      --bg-surface-alt: #1c283e;
-      --border-line: #26354f;
-      --text-primary: #e2e8f0;
+      --bg-primary: #090d16;
+      --bg-secondary: #111827;
+      --bg-card: #162033;
+      --bg-elevated: #1e2b45;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
       --text-muted: #94a3b8;
-      --accent-hex: #38bdf8;
-      --accent-soft: #7dd3fc;
-      --accent-ring: rgba(56, 189, 248, 0.35);
-      --accent-tint: rgba(56, 189, 248, 0.14);
-      --ui-scale: 1;
-      --card-radius: 1.5rem;
-      --card-pad: 1.25rem;
-      --safe-top: env(safe-area-inset-top, 0px);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --accent: #f59e0b;
+      --accent-soft: rgba(245, 158, 11, 0.16);
+      --accent-strong: #d97706;
+      --border: rgba(148, 163, 184, 0.18);
+      --success: #10b981;
+      --danger: #ef4444;
+      --info: #38bdf8;
+      --font-size-base: 16px;
+      --radius: 14px;
+      --density-pad: 16px;
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
     }
 
-    html.theme-light {
-      color-scheme: light;
-      --bg-obsidian: #f1f5f9;
-      --bg-slate-dark: #ffffff;
-      --bg-surface: #f8fafc;
-      --bg-surface-alt: #e2e8f0;
-      --border-line: #cbd5e1;
+    body.theme-light {
+      --bg-primary: #f1f5f9;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-elevated: #e2e8f0;
       --text-primary: #0f172a;
-      --text-muted: #475569;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --accent: #b45309;
+      --accent-soft: rgba(180, 83, 9, 0.12);
+      --accent-strong: #92400e;
+      --border: rgba(15, 23, 42, 0.14);
+      --shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
     }
 
-    * { box-sizing: border-box; }
+    body.compact-mode {
+      --density-pad: 11px;
+      --radius: 10px;
+    }
 
-    html {
-      font-size: calc(16px * var(--ui-scale));
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     html, body {
       margin: 0;
       padding: 0;
-      background-color: var(--bg-obsidian);
+      background: var(--bg-primary);
       color: var(--text-primary);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      font-size: var(--font-size-base);
+      line-height: 1.5;
+      min-height: 100vh;
       overflow-x: hidden;
-      -webkit-text-size-adjust: 100%;
-      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
-    html.theme-light .text-white { color: #0f172a !important; }
-    html.theme-light .text-slate-100,
-    html.theme-light .text-slate-200 { color: #1e293b !important; }
-    html.theme-light .text-slate-300,
-    html.theme-light .text-slate-400 { color: #475569 !important; }
-    html.theme-light .accent-solid { color: #ffffff !important; }
-
-    /* Evita zoom automático no Safari/iOS ao focar inputs */
-    input, select, textarea {
-      font-size: 16px !important;
+    .app-shell {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding-bottom: 92px;
     }
 
-    @media (min-width: 768px) {
-      input, select, textarea {
-        font-size: 14px !important;
-      }
+    /* Cabeçalho limpo sem exposição técnica na vista do aluno */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px var(--density-pad);
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
     }
 
-    .safe-pt { padding-top: max(0.65rem, var(--safe-top)); }
-    .safe-pb { padding-bottom: max(1rem, var(--safe-bottom)); }
-
-    .reformed-card {
-      border-radius: var(--card-radius) !important;
-      padding: var(--card-pad) !important;
-      transition: all 0.25s ease;
-    }
-
-    .tactile-btn {
-      min-height: 44px;
+    .brand-trigger {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       cursor: pointer;
       user-select: none;
-      -webkit-user-select: none;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform 0.08s ease, background-color 0.15s ease, border-color 0.15s ease, filter 0.12s ease;
-    }
-    .tactile-btn:hover { filter: brightness(1.06); }
-    .tactile-btn:active { transform: scale(0.97); }
-
-    .accent-solid {
-      background-color: var(--accent-hex);
-      color: #06101b;
-    }
-    .accent-solid:hover {
-      background-color: var(--accent-soft);
-    }
-    .accent-text { color: var(--accent-hex); }
-    .accent-soft-text { color: var(--accent-soft); }
-    .accent-pill {
-      background-color: var(--accent-tint);
-      border-color: var(--accent-ring);
-      color: var(--accent-soft);
     }
 
-    .nav-pill.active {
-      background-color: var(--accent-hex);
-      color: #06101b;
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
       font-weight: 800;
-      box-shadow: 0 4px 16px var(--accent-ring);
+      font-size: 1.05rem;
+      background: linear-gradient(135deg, var(--accent), #fde68a);
+      color: #090d16;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
     }
 
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-obsidian); }
-    ::-webkit-scrollbar-thumb { background: var(--border-line); border-radius: 9999px; }
+    .brand-title {
+      font-weight: 700;
+      font-size: 1.02rem;
+      letter-spacing: 0.2px;
+    }
 
-    @media print {
-      .no-print { display: none !important; }
-      body { background: #ffffff !important; color: #0f172a !important; }
-      .print-card {
-        background: #ffffff !important;
-        color: #0f172a !important;
-        border: 1px solid #cbd5e1 !important;
-        box-shadow: none !important;
-      }
+    .brand-sub {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .student-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .pill-accent {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+
+    .role-badge {
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.16);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .role-badge.privileged {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--accent);
+      border-color: rgba(245, 158, 11, 0.45);
+    }
+
+    /* Navegação principal */
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 10px var(--density-pad);
+      overflow-x: auto;
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border);
+      scrollbar-width: none;
+    }
+
+    .nav-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-btn {
+      flex: 0 0 auto;
+      padding: 9px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #090d16;
+      border-color: var(--accent);
+    }
+
+    .tab-btn.pass-tab {
+      border-style: dashed;
+    }
+
+    .main-content {
+      padding: var(--density-pad);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .view-panel {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .view-panel.active {
+      display: flex;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--density-pad);
+      box-shadow: var(--shadow);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .card-desc {
+      margin: 4px 0 0;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+    }
+
+    .stat-box {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-top: 2px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-size: 0.94rem;
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 84px;
+      resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 15px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.15s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #090d16;
+    }
+
+    .btn-secondary {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border-color: var(--border);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.16);
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.35);
+    }
+
+    .btn-sm {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      border-radius: 8px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .list-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .item-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 11px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .item-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    th, td {
+      padding: 9px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+    }
+
+    .pinned-banner {
+      background: var(--accent-soft);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: 11px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      font-size: 0.88rem;
+    }
+
+    .chat-box {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      max-height: 360px;
+      overflow-y: auto;
+      padding: 10px;
+      border-radius: 11px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+
+    .msg-bubble {
+      padding: 10px 12px;
+      border-radius: 11px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+    }
+
+    .msg-bubble.saga {
+      border-left: 3px solid var(--accent);
+    }
+
+    .msg-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    /* Botão flutuante S.A.G.A. */
+    .saga-fab {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 40;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), #fbbf24);
+      color: #090d16;
+      font-weight: 800;
+      font-size: 0.92rem;
+      border: none;
+      box-shadow: 0 10px 24px rgba(245, 158, 11, 0.35);
+      cursor: pointer;
+    }
+
+    .saga-drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      background: rgba(2, 6, 23, 0.72);
+      padding: 12px;
+    }
+
+    .saga-drawer.open {
+      display: flex;
+    }
+
+    .saga-panel {
+      width: 100%;
+      max-width: 640px;
+      max-height: 86vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    /* Modal PIN discreto */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(2, 6, 23, 0.76);
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 360px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 78px;
+      transform: translateX(-50%);
+      z-index: 70;
+      padding: 9px 15px;
+      border-radius: 999px;
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--accent);
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: none;
+      box-shadow: var(--shadow);
+    }
+
+    .toast.show {
+      display: block;
+    }
+
+    .muted {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .code-box {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.8rem;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 190px;
+      overflow-y: auto;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col">
-
-  <!-- Notificação Flutuante Limpa -->
-  <div id="toastBox" class="no-print pointer-events-none fixed top-20 right-4 left-4 sm:left-auto z-50 hidden max-w-md rounded-2xl border border-borderLine bg-slateDark/95 px-4 py-3 text-xs sm:text-sm text-white shadow-2xl backdrop-blur">
-    <div class="flex items-start gap-2.5">
-      <span id="toastIndicator" class="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-accent"></span>
-      <p id="toastText" class="leading-snug"></p>
-    </div>
-  </div>
-
-  <!-- Cabeçalho Principal (Zero elementos técnicos visíveis na vista de aluno) -->
-  <header id="appHeader" class="no-print sticky top-0 z-40 border-b border-borderLine bg-slateDark/95 backdrop-blur safe-pt">
-    <div class="mx-auto flex max-w-7xl items-center justify-between gap-2 px-3 py-2.5 sm:px-6">
-      <!-- Emblema Institucional (Duplo clique/toque abre o acesso restrito por PIN sem poluir a interface) -->
-      <div id="institutionalBrandTrigger" class="flex items-center gap-2.5 min-w-0 cursor-pointer select-none" title="Sistema Áurea — Ecossistema Escolar">
-        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-accent/40 bg-surface font-mono text-sm font-extrabold accent-soft-text shadow-inner">
-          ÁU
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-trigger" id="brandTrigger" title="Sistema Áurea">
+        <div class="brand-mark">Á</div>
+        <div>
+          <div class="brand-title">Sistema Áurea</div>
+          <div class="brand-sub">EXorg MT</div>
         </div>
-        <div class="min-w-0">
-          <div class="flex items-center gap-1.5">
-            <h1 class="truncate text-sm sm:text-base font-extrabold tracking-tight text-white">Sistema Áurea</h1>
-            <span class="rounded-md border accent-pill px-1.5 py-0.5 font-mono text-[10px] font-bold">EXorg MT</span>
+      </div>
+
+      <div class="student-bar">
+        <select id="activeStudentSelect" aria-label="Selecionar aluno" style="width: auto; min-width: 155px; padding: 6px 10px; font-size: 0.84rem;"></select>
+        <span class="pill" id="activeStudentIdPill">ID: --</span>
+        <span class="role-badge" id="roleBadge">Aluno</span>
+        <button class="btn btn-secondary btn-sm" id="btnOpenPin" type="button">Acesso</button>
+      </div>
+    </header>
+
+    <nav class="nav-tabs" id="navTabs" aria-label="Navegação principal">
+      <button class="tab-btn active" data-tab="academy" type="button">Academy</button>
+      <button class="tab-btn" data-tab="lado0" type="button">Lado 0</button>
+      <button class="tab-btn" data-tab="manager" type="button">Manager</button>
+      <button class="tab-btn" data-tab="avaliacoes" type="button">Histórico de Avaliações</button>
+      <button class="tab-btn" data-tab="chat" type="button">Chat</button>
+      <button class="tab-btn pass-tab" data-tab="passe1841" id="tab1841" style="display:none;" type="button">Docente · 1841</button>
+      <button class="tab-btn pass-tab" data-tab="passe2013" id="tab2013" style="display:none;" type="button">Núcleo · 2013</button>
+      <button class="tab-btn pass-tab" data-tab="passe2012" id="tab2012" style="display:none;" type="button">Moderação · 2012</button>
+    </nav>
+
+    <main class="main-content">
+      <!-- ACADEMY -->
+      <section class="view-panel active" id="view-academy">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Academy</h2>
+              <p class="card-desc">Trilhas de estudo, aulas e prática guiada para o perfil ativo.</p>
+            </div>
+            <span class="pill pill-accent" id="academyStudentLabel">Aluno</span>
           </div>
-          <p id="headerSubInfo" class="truncate font-mono text-[11px] text-slate-400">8.ª Classe • Ensino Secundário Geral</p>
+
+          <div class="grid-3" id="academyTracks"></div>
         </div>
-      </div>
 
-      <!-- Controlos Limpos da Vista Ativa -->
-      <div id="headerRightControls" class="flex items-center gap-1.5 sm:gap-2 shrink-0"></div>
-    </div>
-
-    <!-- Barra de Navegação Dinâmica conforme o Perfil Ativo -->
-    <nav id="mainNavBar" class="mx-auto flex max-w-7xl items-center gap-1.5 overflow-x-auto px-3 pb-2.5 sm:px-6" aria-label="Navegação do Ecossistema"></nav>
-  </header>
-
-  <!-- Área Principal de Conteúdo -->
-  <main id="mainViewport" class="mx-auto w-full max-w-7xl flex-1 px-3 py-4 sm:px-6 sm:py-6 pb-28 safe-pb"></main>
-
-  <!-- Assistente S.A.G.A. (Limpo para alunos; motor de auto-reforma visual ativo) -->
-  <div id="sagaDrawer" class="no-print fixed inset-0 z-50 hidden items-end sm:items-center justify-end bg-black/75 backdrop-blur-xs">
-    <div class="flex h-[88vh] sm:h-[82vh] w-full sm:max-w-lg flex-col rounded-t-3xl sm:rounded-3xl sm:mr-5 border border-borderLine bg-slateDark shadow-2xl overflow-hidden">
-      <!-- Cabeçalho do S.A.G.A. -->
-      <div class="flex items-center justify-between gap-2 border-b border-borderLine bg-surface px-4 py-3">
-        <div class="min-w-0">
-          <div class="flex items-center gap-2">
-            <span class="h-2.5 w-2.5 rounded-full bg-emeraldGlow"></span>
-            <h2 class="text-sm font-extrabold text-white">S.A.G.A. — Tutor Escolar</h2>
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Contas de Estudantes</h3>
+              <p class="card-desc">Cria perfis com nome e ID próprios ou alterna entre contas registadas.</p>
+            </div>
           </div>
-          <p id="sagaHeaderSubtitle" class="truncate text-[11px] text-slate-300">Apoio ao estudo, notas e ambiente</p>
+
+          <div class="form-row">
+            <div>
+              <label for="newStudentName">Nome do Estudante</label>
+              <input id="newStudentName" type="text" placeholder="Ex.: Helena Cassinda" />
+            </div>
+            <div>
+              <label for="newStudentId">ID / Matrícula</label>
+              <input id="newStudentId" type="text" placeholder="Ex.: ALU-2026-04" />
+            </div>
+            <div>
+              <label for="newStudentClass">Turma</label>
+              <input id="newStudentClass" type="text" placeholder="Ex.: 8.ª Classe A" />
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
+            <button class="btn btn-primary" id="btnCreateStudent" type="button">Criar Conta</button>
+            <button class="btn btn-secondary" id="btnSwitchToNewStudent" type="button">Criar e Entrar</button>
+          </div>
+
+          <div class="list-stack" id="studentsRosterList"></div>
+        </div>
+      </section>
+
+      <!-- LADO 0 -->
+      <section class="view-panel" id="view-lado0">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Lado 0</h2>
+              <p class="card-desc">Exploração conceitual, fundamentos de raciocínio e síntese rápida.</p>
+            </div>
+          </div>
+          <div class="grid-2" id="lado0Cards"></div>
+        </div>
+      </section>
+
+      <!-- MANAGER -->
+      <section class="view-panel" id="view-manager">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Manager</h2>
+              <p class="card-desc">Organização pessoal de tarefas, metas e rotinas de estudo.</p>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div>
+              <label for="taskTitleInput">Nova Tarefa / Meta</label>
+              <input id="taskTitleInput" type="text" placeholder="Ex.: Resolver exercícios de Álgebra" />
+            </div>
+            <div>
+              <label for="taskSubjectInput">Disciplina / Área</label>
+              <input id="taskSubjectInput" type="text" placeholder="Ex.: Matemática" />
+            </div>
+          </div>
+          <button class="btn btn-primary" id="btnAddTask" type="button">Adicionar ao Manager</button>
+
+          <div class="list-stack" id="tasksList" style="margin-top:14px;"></div>
+        </div>
+      </section>
+
+      <!-- HISTÓRICO DE AVALIAÇÕES (ALUNO VÊ APENAS HISTÓRICO; CRIAÇÃO É EXCLUSIVA DO 1841) -->
+      <section class="view-panel" id="view-avaliacoes">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Histórico de Avaliações</h2>
+              <p class="card-desc">Consulta das avaliações registadas para o estudante selecionado.</p>
+            </div>
+            <span class="pill" id="studentAvgPill">Média: --</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Avaliação</th>
+                  <th>Disciplina</th>
+                  <th>Data</th>
+                  <th>Classificação</th>
+                  <th>Observação</th>
+                </tr>
+              </thead>
+              <tbody id="studentAssessmentsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHAT PÚBLICO -->
+      <section class="view-panel" id="view-chat">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Chat da Turma</h2>
+              <p class="card-desc">Conversa da comunidade estudantil.</p>
+            </div>
+          </div>
+
+          <div class="pinned-banner" id="pinnedBanner" style="display:none;"></div>
+          <div class="chat-box" id="publicChatBox"></div>
+
+          <div class="form-row" style="margin-bottom:0;">
+            <div style="grid-column: 1 / -1;">
+              <label for="publicChatInput">Mensagem</label>
+              <div style="display:flex; gap:8px;">
+                <input id="publicChatInput" type="text" placeholder="Escreve uma mensagem para a turma..." />
+                <button class="btn btn-primary" id="btnSendPublicChat" type="button">Enviar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PASSE 1841: DOCENTE / AVALIAÇÕES / NOTAS / ACOMPANHAMENTO -->
+      <section class="view-panel" id="view-passe1841">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Passe 1841 — Gestão Pedagógica & Avaliações</h2>
+              <p class="card-desc">Criação de avaliações, lançamento de notas e acompanhamento individual dos alunos.</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="btnLockPass1841" type="button">Sair do Passe</button>
+          </div>
+
+          <h3 class="card-title" style="font-size:0.98rem; margin-bottom:10px;">Criar e Lançar Avaliação</h3>
+          <div class="form-row">
+            <div>
+              <label for="evalStudentSelect">Aluno</label>
+              <select id="evalStudentSelect"></select>
+            </div>
+            <div>
+              <label for="evalTitleInput">Título da Avaliação</label>
+              <input id="evalTitleInput" type="text" placeholder="Ex.: Prova Escrita 1" />
+            </div>
+            <div>
+              <label for="evalSubjectInput">Disciplina</label>
+              <input id="evalSubjectInput" type="text" placeholder="Ex.: Matemática" />
+            </div>
+            <div>
+              <label for="evalScoreInput">Nota (0 - 20)</label>
+              <input id="evalScoreInput" type="number" min="0" max="20" step="0.5" placeholder="16.5" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label for="evalDateInput">Data</label>
+              <input id="evalDateInput" type="date" />
+            </div>
+            <div>
+              <label for="evalNoteInput">Parecer / Observação Pedagógica</label>
+              <input id="evalNoteInput" type="text" placeholder="Ex.: Bom domínio do raciocínio" />
+            </div>
+          </div>
+          <button class="btn btn-primary" id="btnCreateAssessment" type="button">Registar Avaliação</button>
         </div>
 
-        <div class="flex items-center gap-1.5 shrink-0">
-          <button type="button" data-action="saga-rollback-ui" title="Restaurar visual original" class="tactile-btn rounded-xl border border-borderLine bg-obsidian px-2.5 py-1.5 text-[11px] font-semibold text-slate-300 hover:border-accent">
-            Restaurar Visual
-          </button>
-          <button type="button" data-action="clear-saga-chat" title="Limpar conversa" class="tactile-btn rounded-xl border border-borderLine bg-obsidian px-2.5 py-1.5 text-[11px] font-semibold text-slate-300">
-            Limpar
-          </button>
-          <button type="button" data-action="toggle-saga" title="Fechar S.A.G.A." class="tactile-btn rounded-xl border border-borderLine bg-obsidian px-3 py-1.5 text-xs font-bold text-white">
-            Fechar
-          </button>
+        <div class="card">
+          <h3 class="card-title" style="font-size:0.98rem; margin-bottom:10px;">Acompanhamento de Estudantes</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Estudante</th>
+                  <th>Turma</th>
+                  <th>Avaliações</th>
+                  <th>Média</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="teacherRosterBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PASSE 2013: NÚCLEO TÉCNICO / SISTEMA / API / PROVAS -->
+      <section class="view-panel" id="view-passe2013">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Passe 2013 — Núcleo Técnico & Sistema</h2>
+              <p class="card-desc">Configuração de motor, provas internas, estado do sistema e reforma visual.</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="btnLockPass2013" type="button">Sair do Passe</button>
+          </div>
+
+          <div class="grid-3" style="margin-bottom:14px;">
+            <div class="stat-box">
+              <div class="stat-label">Perfis Ativos</div>
+              <div class="stat-value" id="statStudentsCount">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Avaliações Registadas</div>
+              <div class="stat-value" id="statAssessmentsCount">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Mensagens no Chat</div>
+              <div class="stat-value" id="statChatCount">0</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div>
+              <label for="apiKeyInput">Chave API</label>
+              <input id="apiKeyInput" type="password" placeholder="Cola a chave aqui" />
+            </div>
+            <div>
+              <label for="modelSelect">Modelo</label>
+              <select id="modelSelect">
+                <option value="gemini-3.8-flash">gemini-3.8-flash</option>
+                <option value="gemini-3.8-flash-lite">gemini-3.8-flash-lite</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
+            <button class="btn btn-primary" id="btnSaveTechConfig" type="button">Guardar Configuração</button>
+            <button class="btn btn-secondary" id="btnRunSelfProbe" type="button">Executar Prova do Núcleo</button>
+            <button class="btn btn-secondary" id="btnRestoreFrontend" type="button">Restaurar Frontend</button>
+            <button class="btn btn-danger" id="btnResetAllData" type="button">Repor Dados Padrão</button>
+          </div>
+
+          <div class="code-box" id="probeOutput">Núcleo pronto. Aguardando comando ou prova.</div>
+        </div>
+      </section>
+
+      <!-- PASSE 2012: MODERAÇÃO DOS CHATS PÚBLICOS -->
+      <section class="view-panel" id="view-passe2012">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Passe 2012 — Moderação dos Chats Públicos</h2>
+              <p class="card-desc">Controlo de avisos fixados, remoção de mensagens e limpeza do chat da turma.</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="btnLockPass2012" type="button">Sair do Passe</button>
+          </div>
+
+          <div class="form-row">
+            <div style="grid-column: 1 / -1;">
+              <label for="pinnedNoticeInput">Aviso Fixado no Chat Público</label>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <input id="pinnedNoticeInput" type="text" placeholder="Ex.: Entrega de trabalhos até sexta-feira." />
+                <button class="btn btn-primary" id="btnSetPinnedNotice" type="button">Fixar Aviso</button>
+                <button class="btn btn-secondary" id="btnClearPinnedNotice" type="button">Limpar Aviso</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:12px;">
+            <button class="btn btn-danger btn-sm" id="btnPurgePublicChat" type="button">Apagar Todas as Mensagens Públicas</button>
+          </div>
+
+          <div class="list-stack" id="moderationMessagesList"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- BOTÃO E GAVETA DO S.A.G.A. (COM CAPACIDADE DE REFORMAR O PRÓPRIO FRONTEND) -->
+  <button class="saga-fab" id="btnOpenSaga" type="button">S.A.G.A.</button>
+
+  <div class="saga-drawer" id="sagaDrawer" role="dialog" aria-modal="true" aria-label="S.A.G.A.">
+    <div class="saga-panel">
+      <div class="card-header" style="margin-bottom:8px;">
+        <div>
+          <h3 class="card-title">S.A.G.A.</h3>
+          <p class="card-desc">Assistente académico e reforma segura da interface.</p>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <button class="btn btn-secondary btn-sm" id="btnSagaRollback" type="button">Reverter Visual</button>
+          <button class="btn btn-secondary btn-sm" id="btnCloseSaga" type="button">Fechar</button>
         </div>
       </div>
 
-      <!-- Sugestões Educativas e de Ambiente (Sem termos técnicos) -->
-      <div class="flex items-center gap-1.5 overflow-x-auto border-b border-borderLine bg-obsidian/70 px-3 py-2">
-        <button type="button" data-saga-quick="Mostra as minhas notas e média atual" class="tactile-btn shrink-0 rounded-lg border border-borderLine bg-surface px-2.5 py-1 text-[11px] font-semibold text-slate-200 hover:border-accent">
-          Minhas Notas
-        </button>
-        <button type="button" data-saga-quick="Cria um plano de estudo para a 8.ª classe" class="tactile-btn shrink-0 rounded-lg border border-borderLine bg-surface px-2.5 py-1 text-[11px] font-semibold text-slate-200 hover:border-accent">
-          Plano de Estudo
-        </button>
-        <button type="button" data-saga-quick="Muda o tema visual para esmeralda" class="tactile-btn shrink-0 rounded-lg border border-borderLine bg-surface px-2.5 py-1 text-[11px] font-semibold text-slate-200 hover:border-accent">
-          Cor Esmeralda
-        </button>
-        <button type="button" data-saga-quick="Aumenta o tamanho da letra" class="tactile-btn shrink-0 rounded-lg border border-borderLine bg-surface px-2.5 py-1 text-[11px] font-semibold text-slate-200 hover:border-accent">
-          Aumentar Letra
-        </button>
+      <div class="chat-box" id="sagaChatBox"></div>
+
+      <div style="display:flex; gap:8px;">
+        <input id="sagaPromptInput" type="text" placeholder="Ex.: 'modo claro', 'letra maior', 'compacto' ou dúvida de estudo..." />
+        <button class="btn btn-primary" id="btnSendSaga" type="button">Enviar</button>
       </div>
-
-      <!-- Mensagens -->
-      <div id="sagaChatScroll" class="flex-1 space-y-3 overflow-y-auto p-4 text-xs sm:text-sm"></div>
-
-      <!-- Input do S.A.G.A. -->
-      <form id="sagaChatForm" class="flex items-center gap-2 border-t border-borderLine bg-surface p-3 safe-pb">
-        <input id="sagaPromptInput" type="text" autocomplete="off" placeholder="Pergunta sobre matérias, notas ou pede um ajuste visual..." class="min-h-[46px] flex-1 rounded-xl border border-borderLine bg-obsidian px-3.5 py-2 text-white placeholder-slate-500 focus:border-accent focus:outline-none" />
-        <button type="submit" class="tactile-btn accent-solid rounded-xl px-4 py-2.5 text-xs sm:text-sm font-extrabold shrink-0">
-          Enviar
-        </button>
-      </form>
     </div>
   </div>
 
-  <!-- Modal Discreto de PIN de Acesso (4 Dígitos — Sem Dicas dos Códigos) -->
-  <div id="pinAccessModal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-black/80 p-4 backdrop-blur-xs">
-    <div class="w-full max-w-sm rounded-3xl border border-borderLine bg-slateDark p-6 space-y-5 shadow-2xl">
-      <div class="flex items-center justify-between border-b border-borderLine pb-3">
-        <div>
-          <h2 class="text-base font-extrabold text-white">Acesso Institucional</h2>
-          <p class="text-xs text-slate-400">Introduz o código numérico de 4 dígitos.</p>
-        </div>
-        <button type="button" data-action="close-pin-modal" class="tactile-btn rounded-xl border border-borderLine bg-surface px-3 py-1.5 text-xs font-bold text-slate-200">
-          Fechar
-        </button>
+  <!-- MODAL DE PIN -->
+  <div class="modal-backdrop" id="pinModal" role="dialog" aria-modal="true" aria-label="Acesso">
+    <div class="modal-box">
+      <h3 class="card-title" style="margin-bottom:6px;">Código de Acesso</h3>
+      <p class="card-desc" style="margin-bottom:12px;">Introduz o código de 4 dígitos para alternar o nível de acesso.</p>
+      <div style="margin-bottom:12px;">
+        <label for="pinCodeInput">PIN</label>
+        <input id="pinCodeInput" type="password" inputmode="numeric" maxlength="4" placeholder="••••" />
       </div>
-
-      <form id="pinAccessForm" class="space-y-4">
-        <div>
-          <input
-            id="pinCodeInput"
-            type="password"
-            inputmode="numeric"
-            pattern="[0-9]*"
-            maxlength="4"
-            autocomplete="off"
-            placeholder="••••"
-            class="min-h-[54px] w-full rounded-2xl border border-borderLine bg-obsidian px-4 py-3 text-center font-mono text-2xl font-extrabold tracking-[0.6em] text-white placeholder-slate-600 focus:border-accent focus:outline-none"
-          />
-        </div>
-        <button type="submit" class="tactile-btn accent-solid w-full rounded-xl py-3 text-xs sm:text-sm font-extrabold">
-          Confirmar Acesso
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal de Cores (Para o utilizador personalizar o ambiente) -->
-  <div id="themeModal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-black/75 p-4 backdrop-blur-xs">
-    <div class="w-full max-w-md rounded-3xl border border-borderLine bg-slateDark p-5 space-y-4 shadow-2xl">
-      <div class="flex items-center justify-between border-b border-borderLine pb-3">
-        <div>
-          <h2 class="text-base font-bold text-white">Ambiente Visual</h2>
-          <p class="text-xs text-slate-400">Escolhe a paleta de estudo que preferes.</p>
-        </div>
-        <button type="button" data-action="close-theme-modal" class="tactile-btn rounded-xl border border-borderLine bg-surface px-3 py-1.5 text-xs font-bold text-slate-200">
-          Fechar
-        </button>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2" id="themePresetsBox"></div>
-
-      <div class="grid grid-cols-2 gap-2">
-        <button type="button" data-action="set-surface-mode" data-mode="dark" class="tactile-btn rounded-xl border border-borderLine bg-surface px-3 py-2.5 text-xs font-bold text-white">
-          Modo Escuro
-        </button>
-        <button type="button" data-action="set-surface-mode" data-mode="light" class="tactile-btn rounded-xl border border-borderLine bg-surface px-3 py-2.5 text-xs font-bold text-white">
-          Modo Claro
-        </button>
+      <div style="display:flex; gap:8px; justify-content:flex-end;">
+        <button class="btn btn-secondary" id="btnCancelPin" type="button">Cancelar</button>
+        <button class="btn btn-primary" id="btnSubmitPin" type="button">Entrar</button>
       </div>
     </div>
   </div>
+
+  <div class="toast" id="toast"></div>
 
   <script>
-    /**
-     * =========================================================================
-     * SISTEMA ÁUREA — ECOSSISTEMA ESCOLAR (EXorg MT)
-     * Arquitetura com Isolamento Estrito de Papéis:
-     * - 'student'  : Vista limpa (Academy, Lado 0, Manager, Boletim, Chat Turma, S.A.G.A.)
-     * - '1841'     : Docente / Pedagógico (Lançamento de Notas 0-20, Assiduidade, Acompanhamento)
-     * - '2013'     : Núcleo Técnico & Engenharia (API Gemini, Provas/Telemetria, Reforma S.A.G.A., Backup)
-     * - '2012'     : Moderação & Comunidade (Controlo total dos Chats Públicos dos alunos)
-     * =========================================================================
-     */
+    (function () {
+      "use strict";
 
-    window.__AUREA_MEM_STORE = window.__AUREA_MEM_STORE || {};
-    const STORE_KEY = 'AUREA_ECOSYSTEM_V5_PRESENTATION';
+      const STORAGE_KEY = "aurea_exorg_mt_state_v1";
+      const SNAPSHOT_KEY = "aurea_exorg_mt_snapshot_v1";
 
-    function storageRead(key) {
-      try {
-        if (window.localStorage) {
-          const val = window.localStorage.getItem(key);
-          if (val !== null) {
-            window.__AUREA_MEM_STORE[key] = val;
-            return val;
-          }
-        }
-      } catch (e) {}
-      return Object.prototype.hasOwnProperty.call(window.__AUREA_MEM_STORE, key)
-        ? window.__AUREA_MEM_STORE[key]
-        : null;
-    }
-
-    function storageWrite(key, value) {
-      const str = String(value);
-      window.__AUREA_MEM_STORE[key] = str;
-      try {
-        if (window.localStorage) {
-          window.localStorage.setItem(key, str);
-        }
-      } catch (e) {}
-    }
-
-    // Disciplinas do Currículo Angolano (8.ª Classe — Ensino Secundário Geral)
-    const SUBJECTS_8_CLASSE = [
-      'Matemática',
-      'Língua Portuguesa',
-      'Física',
-      'Química',
-      'Biologia',
-      'História',
-      'Geografia',
-      'Língua Inglesa',
-      'Educação Visual e Plástica',
-      'Educação Física'
-    ];
-
-    const THEME_OPTIONS = [
-      { name: 'Ciano Áurea', hex: '#38bdf8', soft: '#7dd3fc' },
-      { name: 'Esmeralda', hex: '#34d399', soft: '#6ee7b7' },
-      { name: 'Ouro Solar', hex: '#fbbf24', soft: '#fde68a' },
-      { name: 'Violeta', hex: '#a78bfa', soft: '#ddd6fe' }
-    ];
-
-    const DEFAULT_FRONTEND_REFORM = {
-      surfaceMode: 'dark',
-      accentName: 'Ciano Áurea',
-      accentHex: '#38bdf8',
-      accentSoft: '#7dd3fc',
-      uiScale: 1,
-      density: 'comfortable', // 'comfortable' | 'compact' | 'spacious'
-      showWelcomeBanner: true,
-      layoutOrder: ['academy', 'lado0', 'manager', 'boletim', 'chat'],
-      reformHistory: []
-    };
-
-    function escapeHtml(str) {
-      return String(str == null ? '' : str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    }
-
-    function nowClock() {
-      return new Date().toLocaleTimeString('pt-AO', { hour: '2-digit', minute: '2-digit' });
-    }
-
-    function nowFullDateTime() {
-      const d = new Date();
-      return `${d.toLocaleDateString('pt-AO')} ${nowClock()}`;
-    }
-
-    let toastTimer = null;
-    function showToast(msg, type = 'info') {
-      const box = document.getElementById('toastBox');
-      const txt = document.getElementById('toastText');
-      const dot = document.getElementById('toastIndicator');
-      if (!box || !txt || !dot) return;
-
-      txt.textContent = msg;
-      dot.className = `mt-1 h-2.5 w-2.5 shrink-0 rounded-full ${
-        type === 'success' ? 'bg-emeraldGlow' : type === 'warn' ? 'bg-amberGlow' : type === 'error' ? 'bg-roseGlow' : 'bg-accent'
-      }`;
-      box.classList.remove('hidden');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => box.classList.add('hidden'), 3800);
-    }
-
-    // Cálculos Académicos Angolanos (Escala 0 a 20 Valores)
-    function calcTrimesterMT(mac, npp, npt) {
-      const a = Number(mac);
-      const b = Number(npp);
-      const c = Number(npt);
-      if (!Number.isFinite(a) || !Number.isFinite(b) || !Number.isFinite(c)) return 0;
-      return Math.round(((a + b + c) / 3) * 10) / 10;
-    }
-
-    function calcFinalSubjectAverage(gradesObj) {
-      if (!gradesObj) return 0;
-      const t1 = calcTrimesterMT(gradesObj.t1?.mac, gradesObj.t1?.npp, gradesObj.t1?.npt);
-      const t2 = calcTrimesterMT(gradesObj.t2?.mac, gradesObj.t2?.npp, gradesObj.t2?.npt);
-      const t3 = calcTrimesterMT(gradesObj.t3?.mac, gradesObj.t3?.npp, gradesObj.t3?.npt);
-      return Math.round(((t1 + t2 + t3) / 3) * 10) / 10;
-    }
-
-    function classifyScore20(val) {
-      const n = Number(val || 0);
-      if (n >= 16) return { label: 'Muito Bom (Dispensado)', code: 'MB', badge: 'border-emeraldGlow/40 bg-emerald-950/35 text-emeraldGlow' };
-      if (n >= 14) return { label: 'Bom (Aprovado)', code: 'BOM', badge: 'border-emeraldGlow/40 bg-emerald-950/35 text-emeraldGlow' };
-      if (n >= 10) return { label: 'Suficiente (Aprovado)', code: 'APROV', badge: 'border-accent/40 bg-surfaceAlt accent-soft-text' };
-      if (n >= 7) return { label: 'Recurso / Recuperação', code: 'REC', badge: 'border-amberGlow/40 bg-amber-950/35 text-amberGlow' };
-      return { label: 'Reprovado', code: 'REP', badge: 'border-roseGlow/40 bg-rose-950/35 text-roseGlow' };
-    }
-
-    function buildStudentGradesSeed(baseScore) {
-      const map = {};
-      SUBJECTS_8_CLASSE.forEach((subj, i) => {
-        const offset = ((i % 4) - 1) * 0.7;
-        const clamp = (v) => Math.max(4, Math.min(19.5, Math.round(v * 10) / 10));
-        map[subj] = {
-          t1: { mac: clamp(baseScore + offset), npp: clamp(baseScore + offset - 0.4), npt: clamp(baseScore + offset + 0.3) },
-          t2: { mac: clamp(baseScore + offset + 0.3), npp: clamp(baseScore + offset), npt: clamp(baseScore + offset + 0.2) },
-          t3: { mac: clamp(baseScore + offset + 0.5), npp: clamp(baseScore + offset + 0.2), npt: clamp(baseScore + offset + 0.4) }
-        };
-      });
-      return map;
-    }
-
-    function getStudentOverallAverage(student) {
-      if (!student || !student.grades) return 0;
-      const subjs = Object.keys(student.grades);
-      if (!subjs.length) return 0;
-      const sum = subjs.reduce((acc, s) => acc + calcFinalSubjectAverage(student.grades[s]), 0);
-      return Math.round((sum / subjs.length) * 10) / 10;
-    }
-
-    function createInitialState() {
-      return {
-        // Papel ativo: 'student' (padrão limpo) | '1841' (Docente) | '2013' (Engenharia/Sistema) | '2012' (Moderação Chat)
-        activeRole: 'student',
-        ui: {
-          activeTab: 'academy',
-          sagaOpen: false,
-          currentStudentId: 'AUR-2026-0801',
-          selectedSubject: 'Matemática',
-          selectedTrimester: 't1',
-          selectedLessonId: 'mat-01',
-          searchQuery: ''
-        },
-        frontendReform: JSON.parse(JSON.stringify(DEFAULT_FRONTEND_REFORM)),
-        lastSafeSnapshot: JSON.parse(JSON.stringify(DEFAULT_FRONTEND_REFORM)),
-        schoolMeta: {
-          institution: 'Complexo Escolar EXorg MT — Sistema Áurea',
-          academicYear: '2026',
-          classe: '8.ª Classe',
-          curso: 'Ensino Secundário Geral (I Ciclo)',
-          turma: '8.ª B • Turno Manhã',
-          director: 'Sófocles Hilinawa',
-          patron: 'Baptista Antônio'
-        },
-        // Configuração técnica isolada (só acessível no passe 2013)
-        techConfig: {
-          apiKey: '',
-          selectedModel: 'gemini-2.5-flash-lite',
-          showKeyPlain: false,
-          testing: false,
-          diagnostics: {
-            statusText: 'Motor Híbrido Pronto',
-            httpCode: '—',
-            latencyMs: 0,
-            transportUsed: 'Standby',
-            modelUsed: 'gemini-2.5-flash-lite',
-            lastCheckedAt: '—',
-            errorDetail: 'Aguardando configuração no painel 2013.'
-          },
-          systemLogs: [
-            { id: 1, at: 'Hoje 07:30', level: 'INFO', detail: 'Ecossistema Áurea iniciado em modo isolado de aluno.' },
-            { id: 2, at: 'Hoje 07:31', level: 'GUARD', detail: 'Camada de resguardo SagaFrontendReformer validada.' }
-          ]
-        },
+      const DEFAULT_STATE = {
+        activePass: null, // null = aluno | "1841" | "2013" | "2012"
+        activeStudentId: "ALU-001",
         students: [
-          {
-            id: 'AUR-2026-0801',
-            name: 'Sófocles Hilinawa',
-            classe: '8.ª Classe',
-            turma: '8.ª B',
-            guardian: 'Baptista Antônio',
-            pedagogicalNote: 'Excelente participação nas aulas de Matemática e Física. Lidera o grupo de estudo da turma.',
-            attendance: { presences: 62, justifiedAbsences: 1, unjustifiedAbsences: 0 },
-            grades: buildStudentGradesSeed(16.4)
-          },
-          {
-            id: 'AUR-2026-0802',
-            name: 'Helena Quissanga',
-            classe: '8.ª Classe',
-            turma: '8.ª B',
-            guardian: 'Manuel Quissanga',
-            pedagogicalNote: 'Bom domínio de Língua Portuguesa e História; manter regularidade nas tarefas de Química.',
-            attendance: { presences: 60, justifiedAbsences: 2, unjustifiedAbsences: 1 },
-            grades: buildStudentGradesSeed(14.9)
-          },
-          {
-            id: 'AUR-2026-0803',
-            name: 'Mateus Domingos',
-            classe: '8.ª Classe',
-            turma: '8.ª B',
-            guardian: 'Teresa Domingos',
-            pedagogicalNote: 'Evolução positiva no II Trimestre. Recomenda-se reforço em equações do 1.º grau.',
-            attendance: { presences: 56, justifiedAbsences: 2, unjustifiedAbsences: 3 },
-            grades: buildStudentGradesSeed(11.6)
-          },
-          {
-            id: 'AUR-2026-0804',
-            name: 'Beatriz Tchissingui',
-            classe: '8.ª Classe',
-            turma: '8.ª B',
-            guardian: 'Carlos Tchissingui',
-            pedagogicalNote: 'Em acompanhamento pedagógico para recuperação em Matemática e Física antes da NPT.',
-            attendance: { presences: 51, justifiedAbsences: 2, unjustifiedAbsences: 8 },
-            grades: buildStudentGradesSeed(8.8)
-          },
-          {
-            id: 'AUR-2026-0805',
-            name: 'Kelson Capingãla',
-            classe: '8.ª Classe',
-            turma: '8.ª B',
-            guardian: 'Joana Capingãla',
-            pedagogicalNote: 'Bom raciocínio lógico e interesse em Biologia e Geografia.',
-            attendance: { presences: 59, justifiedAbsences: 1, unjustifiedAbsences: 2 },
-            grades: buildStudentGradesSeed(13.4)
-          }
+          { id: "ALU-001", name: "Sófocles", className: "8.ª Classe A" },
+          { id: "ALU-002", name: "Ana Luísa", className: "8.ª Classe A" },
+          { id: "ALU-003", name: "Mateus Domingos", className: "8.ª Classe B" }
         ],
-        academyLessons: [
-          {
-            id: 'mat-01',
-            subject: 'Matemática',
-            title: 'Equações do 1.º Grau e Sistemas Simples',
-            duration: '35 min',
-            level: '8.ª Classe • I Trimestre',
-            summary: 'Resolução passo a passo de equações lineares com uma incógnita, verificação de raízes e problemas aplicados ao quotidiano angolano.',
-            keyPoints: [
-              'Isolar os termos com incógnita num membro e os termos independentes no outro.',
-              'Aplicar o princípio da equivalência ao trocar sinais na transposição.',
-              'Substituir o valor encontrado na equação original para confirmar a solução.'
-            ],
-            completed: true
-          },
-          {
-            id: 'fis-01',
-            subject: 'Física',
-            title: 'Movimento Retilíneo Uniforme (MRU) e Velocidade Média',
-            duration: '30 min',
-            level: '8.ª Classe • I Trimestre',
-            summary: 'Compreensão de trajetória, deslocamento, intervalo de tempo e cálculo da velocidade média no Sistema Internacional (m/s e km/h).',
-            keyPoints: [
-              'Fórmula fundamental: v = Δs / Δt.',
-              'Conversão rápida: de km/h para m/s divide-se por 3,6; de m/s para km/h multiplica-se por 3,6.',
-              'No MRU a velocidade mantém-se constante ao longo de trajetórias retilíneas.'
-            ],
-            completed: true
-          },
-          {
-            id: 'qui-01',
-            subject: 'Química',
-            title: 'Estrutura Atómica e Tabela Periódica',
-            duration: '30 min',
-            level: '8.ª Classe • II Trimestre',
-            summary: 'Identificação de protões, neutrões e eletrões, número atómico (Z), número de massa (A) e organização dos grupos principais.',
-            keyPoints: [
-              'O número atómico (Z) corresponde ao número de protões no núcleo.',
-              'Em átomos neutros, o número de eletrões é igual ao número de protões.',
-              'Os elementos estão organizados por ordem crescente de número atómico.'
-            ],
-            completed: false
-          },
-          {
-            id: 'por-01',
-            subject: 'Língua Portuguesa',
-            title: 'Interpretação Textual e Classes de Palavras',
-            duration: '25 min',
-            level: '8.ª Classe • I Trimestre',
-            summary: 'Leitura crítica de textos narrativos e expositivos, coesão textual e identificação de verbos, substantivos e adjetivos.',
-            keyPoints: [
-              'Identificar a ideia principal de cada parágrafo antes de responder às questões.',
-              'Distinguir sentido denotativo (literal) de sentido conotativo (figurado).',
-              'Concordância nominal e verbal na produção de pequenos resumos.'
-            ],
-            completed: false
-          },
-          {
-            id: 'bio-01',
-            subject: 'Biologia',
-            title: 'A Célula: Unidade Básica dos Seres Vivos',
-            duration: '30 min',
-            level: '8.ª Classe • I Trimestre',
-            summary: 'Diferenças entre células procarióticas e eucarióticas, e funções essenciais da membrana plasmática, citoplasma e núcleo.',
-            keyPoints: [
-              'A membrana plasmática controla a entrada e saída de substâncias na célula.',
-              'As mitocôndrias são responsáveis pela respiração celular e produção de energia.',
-              'A célula vegetal possui parede celular e cloroplastos, ausentes na célula animal.'
-            ],
-            completed: false
-          }
+        tasks: [
+          { id: "TSK-1", studentId: "ALU-001", title: "Rever equações do 1.º grau", subject: "Matemática", done: false },
+          { id: "TSK-2", studentId: "ALU-002", title: "Resumo sobre células vegetais", subject: "Biologia", done: true }
         ],
-        lado0: {
-          mood: 'Focado e motivado',
-          energyScore: 85,
-          focusMinutesToday: 50,
-          dailyReflection: 'Hoje revisei equações do 1.º grau e ajudei os colegas no resumo de Física.',
-          habits: [
-            { id: 'h1', label: 'Rever apontamentos do dia por 25 minutos sem distrações', done: true },
-            { id: 'h2', label: 'Resolver pelo menos 5 exercícios de Matemática', done: true },
-            { id: 'h3', label: 'Preparar o material escolar para amanhã', done: false },
-            { id: 'h4', label: 'Dormir pelo menos 8 horas para consolidar a memória', done: false }
+        assessments: [
+          { id: "AVL-1", studentId: "ALU-001", title: "Teste Diagnóstico", subject: "Matemática", date: "2026-10-12", score: 16.0, note: "Boa resolução dos problemas." },
+          { id: "AVL-2", studentId: "ALU-001", title: "Composição Escrita", subject: "Língua Portuguesa", date: "2026-10-20", score: 15.5, note: "Clareza na estrutura." },
+          { id: "AVL-3", studentId: "ALU-002", title: "Teste Diagnóstico", subject: "Biologia", date: "2026-10-14", score: 17.5, note: "Excelente participação." },
+          { id: "AVL-4", studentId: "ALU-003", title: "Exercício Prático", subject: "Geografia", date: "2026-10-18", score: 14.5, note: "Leitura correta de mapas." }
+        ],
+        publicChat: {
+          pinnedNotice: "Bem-vindos ao espaço da turma.",
+          messages: [
+            { id: "MSG-1", authorId: "ALU-002", authorName: "Ana Luísa", text: "Alguém já organizou os apontamentos de esta semana?", time: "07:05" },
+            { id: "MSG-2", authorId: "ALU-003", authorName: "Mateus Domingos", text: "Sim, deixei o resumo das tarefas no Manager.", time: "07:08" }
           ]
         },
-        managerTasks: [
-          { id: 't1', title: 'Entregar lista de exercícios de Matemática (Equações)', subject: 'Matemática', due: 'Amanhã • 07:30', priority: 'Alta', done: false },
-          { id: 't2', title: 'Resumo ilustrado sobre a Célula Eucariótica', subject: 'Biologia', due: 'Sexta-feira', priority: 'Média', done: false },
-          { id: 't3', title: 'Leitura orientada do capítulo 3 de História de Angola', subject: 'História', due: 'Segunda-feira', priority: 'Normal', done: true },
-          { id: 't4', title: 'Revisão de vocabulário em Língua Inglesa', subject: 'Língua Inglesa', due: 'Quarta-feira', priority: 'Normal', done: false }
-        ],
-        // Chat Público da Turma (Moderado pelo passe 2012)
-        publicChat: {
-          pinnedNotice: 'Aviso da Turma 8.ª B: Mantenham o respeito mútuo e partilhem dúvidas das disciplinas.',
-          slowMode: false,
-          mutedStudentIds: [],
-          messages: [
-            {
-              id: 101,
-              senderId: 'AUR-2026-0801',
-              senderName: 'Sófocles Hilinawa',
-              roleTag: 'Estudante',
-              time: '08:15',
-              text: 'Bom dia turma! Já está disponível na aba Academy o resumo de Equações do 1.º Grau e MRU.'
-            },
-            {
-              id: 102,
-              senderId: 'AUR-2026-0802',
-              senderName: 'Helena Quissanga',
-              roleTag: 'Estudante',
-              time: '08:18',
-              text: 'Obrigada Sófocles! A parte da conversão de km/h para m/s ajudou bastante na ficha de Física.'
-            },
-            {
-              id: 103,
-              senderId: 'AUR-2026-0805',
-              senderName: 'Kelson Capingãla',
-              roleTag: 'Estudante',
-              time: '08:22',
-              text: 'Alguém quer formar grupo de estudo hoje à tarde para rever Biologia?'
-            }
-          ]
+        tech: {
+          apiKey: "",
+          model: "gemini-3.8-flash"
+        },
+        uiReform: {
+          theme: "dark",
+          fontSize: 16,
+          compact: false,
+          accent: "#f59e0b"
         },
         sagaMessages: [
           {
-            id: 1,
-            role: 'assistant',
-            time: nowClock(),
-            text: 'Olá! Sou o S.A.G.A., o teu tutor no Sistema Áurea. Posso ajudar-te com matérias da 8.ª classe, consultar as tuas notas, organizar as tarefas do Manager ou adaptar as cores e o tamanho da letra do ecrã para ti.'
+            id: "SAGA-INIT",
+            sender: "S.A.G.A.",
+            text: "Olá! Estou pronto para ajudar nos estudos e adaptar o visual da interface quando precisares."
           }
         ]
       };
-    }
 
-    function loadAppState() {
-      const def = createInitialState();
-      const raw = storageRead(STORE_KEY);
-      if (!raw) return def;
-      try {
-        const parsed = JSON.parse(raw);
-        return {
-          ...def,
-          ...parsed,
-          activeRole: parsed.activeRole || 'student',
-          ui: { ...def.ui, ...(parsed.ui || {}) },
-          frontendReform: { ...def.frontendReform, ...(parsed.frontendReform || {}) },
-          lastSafeSnapshot: { ...def.lastSafeSnapshot, ...(parsed.lastSafeSnapshot || {}) },
-          schoolMeta: { ...def.schoolMeta, ...(parsed.schoolMeta || {}) },
-          techConfig: {
-            ...def.techConfig,
-            ...(parsed.techConfig || {}),
-            testing: false,
-            diagnostics: {
-              ...def.techConfig.diagnostics,
-              ...((parsed.techConfig && parsed.techConfig.diagnostics) || {})
-            }
-          },
-          students: Array.isArray(parsed.students) && parsed.students.length ? parsed.students : def.students,
-          academyLessons: Array.isArray(parsed.academyLessons) ? parsed.academyLessons : def.academyLessons,
-          lado0: { ...def.lado0, ...(parsed.lado0 || {}) },
-          managerTasks: Array.isArray(parsed.managerTasks) ? parsed.managerTasks : def.managerTasks,
-          publicChat: { ...def.publicChat, ...(parsed.publicChat || {}) },
-          sagaMessages: Array.isArray(parsed.sagaMessages) && parsed.sagaMessages.length ? parsed.sagaMessages : def.sagaMessages
-        };
-      } catch (e) {
-        return def;
-      }
-    }
-
-    let appState = loadAppState();
-
-    function saveAppState() {
-      storageWrite(STORE_KEY, JSON.stringify(appState));
-    }
-
-    function pushSystemLog(level, detail) {
-      if (!appState.techConfig.systemLogs) appState.techConfig.systemLogs = [];
-      appState.techConfig.systemLogs.unshift({
-        id: Date.now() + Math.floor(Math.random() * 100),
-        at: nowFullDateTime(),
-        level,
-        detail
-      });
-      if (appState.techConfig.systemLogs.length > 60) {
-        appState.techConfig.systemLogs = appState.techConfig.systemLogs.slice(0, 60);
-      }
-    }
-
-    // =========================================================================
-    // MOTOR DE AUTO-REFORMA SEGURA DO FRONTEND (SagaFrontendReformer)
-    // =========================================================================
-    const SagaFrontendReformer = {
-      validateIntegrity() {
-        // Garante que nenhuma reforma ocultou ou destruiu elementos vitais ou o isolamento de segurança
-        const requiredIds = ['appHeader', 'mainNavBar', 'mainViewport', 'sagaDrawer', 'pinAccessModal'];
-        const missing = requiredIds.filter(id => !document.getElementById(id));
-        if (missing.length > 0) {
-          this.rollback('Integridade de estrutura protegida');
-          return false;
-        }
-        return true;
-      },
-
-      saveSnapshot(label) {
-        const current = JSON.parse(JSON.stringify(appState.frontendReform));
-        delete current.reformHistory;
-        appState.lastSafeSnapshot = current;
-        if (!Array.isArray(appState.frontendReform.reformHistory)) {
-          appState.frontendReform.reformHistory = [];
-        }
-        appState.frontendReform.reformHistory.unshift({
-          at: nowClock(),
-          label
-        });
-        if (appState.frontendReform.reformHistory.length > 15) {
-          appState.frontendReform.reformHistory = appState.frontendReform.reformHistory.slice(0, 15);
-        }
-      },
-
-      applyToDOM() {
-        const ref = appState.frontendReform || DEFAULT_FRONTEND_REFORM;
-        const root = document.documentElement;
-
-        // 1. Modo claro/escuro
-        if (ref.surfaceMode === 'light') {
-          root.classList.add('theme-light');
-          root.classList.remove('dark');
-        } else {
-          root.classList.remove('theme-light');
-          root.classList.add('dark');
-        }
-
-        // 2. Paleta de destaque
-        const hex = ref.accentHex || '#38bdf8';
-        const soft = ref.accentSoft || '#7dd3fc';
-        root.style.setProperty('--accent-hex', hex);
-        root.style.setProperty('--accent-soft', soft);
-
-        const clean = hex.replace('#', '');
-        if (clean.length === 6) {
-          const r = parseInt(clean.slice(0, 2), 16);
-          const g = parseInt(clean.slice(2, 4), 16);
-          const b = parseInt(clean.slice(4, 6), 16);
-          root.style.setProperty('--accent-ring', `rgba(${r}, ${g}, ${b}, 0.35)`);
-          root.style.setProperty('--accent-tint', `rgba(${r}, ${g}, ${b}, 0.14)`);
-        }
-
-        // 3. Escala tipográfica segura (entre 0.90 e 1.22 para nunca quebrar layouts mobile)
-        const safeScale = Math.max(0.9, Math.min(1.22, Number(ref.uiScale) || 1));
-        root.style.setProperty('--ui-scale', String(safeScale));
-
-        // 4. Densidade dos cartões
-        if (ref.density === 'compact') {
-          root.style.setProperty('--card-radius', '1rem');
-          root.style.setProperty('--card-pad', '0.9rem');
-        } else if (ref.density === 'spacious') {
-          root.style.setProperty('--card-radius', '2rem');
-          root.style.setProperty('--card-pad', '1.6rem');
-        } else {
-          root.style.setProperty('--card-radius', '1.5rem');
-          root.style.setProperty('--card-pad', '1.25rem');
-        }
-
-        this.syncThemeModalUI();
-        this.validateIntegrity();
-      },
-
-      syncThemeModalUI() {
-        const presetsBox = document.getElementById('themePresetsBox');
-        if (!presetsBox) return;
-        const hex = appState.frontendReform.accentHex || '#38bdf8';
-        presetsBox.innerHTML = THEME_OPTIONS.map(t => {
-          const active = t.hex.toLowerCase() === hex.toLowerCase();
-          return `
-            <button type="button" data-action="set-theme-preset" data-hex="${t.hex}" data-soft="${t.soft}" data-name="${escapeHtml(t.name)}" class="tactile-btn flex items-center gap-2 rounded-xl border ${active ? 'border-accent bg-surfaceAlt' : 'border-borderLine bg-surface'} px-3 py-2.5 text-xs font-bold text-white">
-              <span class="h-4 w-4 rounded-full" style="background:${t.hex}"></span>
-              <span>${escapeHtml(t.name)}</span>
-            </button>
-          `;
-        }).join('');
-      },
-
-      reform(patch, description) {
-        this.saveSnapshot(description || 'Ajuste visual');
-        appState.frontendReform = {
-          ...appState.frontendReform,
-          ...patch
-        };
-        this.applyToDOM();
-        pushSystemLog('REFORM', `Auto-reforma frontend aplicada: ${description}`);
-        saveAppState();
-        renderNavigationAndHeader();
-        renderActiveView();
-      },
-
-      rollback(reason = 'Visual original restaurado') {
-        const snap = appState.lastSafeSnapshot || DEFAULT_FRONTEND_REFORM;
-        const history = appState.frontendReform.reformHistory || [];
-        appState.frontendReform = {
-          ...JSON.parse(JSON.stringify(DEFAULT_FRONTEND_REFORM)),
-          ...JSON.parse(JSON.stringify(snap)),
-          reformHistory: history
-        };
-        this.applyToDOM();
-        pushSystemLog('ROLLBACK', reason);
-        saveAppState();
-        renderNavigationAndHeader();
-        renderActiveView();
-        showToast(reason, 'info');
-      },
-
-      resetToFactory() {
-        this.saveSnapshot('Reposição de fábrica');
-        appState.frontendReform = JSON.parse(JSON.stringify(DEFAULT_FRONTEND_REFORM));
-        this.applyToDOM();
-        pushSystemLog('REFORM', 'Frontend reposto na configuração original de apresentação.');
-        saveAppState();
-        renderNavigationAndHeader();
-        renderActiveView();
-        showToast('Visual original do Sistema Áurea restaurado.', 'success');
-      }
-    };
-
-    // =========================================================================
-    // CONEXÃO GEMINI SILENCIOSA (ATIVA APENAS SE CONFIGURADA NO PASSE 2013)
-    // =========================================================================
-    function sanitizeApiKey(raw) {
-      return String(raw || '').replace(/[\s\u200B-\u200D\uFEFF]/g, '').trim();
-    }
-
-    async function fetchWithAbort(url, options, timeoutMs = 10000) {
-      const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
-      const timer = setTimeout(() => {
-        if (controller) {
-          try { controller.abort(); } catch (e) {}
-        }
-      }, timeoutMs);
-
-      try {
-        return await fetch(url, {
-          ...options,
-          signal: controller ? controller.signal : undefined
-        });
-      } finally {
-        clearTimeout(timer);
-      }
-    }
-
-    async function callGeminiSilent(promptText, systemPrompt, overrideKey = null, overrideModel = null) {
-      const cleanKey = sanitizeApiKey(overrideKey !== null ? overrideKey : appState.techConfig.apiKey);
-      if (!cleanKey) throw new Error('Sem chave configurada');
-
-      const models = [
-        overrideModel || appState.techConfig.selectedModel || 'gemini-2.5-flash-lite',
-        'gemini-2.5-flash-lite',
-        'gemini-2.5-flash'
-      ].filter((v, i, arr) => arr.indexOf(v) === i);
-
-      const payload = {
-        systemInstruction: { parts: [{ text: systemPrompt }] },
-        contents: [{ role: 'user', parts: [{ text: promptText }] }],
-        generationConfig: { temperature: 0.5, maxOutputTokens: 600 }
-      };
-
-      let lastErr = null;
-      for (let i = 0; i < models.length; i += 1) {
-        const model = models[i];
-        const baseUrl = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
-
-        for (let attempt = 0; attempt < 2; attempt += 1) {
-          const useQuery = attempt === 1;
-          const url = useQuery ? `${baseUrl}?key=${encodeURIComponent(cleanKey)}` : baseUrl;
-          const headers = { 'Content-Type': 'application/json' };
-          if (!useQuery) headers['x-goog-api-key'] = cleanKey;
-
-          try {
-            const t0 = performance.now();
-            const resp = await fetchWithAbort(url, {
-              method: 'POST',
-              mode: 'cors',
-              credentials: 'omit',
-              headers,
-              body: JSON.stringify(payload)
-            }, 10000);
-            const latency = Math.max(1, Math.round(performance.now() - t0));
-            const json = await resp.json().catch(() => null);
-
-            if (!resp.ok) {
-              const msg = json && json.error && json.error.message ? json.error.message : `HTTP ${resp.status}`;
-              const err = new Error(msg);
-              err.httpCode = resp.status;
-              err.latencyMs = latency;
-              err.transport = useQuery ? 'Query ?key=' : 'Header x-goog-api-key';
-              throw err;
-            }
-
-            const parts = json && json.candidates && json.candidates[0] && json.candidates[0].content && json.candidates[0].content.parts;
-            const text = Array.isArray(parts) ? parts.map(p => p.text || '').join('\n').trim() : '';
-            if (!text) throw new Error('Resposta vazia');
-
-            return {
-              text,
-              httpCode: resp.status,
-              latencyMs: latency,
-              modelUsed: model,
-              transport: useQuery ? 'Query ?key=' : 'Header x-goog-api-key'
-            };
-          } catch (e) {
-            lastErr = e;
-          }
-        }
-      }
-      throw lastErr || new Error('Ligação externa indisponível');
-    }
-
-    // =========================================================================
-    // MOTOR EDUCACIONAL & AUTO-REFORMA S.A.G.A. (ZERO MENÇÃO TÉCNICA AO ALUNO)
-    // =========================================================================
-    function tryApplyFrontendReformFromPrompt(promptText) {
-      const lower = promptText.toLowerCase();
-
-      // Restauro / Rollback
-      if (/(restaurar|voltar|desfazer|repor).*(visual|layout|tema|original|antes)/i.test(lower)) {
-        SagaFrontendReformer.resetToFactory();
-        return 'Restaurei o visual original do Sistema Áurea para ti. Tudo está limpo e organizado.';
-      }
-
-      // Modo claro / escuro
-      if (/(modo claro|tema claro|fundo claro|branco)/i.test(lower)) {
-        SagaFrontendReformer.reform({ surfaceMode: 'light' }, 'Ativação de Modo Claro');
-        return 'Alterei o ambiente para o Modo Claro para facilitar a leitura. Se quiseres voltar atrás, basta dizer "restaurar visual".';
-      }
-      if (/(modo escuro|tema escuro|fundo escuro|noturno)/i.test(lower)) {
-        SagaFrontendReformer.reform({ surfaceMode: 'dark' }, 'Ativação de Modo Escuro');
-        return 'Alterei o ambiente para o Modo Escuro confortável para os olhos.';
-      }
-
-      // Cores
-      if (/(esmeralda|verde)/i.test(lower) && /(cor|tema|visual|muda|põe|coloca)/i.test(lower)) {
-        SagaFrontendReformer.reform({ accentName: 'Esmeralda', accentHex: '#34d399', accentSoft: '#6ee7b7' }, 'Cor Esmeralda');
-        return 'Apliquei a paleta Esmeralda em todo o ecossistema!';
-      }
-      if (/(ouro|âmbar|ambar|amarelo|dourado)/i.test(lower) && /(cor|tema|visual|muda|põe|coloca)/i.test(lower)) {
-        SagaFrontendReformer.reform({ accentName: 'Ouro Solar', accentHex: '#fbbf24', accentSoft: '#fde68a' }, 'Cor Ouro Solar');
-        return 'Apliquei a paleta Ouro Solar em todo o ecossistema!';
-      }
-      if (/(violeta|roxo|lilás)/i.test(lower) && /(cor|tema|visual|muda|põe|coloca)/i.test(lower)) {
-        SagaFrontendReformer.reform({ accentName: 'Violeta', accentHex: '#a78bfa', accentSoft: '#ddd6fe' }, 'Cor Violeta');
-        return 'Apliquei a paleta Violeta em todo o ecossistema!';
-      }
-      if (/(ciano|azul)/i.test(lower) && /(cor|tema|visual|muda|põe|coloca)/i.test(lower)) {
-        SagaFrontendReformer.reform({ accentName: 'Ciano Áurea', accentHex: '#38bdf8', accentSoft: '#7dd3fc' }, 'Cor Ciano Áurea');
-        return 'Apliquei a paleta Ciano Áurea em todo o ecossistema!';
-      }
-
-      // Tamanho da letra
-      if (/(aumenta|maior|grande).*(letra|fonte|texto)/i.test(lower)) {
-        const nextScale = Math.min(1.2, (appState.frontendReform.uiScale || 1) + 0.08);
-        SagaFrontendReformer.reform({ uiScale: nextScale }, `Ampliação de tipografia (${Math.round(nextScale * 100)}%)`);
-        return `Aumentei o tamanho da letra para ${Math.round(nextScale * 100)}% para facilitar a leitura na tela.`;
-      }
-      if (/(diminui|menor|pequena|normal).*(letra|fonte|texto)/i.test(lower)) {
-        SagaFrontendReformer.reform({ uiScale: 1 }, 'Tipografia padrão (100%)');
-        return 'Ajustei o tamanho da letra de volta para o padrão confortável (100%).';
-      }
-
-      // Densidade
-      if (/(compacto|compacta|condensado)/i.test(lower)) {
-        SagaFrontendReformer.reform({ density: 'compact' }, 'Densidade compacta');
-        return 'Organizei os cartões em formato mais compacto para caber mais informação no ecrã.';
-      }
-      if (/(espaçoso|espacoso|amplo|arejado)/i.test(lower)) {
-        SagaFrontendReformer.reform({ density: 'spacious' }, 'Densidade espaçosa');
-        return 'Aumentei o espaçamento dos cartões para uma leitura mais tranquila.';
-      }
-
-      return null;
-    }
-
-    function buildEducationalLocalReply(promptText) {
-      const q = String(promptText || '').trim();
-      const lower = q.toLowerCase();
-      const currentStudent = appState.students.find(s => s.id === appState.ui.currentStudentId) || appState.students[0];
-
-      // 1. Verifica se é um pedido de reforma visual do frontend
-      const reformReply = tryApplyFrontendReformFromPrompt(q);
-      if (reformReply) return reformReply;
-
-      // 2. Cálculos matemáticos rápidos
-      const expr = lower
-        .replace(/quanto\s+(é|e)\s+/g, '')
-        .replace(/calcula\s+/g, '')
-        .replace(/,/g, '.')
-        .replace(/×/g, '*')
-        .replace(/÷/g, '/');
-      if (/^[0-9+\-*/().\s]+$/.test(expr) && /[+\-*/]/.test(expr)) {
+      function loadState() {
         try {
-          const val = Function('"use strict";return (' + expr + ')')();
-          if (typeof val === 'number' && Number.isFinite(val)) {
-            return `O resultado de (${expr.trim()}) é ${val.toLocaleString('pt-AO')}. Se quiseres, explico o passo a passo da resolução.`;
-          }
-        } catch (e) {}
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return structuredClone(DEFAULT_STATE);
+          const parsed = JSON.parse(raw);
+          return {
+            ...structuredClone(DEFAULT_STATE),
+            ...parsed,
+            students: Array.isArray(parsed.students) && parsed.students.length ? parsed.students : structuredClone(DEFAULT_STATE.students),
+            tasks: Array.isArray(parsed.tasks) ? parsed.tasks : structuredClone(DEFAULT_STATE.tasks),
+            assessments: Array.isArray(parsed.assessments) ? parsed.assessments : structuredClone(DEFAULT_STATE.assessments),
+            publicChat: {
+              pinnedNotice: parsed.publicChat?.pinnedNotice ?? DEFAULT_STATE.publicChat.pinnedNotice,
+              messages: Array.isArray(parsed.publicChat?.messages) ? parsed.publicChat.messages : structuredClone(DEFAULT_STATE.publicChat.messages)
+            },
+            tech: {
+              apiKey: typeof parsed.tech?.apiKey === "string" ? parsed.tech.apiKey : "",
+              model: parsed.tech?.model === "gemini-3.8-flash-lite" ? "gemini-3.8-flash-lite" : "gemini-3.8-flash"
+            },
+            uiReform: {
+              ...structuredClone(DEFAULT_STATE.uiReform),
+              ...(parsed.uiReform || {})
+            },
+            sagaMessages: Array.isArray(parsed.sagaMessages) && parsed.sagaMessages.length ? parsed.sagaMessages : structuredClone(DEFAULT_STATE.sagaMessages)
+          };
+        } catch (_err) {
+          return structuredClone(DEFAULT_STATE);
+        }
       }
 
-      // 3. Notas e desempenho do aluno
-      if (/(nota|média|media|boletim|aproveitamento|desempenho)/i.test(lower)) {
-        const avg = getStudentOverallAverage(currentStudent);
-        const cls = classifyScore20(avg);
-        const list = SUBJECTS_8_CLASSE.slice(0, 5).map(s =>
-          `• ${s}: ${calcFinalSubjectAverage(currentStudent.grades[s]).toFixed(1)} val.`
-        );
-        return [
-          `Resumo Académico de ${currentStudent.name} (${currentStudent.classe}):`,
-          `• Média Geral Atual: ${avg.toFixed(1)} / 20 valores — ${cls.label}`,
-          ...list,
-          `Podes ver todas as disciplinas e trimestres na aba "Boletim & Notas".`
-        ].join('\n');
-      }
+      let state = loadState();
 
-      // 4. Plano de estudo
-      if (/(plano|estudo|organizar|estudar|prova|matéria|materia)/i.test(lower)) {
-        return [
-          `Plano de Estudo Sugerido para a ${appState.schoolMeta.classe}:`,
-          `• Segunda & Quarta (40 min): Matemática e Física — resolver exercícios práticos de equações e MRU.`,
-          `• Terça & Quinta (35 min): Química e Biologia — rever a tabela periódica e a estrutura celular.`,
-          `• Sexta-feira (30 min): Língua Portuguesa e História — leitura interpretativa e resumos.`,
-          `• Dica: marca cada bloco concluído no teu espaço "Lado 0" e "Manager".`
-        ].join('\n');
-      }
-
-      // 5. Explicações de matérias da 8.ª classe
-      if (/(equaç|equac|1\.º grau|x\b)/i.test(lower)) {
-        return `Para resolver uma equação do 1.º grau (ex.: 2x + 6 = 14):\n1. Passa o +6 para o outro membro trocando o sinal: 2x = 14 - 6.\n2. Simplifica: 2x = 8.\n3. Divide pelo coeficiente de x: x = 8 ÷ 2 → x = 4.\nNa aba Academy tens uma aula completa sobre este tema!`;
-      }
-
-      if (/(física|fisica|mru|velocidade)/i.test(lower)) {
-        return `No Movimento Retilíneo Uniforme (MRU), a velocidade média calcula-se por v = Δs ÷ Δt.\nLembra-te: para passar de km/h para m/s basta dividir por 3,6 (por exemplo, 72 km/h ÷ 3,6 = 20 m/s).`;
-      }
-
-      return `Estou aqui para te ajudar nos estudos da ${appState.schoolMeta.classe}, ${currentStudent.name.split(' ')[0]}! Podes pedir-me:\n• Resumo das tuas notas e médias;\n• Explicações de Matemática, Física, Química ou Biologia;\n• Um plano de estudo semanal;\n• Ou pedir para ajustar as cores, o modo claro/escuro e o tamanho da letra do ecrã.`;
-    }
-
-    async function handleSagaSubmit(rawText) {
-      const text = String(rawText || '').trim();
-      if (!text) return;
-
-      // Comando discreto opcional para abrir o modal de PIN sem botões visíveis
-      if (text.toLowerCase() === '/acesso' || text.toLowerCase() === '/pin') {
-        appState.ui.sagaOpen = false;
-        renderSagaDrawer();
-        openPinModal();
-        return;
-      }
-
-      appState.sagaMessages.push({
-        id: Date.now(),
-        role: 'user',
-        time: nowClock(),
-        text
-      });
-      renderSagaDrawer();
-
-      // Verifica primeiro se é uma reforma visual imediata
-      const immediateReform = tryApplyFrontendReformFromPrompt(text);
-      if (immediateReform) {
-        appState.sagaMessages.push({
-          id: Date.now() + 1,
-          role: 'assistant',
-          time: nowClock(),
-          text: immediateReform
-        });
-        saveAppState();
-        renderSagaDrawer();
-        return;
-      }
-
-      let replyText = '';
-      const hasExternalKey = Boolean(sanitizeApiKey(appState.techConfig.apiKey));
-
-      if (hasExternalKey) {
+      function saveState() {
         try {
-          const stu = appState.students.find(s => s.id === appState.ui.currentStudentId) || appState.students[0];
-          const sysPrompt = [
-            `És o S.A.G.A., tutor educativo do Sistema Áurea (EXorg MT) em Angola.`,
-            `Responde em português claro, acolhedor e pedagógico para um estudante da ${appState.schoolMeta.classe} (${stu.name}, média ${getStudentOverallAverage(stu).toFixed(1)}/20).`,
-            `Nunca menciones termos técnicos de programação, API, chaves ou servidores.`
-          ].join(' ');
-          const res = await callGeminiSilent(text, sysPrompt);
-          replyText = res.text;
-          appState.techConfig.diagnostics = {
-            statusText: `Ligação Ativa (${res.modelUsed})`,
-            httpCode: String(res.httpCode),
-            latencyMs: res.latencyMs,
-            transportUsed: res.transport,
-            modelUsed: res.modelUsed,
-            lastCheckedAt: nowFullDateTime(),
-            errorDetail: 'Operacional'
-          };
-        } catch (err) {
-          appState.techConfig.diagnostics = {
-            statusText: 'Motor Local em Operação',
-            httpCode: String(err.httpCode || 'OFFLINE'),
-            latencyMs: err.latencyMs || 0,
-            transportUsed: err.transport || 'Local',
-            modelUsed: appState.techConfig.selectedModel,
-            lastCheckedAt: nowFullDateTime(),
-            errorDetail: err.message || 'Sem ligação externa'
-          };
-          replyText = buildEducationalLocalReply(text);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (_err) {
+          // Resguardo em memória caso o armazenamento local esteja restrito
         }
-      } else {
-        replyText = buildEducationalLocalReply(text);
       }
 
-      appState.sagaMessages.push({
-        id: Date.now() + 1,
-        role: 'assistant',
-        time: nowClock(),
-        text: replyText
-      });
-
-      saveAppState();
-      renderSagaDrawer();
-    }
-
-    // =========================================================================
-    // CONTROLO DE PAPÉIS E ISOLAMENTO ESTRITO DE NAVEGAÇÃO
-    // =========================================================================
-    function openPinModal() {
-      const modal = document.getElementById('pinAccessModal');
-      const inp = document.getElementById('pinCodeInput');
-      if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-      }
-      if (inp) {
-        inp.value = '';
-        setTimeout(() => inp.focus(), 60);
-      }
-    }
-
-    function closePinModal() {
-      const modal = document.getElementById('pinAccessModal');
-      if (modal) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-      }
-    }
-
-    function activateRole(roleCode) {
-      appState.activeRole = roleCode;
-      if (roleCode === '1841') {
-        appState.ui.activeTab = 'docente_notas';
-        pushSystemLog('AUTH', 'Sessão Docente (1841) ativada.');
-        showToast('Acesso Docente (1841) ativo: controlo de notas e acompanhamento.', 'success');
-      } else if (roleCode === '2013') {
-        appState.ui.activeTab = 'nucleo_tecnico';
-        pushSystemLog('AUTH', 'Sessão Núcleo Técnico (2013) ativada.');
-        showToast('Núcleo Técnico (2013) ativo: gestão do sistema e motor S.A.G.A.', 'success');
-      } else if (roleCode === '2012') {
-        appState.ui.activeTab = 'moderacao_chat';
-        pushSystemLog('AUTH', 'Sessão Moderação de Chats (2012) ativada.');
-        showToast('Moderação de Comunidade (2012) ativa: controlo dos chats públicos.', 'success');
-      } else {
-        appState.activeRole = 'student';
-        appState.ui.activeTab = 'academy';
-        showToast('Vista de Estudante restaurada.', 'info');
-      }
-      saveAppState();
-      renderNavigationAndHeader();
-      renderActiveView();
-    }
-
-    function renderNavigationAndHeader() {
-      const role = appState.activeRole || 'student';
-      const sub = document.getElementById('headerSubInfo');
-      const rightControls = document.getElementById('headerRightControls');
-      const navBar = document.getElementById('mainNavBar');
-
-      if (!rightControls || !navBar) return;
-
-      // Cabeçalho: na vista de aluno NÃO existe nenhum botão técnico/ADM
-      if (role === 'student') {
-        if (sub) sub.textContent = `${appState.schoolMeta.classe} • ${appState.schoolMeta.turma}`;
-        rightControls.innerHTML = `
-          <button type="button" data-action="open-theme-modal" class="tactile-btn rounded-xl border border-borderLine bg-surface px-3 py-2 text-xs font-bold accent-soft-text hover:border-accent">
-            Cores
-          </button>
-          <button type="button" data-action="toggle-saga" class="tactile-btn accent-solid flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-extrabold shadow-lg">
-            <span class="h-2 w-2 rounded-full bg-obsidian"></span>
-            <span>S.A.G.A.</span>
-          </button>
-        `;
-
-        const studentTabs = [
-          { id: 'academy', label: 'Academy' },
-          { id: 'lado0', label: 'Lado 0' },
-          { id: 'manager', label: 'Manager' },
-          { id: 'boletim', label: 'Boletim & Notas' },
-          { id: 'chat', label: 'Chat da Turma' }
-        ];
-        if (!studentTabs.some(t => t.id === appState.ui.activeTab)) {
-          appState.ui.activeTab = 'academy';
-        }
-
-        navBar.innerHTML = studentTabs.map(t => `
-          <button type="button" data-tab="${t.id}" class="nav-pill ${appState.ui.activeTab === t.id ? 'active' : ''} tactile-btn shrink-0 rounded-xl border border-borderLine bg-surface px-4 py-2 text-xs font-semibold text-slate-200">
-            ${escapeHtml(t.label)}
-          </button>
-        `).join('');
-        return;
+      function saveFrontendSnapshot() {
+        try {
+          localStorage.setItem(SNAPSHOT_KEY, JSON.stringify(state.uiReform));
+        } catch (_err) {}
       }
 
-      // Cabeçalho e Navegação para Passes Autorizados (1841, 2013, 2012)
-      const roleTitles = {
-        '1841': { label: 'MODO DOCENTE (1841)', color: 'text-emeraldGlow border-emeraldGlow/40 bg-emerald-950/30' },
-        '2013': { label: 'NÚCLEO TÉCNICO (2013)', color: 'text-amberGlow border-amberGlow/40 bg-amber-950/30' },
-        '2012': { label: 'MODERAÇÃO CHATS (2012)', color: 'accent-soft-text border-accent/40 bg-surfaceAlt' }
-      };
-      const meta = roleTitles[role] || roleTitles['1841'];
-
-      if (sub) sub.textContent = `${appState.schoolMeta.institution} • Sessão Restrita Ativa`;
-
-      rightControls.innerHTML = `
-        <span class="hidden sm:inline-flex items-center rounded-xl border px-3 py-2 font-mono text-[11px] font-extrabold ${meta.color}">
-          ${meta.label}
-        </span>
-        <button type="button" data-action="toggle-saga" class="tactile-btn accent-solid rounded-xl px-3 py-2 text-xs font-extrabold">
-          S.A.G.A.
-        </button>
-        <button type="button" data-action="exit-restricted-role" class="tactile-btn rounded-xl border border-roseGlow/40 bg-rose-950/35 px-3 py-2 text-xs font-bold text-roseGlow hover:bg-rose-900/50">
-          Vista Aluno
-        </button>
-      `;
-
-      let roleTabs = [];
-      if (role === '1841') {
-        roleTabs = [
-          { id: 'docente_notas', label: 'Lançamento de Notas (0–20)' },
-          { id: 'docente_acompanhamento', label: 'Acompanhamento & Assiduidade' },
-          { id: 'academy', label: 'Conteúdos Academy' },
-          { id: 'boletim', label: 'Boletins Individuais' }
-        ];
-      } else if (role === '2013') {
-        roleTabs = [
-          { id: 'nucleo_tecnico', label: 'API & Núcleo Técnico' },
-          { id: 'reforma_saga', label: 'Auto-Reforma Frontend S.A.G.A.' },
-          { id: 'telemetria_provas', label: 'Provas & Telemetria Interna' },
-          { id: 'docente_notas', label: 'Pauta Geral' }
-        ];
-      } else if (role === '2012') {
-        roleTabs = [
-          { id: 'moderacao_chat', label: 'Moderação do Chat Público' },
-          { id: 'chat', label: 'Visualizar Mural' }
-        ];
-      }
-
-      if (!roleTabs.some(t => t.id === appState.ui.activeTab)) {
-        appState.ui.activeTab = roleTabs[0].id;
-      }
-
-      navBar.innerHTML = roleTabs.map(t => `
-        <button type="button" data-tab="${t.id}" class="nav-pill ${appState.ui.activeTab === t.id ? 'active' : ''} tactile-btn shrink-0 rounded-xl border border-borderLine bg-surface px-4 py-2 text-xs font-semibold text-slate-200">
-          ${escapeHtml(t.label)}
-        </button>
-      `).join('');
-    }
-
-    function renderSagaDrawer() {
-      const drawer = document.getElementById('sagaDrawer');
-      const scroll = document.getElementById('sagaChatScroll');
-      if (!drawer || !scroll) return;
-
-      if (appState.ui.sagaOpen) {
-        drawer.classList.remove('hidden');
-        drawer.classList.add('flex');
-      } else {
-        drawer.classList.add('hidden');
-        drawer.classList.remove('flex');
-      }
-
-      // Mensagens limpas sem etiquetas técnicas visíveis aos alunos
-      scroll.innerHTML = appState.sagaMessages.map(m => {
-        const isUser = m.role === 'user';
-        return `
-          <div class="rounded-2xl border ${isUser ? 'border-accent bg-surfaceAlt ml-6' : 'border-borderLine bg-surface mr-4'} p-3.5 space-y-1.5">
-            <div class="flex items-center justify-between gap-2 text-[10px]">
-              <span class="font-bold ${isUser ? 'accent-soft-text' : 'text-emeraldGlow'}">
-                ${isUser ? 'Tu' : 'S.A.G.A.'}
-              </span>
-              <span class="font-mono text-slate-400">${escapeHtml(m.time)}</span>
-            </div>
-            <p class="leading-relaxed text-slate-100 whitespace-pre-line">${escapeHtml(m.text)}</p>
-          </div>
-        `;
-      }).join('');
-      scroll.scrollTop = scroll.scrollHeight;
-    }
-
-    // =========================================================================
-    // VISTAS DA INTERFACE DO ALUNO (LIMPA, EDUCATIVA E ACOLHEDORA)
-    // =========================================================================
-    function renderActiveView() {
-      const root = document.getElementById('mainViewport');
-      if (!root) return;
-
-      // Proteção extra: impede renderização de vistas restritas se o papel for 'student'
-      const role = appState.activeRole || 'student';
-      const tab = appState.ui.activeTab;
-
-      if (role === 'student' && ['docente_notas', 'docente_acompanhamento', 'nucleo_tecnico', 'reforma_saga', 'telemetria_provas', 'moderacao_chat'].includes(tab)) {
-        appState.ui.activeTab = 'academy';
-      }
-
-      switch (appState.ui.activeTab) {
-        case 'academy':
-          renderAcademyView(root);
-          break;
-        case 'lado0':
-          renderLado0View(root);
-          break;
-        case 'manager':
-          renderManagerView(root);
-          break;
-        case 'boletim':
-          renderBoletimView(root);
-          break;
-        case 'chat':
-          renderPublicChatView(root);
-          break;
-        case 'docente_notas':
-          renderDocenteNotasView(root);
-          break;
-        case 'docente_acompanhamento':
-          renderDocenteAcompanhamentoView(root);
-          break;
-        case 'nucleo_tecnico':
-          renderNucleoTecnico2013View(root);
-          break;
-        case 'reforma_saga':
-          renderReformaSaga2013View(root);
-          break;
-        case 'telemetria_provas':
-          renderTelemetriaProvas2013View(root);
-          break;
-        case 'moderacao_chat':
-          renderModeracaoChat2012View(root);
-          break;
-        default:
-          renderAcademyView(root);
-      }
-    }
-
-    // 1. ACADEMY (Conteúdos e Aulas da 8.ª Classe)
-    function renderAcademyView(root) {
-      const lessons = appState.academyLessons || [];
-      const activeLesson = lessons.find(l => l.id === appState.ui.selectedLessonId) || lessons[0];
-      const completedCount = lessons.filter(l => l.completed).length;
-      const stu = appState.students.find(s => s.id === appState.ui.currentStudentId) || appState.students[0];
-
-      root.innerHTML = `
-        <div class="space-y-5">
-          <div class="reformed-card border border-borderLine bg-slateDark">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <span class="inline-flex items-center gap-2 rounded-full border accent-pill px-3 py-1 font-mono text-[11px] font-bold">
-                  <span>ÁUREA ACADEMY</span>
-                  <span>•</span>
-                  <span>${escapeHtml(appState.schoolMeta.classe)}</span>
-                </span>
-                <h2 class="mt-2 text-xl sm:text-2xl font-extrabold text-white">
-                  Bem-vindo, ${escapeHtml(stu.name.split(' ')[0])}
-                </h2>
-                <p class="text-xs sm:text-sm text-slate-300">
-                  Explora os conteúdos organizados por disciplina e consolida os teus estudos no teu ritmo.
-                </p>
-              </div>
-              <div class="rounded-2xl border border-borderLine bg-surface px-4 py-3 text-right">
-                <p class="text-[11px] text-slate-400">Aulas Concluídas</p>
-                <p class="font-mono text-xl font-extrabold text-emeraldGlow">${completedCount} / ${lessons.length}</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 gap-5 lg:grid-cols-12">
-            <!-- Lista de Aulas -->
-            <div class="space-y-2.5 lg:col-span-5">
-              ${lessons.map(ls => {
-                const isSelected = activeLesson && ls.id === activeLesson.id;
-                return `
-                  <button type="button" data-action="select-lesson" data-lid="${escapeHtml(ls.id)}" class="tactile-btn w-full rounded-2xl border ${isSelected ? 'border-accent bg-surfaceAlt' : 'border-borderLine bg-slateDark'} p-4 text-left space-y-1.5">
-                    <div class="flex items-center justify-between gap-2">
-                      <span class="font-mono text-[11px] font-bold accent-soft-text">${escapeHtml(ls.subject)}</span>
-                      <span class="rounded-md px-2 py-0.5 font-mono text-[10px] font-bold ${ls.completed ? 'bg-emerald-950/60 text-emeraldGlow' : 'bg-surface text-slate-400'}">
-                        ${ls.completed ? 'Concluída' : escapeHtml(ls.duration)}
-                      </span>
-                    </div>
-                    <h3 class="text-sm font-bold text-white">${escapeHtml(ls.title)}</h3>
-                    <p class="text-[11px] text-slate-400">${escapeHtml(ls.level)}</p>
-                  </button>
-                `;
-              }).join('')}
-            </div>
-
-            <!-- Detalhe da Aula Selecionada -->
-            <div class="reformed-card border border-borderLine bg-slateDark space-y-4 lg:col-span-7">
-              ${activeLesson ? `
-                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-borderLine pb-3">
-                  <div>
-                    <span class="font-mono text-xs font-bold accent-soft-text">${escapeHtml(activeLesson.subject)} • ${escapeHtml(activeLesson.level)}</span>
-                    <h3 class="mt-1 text-lg sm:text-xl font-extrabold text-white">${escapeHtml(activeLesson.title)}</h3>
-                  </div>
-                  <button type="button" data-action="toggle-lesson-done" data-lid="${escapeHtml(activeLesson.id)}" class="tactile-btn ${activeLesson.completed ? 'border border-emeraldGlow/50 bg-emerald-950/35 text-emeraldGlow' : 'accent-solid'} rounded-xl px-4 py-2 text-xs font-extrabold">
-                    ${activeLesson.completed ? 'Aula Concluída' : 'Marcar como Concluída'}
-                  </button>
-                </div>
-
-                <p class="text-sm leading-relaxed text-slate-200">
-                  ${escapeHtml(activeLesson.summary)}
-                </p>
-
-                <div class="rounded-2xl border border-borderLine bg-surface p-4 space-y-2.5">
-                  <h4 class="font-mono text-xs font-extrabold uppercase accent-soft-text">Pontos-Chave para Fixar</h4>
-                  <ul class="space-y-2 text-xs sm:text-sm text-slate-200">
-                    ${activeLesson.keyPoints.map(pt => `
-                      <li class="flex items-start gap-2">
-                        <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"></span>
-                        <span>${escapeHtml(pt)}</span>
-                      </li>
-                    `).join('')}
-                  </ul>
-                </div>
-
-                <div class="flex flex-wrap gap-2 pt-2">
-                  <button type="button" data-saga-quick="Explica-me melhor a aula de ${escapeHtml(activeLesson.subject)}: ${escapeHtml(activeLesson.title)}" class="tactile-btn rounded-xl border border-borderLine bg-surface px-4 py-2.5 text-xs font-bold accent-soft-text hover:border-accent">
-                    Pedir Exemplo ao S.A.G.A.
-                  </button>
-                </div>
-              ` : ''}
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    // 2. LADO 0 (Foco, Hábitos, Reflexão e Bem-Estar Estudantil)
-    function renderLado0View(root) {
-      const l0 = appState.lado0;
-      const doneHabits = (l0.habits || []).filter(h => h.done).length;
-
-      root.innerHTML = `
-        <div class="space-y-5">
-          <div class="reformed-card border border-borderLine bg-slateDark space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <span class="font-mono text-[11px] font-bold text-emeraldGlow">LADO 0 • EQUILÍBRIO &amp; FOCO</span>
-                <h2 class="mt-1 text-xl font-extrabold text-white">O Teu Espaço de Evolução Pessoal</h2>
-                <p class="text-xs text-slate-400">Organiza a tua rotina diária, regista o teu ritmo de estudo e mantém a mente tranquila.</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <div class="rounded-2xl border border-borderLine bg-surface px-4 py-2.5 text-center">
-                  <p class="text-[10px] text-slate-400">Foco Hoje</p>
-                  <p class="font-mono text-lg font-extrabold accent-soft-text">${Number(l0.focusMinutesToday || 0)} min</p>
-                </div>
-                <button type="button" data-action="add-focus-session" class="tactile-btn accent-solid rounded-xl px-4 py-3 text-xs font-extrabold">
-                  +25 min Foco
-                </button>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 gap-5 lg:grid-cols-12">
-              <div class="space-y-2.5 lg:col-span-6">
-                <h3 class="text-sm font-bold text-white">Hábitos Diários (${doneHabits}/${l0.habits.length})</h3>
-                ${l0.habits.map(hb => `
-                  <button type="button" data-action="toggle-habit" data-hid="${escapeHtml(hb.id)}" class="tactile-btn flex w-full items-center justify-between gap-3 rounded-2xl border ${hb.done ? 'border-emeraldGlow/40 bg-emerald-950/20' : 'border-borderLine bg-surface'} p-3.5 text-left text-xs sm:text-sm">
-                    <span class="${hb.done ? 'line-through text-slate-400' : 'text-white font-medium'}">${escapeHtml(hb.label)}</span>
-                    <span class="rounded-lg px-2.5 py-1 font-mono text-[10px] font-bold ${hb.done ? 'bg-emerald-950 text-emeraldGlow' : 'bg-obsidian text-slate-400'}">
-                      ${hb.done ? 'Feito' : 'Pendente'}
-                    </span>
-                  </button>
-                `).join('')}
-              </div>
-
-              <div class="space-y-3 lg:col-span-6">
-                <h3 class="text-sm font-bold text-white">Diário de Reflexão &amp; Meta do Dia</h3>
-                <form id="lado0ReflectionForm" class="space-y-3">
-                  <textarea id="lado0ReflectionInput" rows="4" class="w-full rounded-2xl border border-borderLine bg-surface p-3.5 text-white placeholder-slate-500 focus:border-accent focus:outline-none" placeholder="Escreve o que aprendeste hoje ou o teu objetivo para amanhã...">${escapeHtml(l0.dailyReflection || '')}</textarea>
-                  <button type="submit" class="tactile-btn accent-solid rounded-xl px-5 py-2.5 text-xs font-extrabold">
-                    Guardar Reflexão
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    // 3. MANAGER (Organização de Tarefas, Trabalhos e Metas do Estudante)
-    function renderManagerView(root) {
-      const tasks = appState.managerTasks || [];
-      const pending = tasks.filter(t => !t.done).length;
-
-      root.innerHTML = `
-        <div class="space-y-5">
-          <form id="newTaskForm" class="reformed-card border border-borderLine bg-slateDark space-y-3.5">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <div>
-                <span class="font-mono text-[11px] font-bold accent-soft-text">ÁUREA MANAGER • ORGANIZAÇÃO ESCOLAR</span>
-                <h2 class="mt-1 text-xl font-extrabold text-white">Agenda de Tarefas &amp; Trabalhos</h2>
-              </div>
-              <span class="rounded-xl border border-borderLine bg-surface px-3 py-1.5 font-mono text-xs font-bold text-amberGlow">
-                ${pending} pendente(s)
-              </span>
-            </div>
-
-            <div class="grid grid-cols-1 gap-2.5 sm:grid-cols-4">
-              <input id="taskTitleInp" type="text" required placeholder="Nova tarefa ou trabalho de casa..." class="min-h-[46px] rounded-xl border border-borderLine bg-surface px-3.5 py-2 text-white placeholder-slate-500 focus:border-accent focus:outline-none sm:col-span-2" />
-              <select id="taskSubjSel" class="min-h-[46px] rounded-xl border border-borderLine bg-surface px-3 py-2 text-white focus:border-accent focus:outline-none">
-                ${SUBJECTS_8_CLASSE.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('')}
-              </select>
-              <button type="submit" class="tactile-btn accent-solid rounded-xl px-4 py-2.5 text-xs font-extrabold">
-                Adicionar Tarefa
-              </button>
-            </div>
-          </form>
-
-          <div class="space-y-2.5">
-            ${tasks.map(tk => `
-              <div class="flex items-center justify-between gap-3 rounded-2xl border ${tk.done ? 'border-borderLine/60 bg-slateDark/60' : 'border-borderLine bg-slateDark'} p-4">
-                <button type="button" data-action="toggle-manager-task" data-tid="${escapeHtml(tk.id)}" class="tactile-btn flex flex-1 items-center gap-3 text-left">
-                  <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border ${tk.done ? 'border-emeraldGlow bg-emeraldGlow text-obsidian font-extrabold' : 'border-borderLine bg-surface'} text-xs">
-                    ${tk.done ? '✓' : ''}
-                  </span>
-                  <div>
-                    <p class="text-sm font-bold ${tk.done ? 'line-through text-slate-400' : 'text-white'}">${escapeHtml(tk.title)}</p>
-                    <p class="font-mono text-[11px] text-slate-400">${escapeHtml(tk.subject)} • Prazo: ${escapeHtml(tk.due)}</p>
-                  </div>
-                </button>
-                <button type="button" data-action="delete-manager-task" data-tid="${escapeHtml(tk.id)}" class="tactile-btn rounded-xl border border-borderLine bg-surface px-3 py-1.5 text-xs font-semibold text-slate-300 hover:border-roseGlow hover:text-roseGlow">
-                  Remover
-                </button>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
-    }
-
-    // 4. BOLETIM & NOTAS (Apenas Leitura na Vista do Aluno — Editável apenas no Passe 1841)
-    function renderBoletimView(root) {
-      const stu = appState.students.find(s => s.id === appState.ui.currentStudentId) || appState.students[0];
-      const overall = getStudentOverallAverage(stu);
-      const cls = classifyScore20(overall);
-      const att = stu.attendance || { presences: 0, justifiedAbsences: 0, unjustifiedAbsences: 0 };
-
-      root.innerHTML = `
-        <div class="space-y-5">
-          <div class="print-card reformed-card border border-borderLine bg-slateDark space-y-5">
-            <div class="flex flex-wrap items-start justify-between gap-4 border-b border-borderLine pb-4">
-              <div>
-                <p class="font-mono text-xs font-bold accent-soft-text">${escapeHtml(appState.schoolMeta.institution)}</p>
-                <h2 class="mt-1 text-xl font-extrabold text-white">Boletim Individual do Estudante</h2>
-                <p class="text-xs text-slate-300">Nome: <strong class="text-white">${escapeHtml(stu.name)}</strong> • Processo: <span class="font-mono">${escapeHtml(stu.id)}</span></p>
-                <p class="text-xs text-slate-400">${escapeHtml(stu.classe)} • Turma ${escapeHtml(stu.turma)} • Ano Lectivo ${escapeHtml(appState.schoolMeta.academicYear)}</p>
-              </div>
-
-              <div class="flex flex-wrap items-center gap-3">
-                <div class="rounded-2xl border border-borderLine bg-surface px-4 py-3 text-right">
-                  <p class="font-mono text-[10px] text-slate-400">MÉDIA GERAL (0–20)</p>
-                  <p class="font-mono text-2xl font-extrabold text-white">${overall.toFixed(1)}</p>
-                  <span class="mt-1 inline-block rounded-md border px-2 py-0.5 font-mono text-[10px] font-bold ${cls.badge}">${cls.label}</span>
-                </div>
-                <button type="button" onclick="window.print()" class="no-print tactile-btn accent-solid rounded-xl px-4 py-3 text-xs font-extrabold">
-                  Imprimir Boletim
-                </button>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2.5 text-center font-mono text-xs">
-              <div class="rounded-xl border border-borderLine bg-surface p-3">
-                <p class="text-[10px] text-slate-400">PRESENÇAS</p>
-                <p class="mt-1 text-base font-extrabold text-emeraldGlow">${att.presences}</p>
-              </div>
-              <div class="rounded-xl border border-borderLine bg-surface p-3">
-                <p class="text-[10px] text-slate-400">FALTAS JUSTIFICADAS</p>
-                <p class="mt-1 text-base font-extrabold text-amberGlow">${att.justifiedAbsences}</p>
-              </div>
-              <div class="rounded-xl border border-borderLine bg-surface p-3">
-                <p class="text-[10px] text-slate-400">FALTAS INJUSTIFICADAS</p>
-                <p class="mt-1 text-base font-extrabold text-roseGlow">${att.unjustifiedAbsences}</p>
-              </div>
-            </div>
-
-            <div class="overflow-x-auto rounded-2xl border border-borderLine">
-              <table class="w-full text-left text-xs">
-                <thead class="border-b border-borderLine bg-surface font-mono text-[11px] uppercase text-slate-300">
-                  <tr>
-                    <th class="px-3.5 py-2.5">Disciplina</th>
-                    <th class="px-3.5 py-2.5">I Trim.</th>
-                    <th class="px-3.5 py-2.5">II Trim.</th>
-                    <th class="px-3.5 py-2.5">III Trim.</th>
-                    <th class="px-3.5 py-2.5">Média Final</th>
-                    <th class="px-3.5 py-2.5">Situação</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-borderLine">
-                  ${SUBJECTS_8_CLASSE.map(subj => {
-                    const g = stu.grades[subj] || {};
-                    const m1 = calcTrimesterMT(g.t1?.mac, g.t1?.npp, g.t1?.npt);
-                    const m2 = calcTrimesterMT(g.t2?.mac, g.t2?.npp, g.t2?.npt);
-                    const m3 = calcTrimesterMT(g.t3?.mac, g.t3?.npp, g.t3?.npt);
-                    const mf = calcFinalSubjectAverage(g);
-                    const stSubj = classifyScore20(mf);
-                    return `
-                      <tr>
-                        <td class="px-3.5 py-2.5 font-bold text-white">${escapeHtml(subj)}</td>
-                        <td class="px-3.5 py-2.5 font-mono">${m1.toFixed(1)}</td>
-                        <td class="px-3.5 py-2.5 font-mono">${m2.toFixed(1)}</td>
-                        <td class="px-3.5 py-2.5 font-mono">${m3.toFixed(1)}</td>
-                        <td class="px-3.5 py-2.5 font-mono font-extrabold accent-soft-text">${mf.toFixed(1)}</td>
-                        <td class="px-3.5 py-2.5 font-mono text-[11px]">${stSubj.code}</td>
-                      </tr>
-                    `;
-                  }).join('')}
-                </tbody>
-              </table>
-            </div>
-
-            ${stu.pedagogicalNote ? `
-              <div class="rounded-2xl border border-borderLine bg-surface p-3.5 text-xs text-slate-200">
-                <strong class="accent-soft-text">Observação Pedagógica:</strong> ${escapeHtml(stu.pedagogicalNote)}
-              </div>
-            ` : ''}
-          </div>
-        </div>
-      `;
-    }
-
-    // 5. CHAT PÚBLICO DA TURMA (Vista do Aluno)
-    function renderPublicChatView(root) {
-      const chat = appState.publicChat;
-      const stu = appState.students.find(s => s.id === appState.ui.currentStudentId) || appState.students[0];
-      const isMuted = (chat.mutedStudentIds || []).includes(stu.id);
-
-      root.innerHTML = `
-        <div class="reformed-card border border-borderLine bg-slateDark space-y-4">
-          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-borderLine pb-3">
-            <div>
-              <span class="font-mono text-[11px] font-bold accent-soft-text">COMUNIDADE ESCOLAR • ${escapeHtml(appState.schoolMeta.turma)}</span>
-              <h2 class="mt-0.5 text-lg sm:text-xl font-extrabold text-white">Chat Público da Turma</h2>
-            </div>
-            <span class="rounded-xl border border-borderLine bg-surface px-3 py-1.5 font-mono text-xs text-slate-300">
-              ${chat.messages.length} mensagens
-            </span>
-          </div>
-
-          ${chat.pinnedNotice ? `
-            <div class="rounded-2xl border border-accent/40 bg-surfaceAlt px-4 py-3 text-xs text-slate-100">
-              <strong class="accent-soft-text">Aviso Fixado:</strong> ${escapeHtml(chat.pinnedNotice)}
-            </div>
-          ` : ''}
-
-          <div class="max-h-96 space-y-2.5 overflow-y-auto pr-1">
-            ${chat.messages.length === 0 ? `
-              <p class="rounded-2xl border border-borderLine bg-surface p-6 text-center text-xs text-slate-400">
-                Ainda não há mensagens no mural da turma. Sê o primeiro a partilhar uma dúvida de estudo!
-              </p>
-            ` : chat.messages.map(m => {
-              const isMine = m.senderId === stu.id;
-              return `
-                <div class="rounded-2xl border ${isMine ? 'border-accent/50 bg-surfaceAlt ml-4 sm:ml-10' : 'border-borderLine bg-surface mr-4 sm:mr-10'} p-3.5 space-y-1">
-                  <div class="flex items-center justify-between gap-2 text-[11px]">
-                    <span class="font-bold ${isMine ? 'accent-soft-text' : 'text-white'}">${escapeHtml(m.senderName)}</span>
-                    <span class="font-mono text-slate-400">${escapeHtml(m.time)}</span>
-                  </div>
-                  <p class="text-xs sm:text-sm text-slate-100">${escapeHtml(m.text)}</p>
-                </div>
-              `;
-            }).join('')}
-          </div>
-
-          ${isMuted ? `
-            <div class="rounded-2xl border border-amberGlow/40 bg-amber-950/25 p-3.5 text-center text-xs font-semibold text-amberGlow">
-              A tua participação no chat público está temporariamente suspensa pela moderação.
-            </div>
-          ` : `
-            <form id="publicChatForm" class="flex items-center gap-2 border-t border-borderLine pt-3">
-              <input id="publicChatInput" type="text" autocomplete="off" placeholder="Partilha uma dúvida ou mensagem com a turma..." class="min-h-[46px] flex-1 rounded-xl border border-borderLine bg-surface px-4 py-2 text-white placeholder-slate-500 focus:border-accent focus:outline-none" />
-              <button type="submit" class="tactile-btn accent-solid rounded-xl px-5 py-2.5 text-xs font-extrabold shrink-0">
-                Enviar
-              </button>
-            </form>
-          `}
-        </div>
-      `;
-    }
-
-    // =========================================================================
-    // VISTAS RESTRITAS POR PASSE (1841, 2013, 2012)
-    // =========================================================================
-
-    // PASSE 1841 — MODO DOCENTE / PEDAGÓGICO (Notas 0-20 e Acompanhamento)
-    function renderDocenteNotasView(root) {
-      const subj = appState.ui.selectedSubject || SUBJECTS_8_CLASSE[0];
-      const trim = appState.ui.selectedTrimester || 't1';
-      const trimName = trim === 't1' ? 'I Trimestre' : trim === 't2' ? 'II Trimestre' : 'III Trimestre';
-
-      root.innerHTML = `
-        <div class="space-y-5">
-          <div class="reformed-card border border-emeraldGlow/40 bg-slateDark space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <span class="font-mono text-[11px] font-bold text-emeraldGlow">PAUTA DOCENTE (1841) • ESCALA 0 A 20 VALORES</span>
-                <h2 class="mt-1 text-xl font-extrabold text-white">Controlo Pedagógico &amp; Lançamento de Notas</h2>
-                <p class="text-xs text-slate-300">Altera MAC, NPP ou NPT; a Média Trimestral (MT) e a Média Final Anual atualizam automaticamente.</p>
-              </div>
-
-              <div class="flex flex-wrap gap-2">
-                <select id="docenteSubjSel" class="min-h-[44px] rounded-xl border border-borderLine bg-surface px-3.5 py-2 text-xs font-bold text-white focus:border-accent focus:outline-none">
-                  ${SUBJECTS_8_CLASSE.map(s => `<option value="${escapeHtml(s)}" ${s === subj ? 'selected' : ''}>${escapeHtml(s)}</option>`).join('')}
-                </select>
-                <select id="docenteTrimSel" class="min-h-[44px] rounded-xl border border-borderLine bg-surface px-3.5 py-2 text-xs font-bold text-white focus:border-accent focus:outline-none">
-                  <option value="t1" ${trim === 't1' ? 'selected' : ''}>I Trimestre</option>
-                  <option value="t2" ${trim === 't2' ? 'selected' : ''}>II Trimestre</option>
-                  <option value="t3" ${trim === 't3' ? 'selected' : ''}>III Trimestre</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="overflow-x-auto rounded-2xl border border-borderLine">
-              <table class="w-full text-left text-xs">
-                <thead class="border-b border-borderLine bg-surface font-mono text-[11px] uppercase text-slate-300">
-                  <tr>
-                    <th class="px-3.5 py-3">Processo</th>
-                    <th class="px-3.5 py-3">Estudante</th>
-                    <th class="px-3.5 py-3">MAC (${escapeHtml(trimName)})</th>
-                    <th class="px-3.5 py-3">NPP</th>
-                    <th class="px-3.5 py-3">NPT</th>
-                    <th class="px-3.5 py-3">MT Trim.</th>
-                    <th class="px-3.5 py-3">Média Anual</th>
-                    <th class="px-3.5 py-3">Classificação</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-borderLine bg-obsidian/60">
-                  ${appState.students.map(st => {
-                    const g = (st.grades && st.grades[subj] && st.grades[subj][trim]) || { mac: 10, npp: 10, npt: 10 };
-                    const mt = calcTrimesterMT(g.mac, g.npp, g.npt);
-                    const mf = calcFinalSubjectAverage(st.grades[subj]);
-                    const cls = classifyScore20(mf);
-                    return `
-                      <tr>
-                        <td class="px-3.5 py-2.5 font-mono font-bold accent-soft-text whitespace-nowrap">${escapeHtml(st.id)}</td>
-                        <td class="px-3.5 py-2.5 font-semibold text-white whitespace-nowrap">${escapeHtml(st.name)}</td>
-                        <td class="px-3 py-2">
-                          <input type="number" min="0" max="20" step="0.1" value="${g.mac}" data-doc-uid="${escapeHtml(st.id)}" data-doc-field="mac" class="doc-grade-input w-20 rounded-lg border border-borderLine bg-surface px-2.5 py-1.5 font-mono text-white focus:border-accent focus:outline-none" />
-                        </td>
-                        <td class="px-3 py-2">
-                          <input type="number" min="0" max="20" step="0.1" value="${g.npp}" data-doc-uid="${escapeHtml(st.id)}" data-doc-field="npp" class="doc-grade-input w-20 rounded-lg border border-borderLine bg-surface px-2.5 py-1.5 font-mono text-white focus:border-accent focus:outline-none" />
-                        </td>
-                        <td class="px-3 py-2">
-                          <input type="number" min="0" max="20" step="0.1" value="${g.npt}" data-doc-uid="${escapeHtml(st.id)}" data-doc-field="npt" class="doc-grade-input w-20 rounded-lg border border-borderLine bg-surface px-2.5 py-1.5 font-mono text-white focus:border-accent focus:outline-none" />
-                        </td>
-                        <td class="px-3.5 py-2.5 font-mono font-extrabold text-white whitespace-nowrap">${mt.toFixed(1)}</td>
-                        <td class="px-3.5 py-2.5 font-mono font-extrabold accent-soft-text whitespace-nowrap">${mf.toFixed(1)}</td>
-                        <td class="px-3.5 py-2.5 whitespace-nowrap">
-                          <span class="rounded-lg border px-2 py-1 font-mono text-[10px] font-bold ${cls.badge}">${cls.label}</span>
-                        </td>
-                      </tr>
-                    `;
-                  }).join('')}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderDocenteAcompanhamentoView(root) {
-      root.innerHTML = `
-        <div class="space-y-4">
-          ${appState.students.map(st => {
-            const avg = getStudentOverallAverage(st);
-            const cls = classifyScore20(avg);
-            const att = st.attendance || { presences: 0, justifiedAbsences: 0, unjustifiedAbsences: 0 };
-            return `
-              <div class="reformed-card border border-borderLine bg-slateDark space-y-3">
-                <div class="flex flex-wrap items-center justify-between gap-2">
-                  <div>
-                    <span class="font-mono text-xs font-bold accent-soft-text">${escapeHtml(st.id)}</span>
-                    <h3 class="text-base font-extrabold text-white">${escapeHtml(st.name)}</h3>
-                    <p class="text-xs text-slate-400">Encarregado: ${escapeHtml(st.guardian)} • Média Geral: <strong class="text-white">${avg.toFixed(1)}/20</strong> (${cls.code})</p>
-                  </div>
-                  <div class="flex flex-wrap gap-1.5">
-                    <button type="button" data-action="doc-att" data-uid="${escapeHtml(st.id)}" data-kind="presences" class="tactile-btn rounded-lg border border-emeraldGlow/40 bg-emerald-950/30 px-2.5 py-1.5 font-mono text-xs font-bold text-emeraldGlow">+Presença (${att.presences})</button>
-                    <button type="button" data-action="doc-att" data-uid="${escapeHtml(st.id)}" data-kind="justifiedAbsences" class="tactile-btn rounded-lg border border-amberGlow/40 bg-amber-950/30 px-2.5 py-1.5 font-mono text-xs font-bold text-amberGlow">+F.Just (${att.justifiedAbsences})</button>
-                    <button type="button" data-action="doc-att" data-uid="${escapeHtml(st.id)}" data-kind="unjustifiedAbsences" class="tactile-btn rounded-lg border border-roseGlow/40 bg-rose-950/30 px-2.5 py-1.5 font-mono text-xs font-bold text-roseGlow">+F.Injust (${att.unjustifiedAbsences})</button>
-                  </div>
-                </div>
-                <div class="flex flex-col sm:flex-row gap-2">
-                  <input type="text" data-doc-note-uid="${escapeHtml(st.id)}" value="${escapeHtml(st.pedagogicalNote || '')}" placeholder="Observação pedagógica do estudante..." class="doc-note-input min-h-[44px] flex-1 rounded-xl border border-borderLine bg-surface px-3.5 py-2 text-white focus:border-accent focus:outline-none" />
-                </div>
-              </div>
-            `;
-          }).join('')}
-        </div>
-      `;
-    }
-
-    // PASSE 2013 — NÚCLEO TÉCNICO & ENGENHARIA (API Key, Diagnóstico, Provas & Auto-Reforma S.A.G.A.)
-    function renderNucleoTecnico2013View(root) {
-      const cfg = appState.techConfig;
-      const diag = cfg.diagnostics || {};
-      const isOnline = diag.httpCode === '200';
-      const inputType = cfg.showKeyPlain ? 'text' : 'password';
-
-      root.innerHTML = `
-        <div class="space-y-5">
-          <section class="reformed-card border-2 border-amberGlow/50 bg-slateDark space-y-5">
-            <div class="flex flex-wrap items-start justify-between gap-3 border-b border-borderLine pb-4">
-              <div>
-                <span class="font-mono text-[11px] font-bold text-amberGlow">NÚCLEO TÉCNICO (2013) • ISOLADO DOS ALUNOS</span>
-                <h2 class="mt-1 text-xl font-extrabold text-white">Configuração de Inteligência Externa &amp; Sistema</h2>
-                <p class="text-xs text-slate-300">Este painel só é visível com o passe 2013. Os alunos nunca veem referências a API, chaves ou telemetria.</p>
-              </div>
-              <span class="rounded-xl border ${isOnline ? 'border-emeraldGlow/50 bg-emerald-950/40 text-emeraldGlow' : 'border-amberGlow/50 bg-amber-950/30 text-amberGlow'} px-3 py-1.5 font-mono text-xs font-bold">
-                ${escapeHtml(diag.statusText || 'Standby')}
-              </span>
-            </div>
-
-            <form id="techApiForm" class="space-y-4">
-              <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-                <div class="lg:col-span-7 space-y-1.5">
-                  <label for="techApiKeyInput" class="block text-xs font-bold uppercase text-white">Chave API (Google AI Studio)</label>
-                  <div class="flex items-center gap-2">
-                    <input id="techApiKeyInput" type="${inputType}" autocomplete="off" value="${escapeHtml(cfg.apiKey || '')}" placeholder="AIzaSy..." class="min-h-[46px] flex-1 rounded-xl border border-borderLine bg-surface px-4 py-2 font-mono text-white focus:border-accent focus:outline-none" />
-                    <button type="button" data-action="tech-toggle-key" class="tactile-btn rounded-xl border border-borderLine bg-surface px-3.5 py-2 text-xs font-bold text-slate-200">
-                      ${cfg.showKeyPlain ? 'Ocultar' : 'Mostrar'}
-                    </button>
-                  </div>
-                </div>
-
-                <div class="lg:col-span-5 space-y-1.5">
-                  <label for="techModelSelect" class="block text-xs font-bold uppercase text-white">Modelo Preferencial</label>
-                  <select id="techModelSelect" class="min-h-[46px] w-full rounded-xl border border-borderLine bg-surface px-3.5 py-2 font-mono text-white focus:border-accent focus:outline-none">
-                    <option value="gemini-2.5-flash-lite" ${cfg.selectedModel === 'gemini-2.5-flash-lite' ? 'selected' : ''}>gemini-2.5-flash-lite</option>
-                    <option value="gemini-2.5-flash" ${cfg.selectedModel === 'gemini-2.5-flash' ? 'selected' : ''}>gemini-2.5-flash</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="flex flex-wrap gap-2">
-                <button type="submit" class="tactile-btn accent-solid rounded-xl px-5 py-2.5 text-xs font-extrabold">
-                  Guardar Configuração
-                </button>
-                <button type="button" ${cfg.testing ? 'disabled' : ''} data-action="tech-test-api" class="tactile-btn rounded-xl border border-emeraldGlow/50 bg-emerald-950/35 px-5 py-2.5 text-xs font-extrabold text-emeraldGlow disabled:opacity-50">
-                  ${cfg.testing ? 'A Testar...' : 'Testar Ligação'}
-                </button>
-                <button type="button" data-action="tech-clear-api" class="tactile-btn rounded-xl border border-roseGlow/40 bg-rose-950/30 px-4 py-2.5 text-xs font-bold text-roseGlow">
-                  Limpar Chave
-                </button>
-              </div>
-            </form>
-
-            <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-4 font-mono text-xs">
-              <div class="rounded-xl border border-borderLine bg-surface p-3">
-                <p class="text-[10px] text-slate-400">HTTP</p>
-                <p class="mt-1 text-sm font-extrabold text-white">${escapeHtml(diag.httpCode || '—')}</p>
-              </div>
-              <div class="rounded-xl border border-borderLine bg-surface p-3">
-                <p class="text-[10px] text-slate-400">LATÊNCIA</p>
-                <p class="mt-1 text-sm font-extrabold text-white">${Number(diag.latencyMs || 0)} ms</p>
-              </div>
-              <div class="rounded-xl border border-borderLine bg-surface p-3">
-                <p class="text-[10px] text-slate-400">TRANSPORTE</p>
-                <p class="mt-1 truncate text-xs font-bold accent-soft-text">${escapeHtml(diag.transportUsed || '—')}</p>
-              </div>
-              <div class="rounded-xl border border-borderLine bg-surface p-3">
-                <p class="text-[10px] text-slate-400">VERIFICAÇÃO</p>
-                <p class="mt-1 truncate text-xs text-slate-200">${escapeHtml(diag.lastCheckedAt || '—')}</p>
-              </div>
-            </div>
-            <p class="rounded-xl border border-borderLine bg-obsidian px-3.5 py-2.5 font-mono text-xs text-slate-300">
-              Detalhe: ${escapeHtml(diag.errorDetail || '—')}
-            </p>
-          </section>
-        </div>
-      `;
-    }
-
-    function renderReformaSaga2013View(root) {
-      const ref = appState.frontendReform;
-      root.innerHTML = `
-        <div class="reformed-card border border-borderLine bg-slateDark space-y-5">
-          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-borderLine pb-4">
-            <div>
-              <span class="font-mono text-[11px] font-bold accent-soft-text">AUTO-REFORMA SEGURA DO FRONTEND • S.A.G.A.</span>
-              <h2 class="mt-1 text-xl font-extrabold text-white">Estúdio de Reforma Visual com Resguardo (Sandbox &amp; Rollback)</h2>
-              <p class="text-xs text-slate-300">O S.A.G.A. reforma o frontend em tempo real preservando integridade estrutural e isolamento de permissões.</p>
-            </div>
-            <button type="button" data-action="saga-rollback-ui" class="tactile-btn rounded-xl border border-amberGlow/50 bg-amber-950/30 px-4 py-2.5 text-xs font-extrabold text-amberGlow">
-              Rollback Instantâneo
-            </button>
-          </div>
-
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div class="rounded-2xl border border-borderLine bg-surface p-4 space-y-2.5">
-              <p class="font-mono text-xs font-bold text-white">1. Superfície</p>
-              <div class="flex gap-2">
-                <button type="button" data-action="set-surface-mode" data-mode="dark" class="tactile-btn flex-1 rounded-xl border ${ref.surfaceMode === 'dark' ? 'border-accent bg-surfaceAlt' : 'border-borderLine bg-obsidian'} py-2 text-xs font-bold text-white">Escuro</button>
-                <button type="button" data-action="set-surface-mode" data-mode="light" class="tactile-btn flex-1 rounded-xl border ${ref.surfaceMode === 'light' ? 'border-accent bg-surfaceAlt' : 'border-borderLine bg-obsidian'} py-2 text-xs font-bold text-white">Claro</button>
-              </div>
-            </div>
-
-            <div class="rounded-2xl border border-borderLine bg-surface p-4 space-y-2.5">
-              <p class="font-mono text-xs font-bold text-white">2. Densidade do Layout</p>
-              <div class="flex gap-1.5">
-                <button type="button" data-action="set-density" data-density="compact" class="tactile-btn flex-1 rounded-xl border ${ref.density === 'compact' ? 'border-accent bg-surfaceAlt' : 'border-borderLine bg-obsidian'} py-2 text-xs font-bold text-white">Compacto</button>
-                <button type="button" data-action="set-density" data-density="comfortable" class="tactile-btn flex-1 rounded-xl border ${ref.density === 'comfortable' ? 'border-accent bg-surfaceAlt' : 'border-borderLine bg-obsidian'} py-2 text-xs font-bold text-white">Padrão</button>
-                <button type="button" data-action="set-density" data-density="spacious" class="tactile-btn flex-1 rounded-xl border ${ref.density === 'spacious' ? 'border-accent bg-surfaceAlt' : 'border-borderLine bg-obsidian'} py-2 text-xs font-bold text-white">Amplo</button>
-              </div>
-            </div>
-
-            <div class="rounded-2xl border border-borderLine bg-surface p-4 space-y-2.5">
-              <p class="font-mono text-xs font-bold text-white">3. Escala Tipográfica (${Math.round((ref.uiScale || 1) * 100)}%)</p>
-              <div class="flex gap-2">
-                <button type="button" data-action="set-ui-scale" data-scale="0.95" class="tactile-btn flex-1 rounded-xl border border-borderLine bg-obsidian py-2 text-xs font-bold text-white">95%</button>
-                <button type="button" data-action="set-ui-scale" data-scale="1" class="tactile-btn flex-1 rounded-xl border border-borderLine bg-obsidian py-2 text-xs font-bold text-white">100%</button>
-                <button type="button" data-action="set-ui-scale" data-scale="1.12" class="tactile-btn flex-1 rounded-xl border border-borderLine bg-obsidian py-2 text-xs font-bold text-white">112%</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="rounded-2xl border border-borderLine bg-obsidian p-4 space-y-2">
-            <p class="font-mono text-xs font-bold accent-soft-text">Histórico de Reformas Protegidas</p>
-            ${(ref.reformHistory || []).length === 0 ? `
-              <p class="text-xs text-slate-400">Nenhuma reforma registada ainda nesta sessão.</p>
-            ` : (ref.reformHistory || []).map(h => `
-              <div class="flex items-center justify-between text-xs text-slate-300 border-b border-borderLine/50 py-1.5">
-                <span>${escapeHtml(h.label)}</span>
-                <span class="font-mono text-slate-400">${escapeHtml(h.at)}</span>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
-    }
-
-    function renderTelemetriaProvas2013View(root) {
-      const logs = appState.techConfig.systemLogs || [];
-      root.innerHTML = `
-        <div class="space-y-5">
-          <div class="reformed-card border border-borderLine bg-slateDark flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <span class="font-mono text-[11px] font-bold text-amberGlow">PROVAS &amp; TELEMETRIA INTERNA (2013)</span>
-              <h2 class="mt-1 text-xl font-extrabold text-white">Consola de Testes, Backup &amp; Registos do Sistema</h2>
-            </div>
-            <div class="flex flex-wrap gap-2">
-              <button type="button" data-action="export-backup-2013" class="tactile-btn accent-solid rounded-xl px-4 py-2.5 text-xs font-extrabold">
-                Exportar Snapshot JSON
-              </button>
-              <button type="button" data-action="run-self-test-2013" class="tactile-btn rounded-xl border border-emeraldGlow/40 bg-emerald-950/30 px-4 py-2.5 text-xs font-bold text-emeraldGlow">
-                Executar Prova de Integridade
-              </button>
-            </div>
-          </div>
-
-          <div class="reformed-card border border-borderLine bg-slateDark space-y-2.5">
-            <h3 class="text-sm font-bold text-white">Logs Internos (${logs.length})</h3>
-            <div class="max-h-96 space-y-2 overflow-y-auto pr-1 font-mono text-xs">
-              ${logs.map(l => `
-                <div class="rounded-xl border border-borderLine bg-obsidian px-3.5 py-2.5">
-                  <div class="flex items-center justify-between text-[10px]">
-                    <span class="font-bold accent-soft-text">[${escapeHtml(l.level)}]</span>
-                    <span class="text-slate-400">${escapeHtml(l.at)}</span>
-                  </div>
-                  <p class="mt-1 text-slate-200">${escapeHtml(l.detail)}</p>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    // PASSE 2012 — MODERAÇÃO & COMUNIDADE (Controlo Total sobre Chats Públicos)
-    function renderModeracaoChat2012View(root) {
-      const chat = appState.publicChat;
-      const mutedIds = chat.mutedStudentIds || [];
-
-      root.innerHTML = `
-        <div class="space-y-5">
-          <div class="reformed-card border border-accent/50 bg-slateDark space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <span class="font-mono text-[11px] font-bold accent-soft-text">MODERAÇÃO &amp; COMUNIDADE (2012)</span>
-                <h2 class="mt-1 text-xl font-extrabold text-white">Controlo dos Chats Públicos dos Estudantes</h2>
-                <p class="text-xs text-slate-300">Fixa avisos oficiais, apaga mensagens inadequadas e gere permissões de escrita dos alunos.</p>
-              </div>
-              <button type="button" data-action="mod-clear-all-chat" class="tactile-btn rounded-xl border border-roseGlow/40 bg-rose-950/35 px-4 py-2.5 text-xs font-bold text-roseGlow">
-                Limpar Mural Público
-              </button>
-            </div>
-
-            <!-- Fixar Aviso Oficial -->
-            <form id="modPinNoticeForm" class="flex flex-col sm:flex-row gap-2">
-              <input id="modPinNoticeInput" type="text" value="${escapeHtml(chat.pinnedNotice || '')}" placeholder="Escreve um aviso oficial fixado no topo do chat..." class="min-h-[46px] flex-1 rounded-xl border border-borderLine bg-surface px-4 py-2 text-white focus:border-accent focus:outline-none" />
-              <button type="submit" class="tactile-btn accent-solid rounded-xl px-5 py-2.5 text-xs font-extrabold">
-                Fixar Aviso
-              </button>
-            </form>
-
-            <!-- Controlo de Participação dos Estudantes -->
-            <div class="space-y-2">
-              <h3 class="text-xs font-bold uppercase text-slate-300">Participação dos Estudantes no Mural</h3>
-              <div class="flex flex-wrap gap-2">
-                ${appState.students.map(st => {
-                  const muted = mutedIds.includes(st.id);
-                  return `
-                    <button type="button" data-action="mod-toggle-mute" data-uid="${escapeHtml(st.id)}" class="tactile-btn rounded-xl border ${muted ? 'border-roseGlow/50 bg-rose-950/35 text-roseGlow' : 'border-emeraldGlow/40 bg-emerald-950/25 text-emeraldGlow'} px-3 py-2 text-xs font-bold">
-                      ${escapeHtml(st.name)} • ${muted ? 'Silenciado (Ativar)' : 'Ativo (Silenciar)'}
-                    </button>
-                  `;
-                }).join('')}
-              </div>
-            </div>
-          </div>
-
-          <!-- Mensagens do Mural com Botão de Remoção -->
-          <div class="reformed-card border border-borderLine bg-slateDark space-y-3">
-            <h3 class="text-base font-bold text-white">Mensagens no Chat Público (${chat.messages.length})</h3>
-            <div class="space-y-2.5">
-              ${chat.messages.length === 0 ? `
-                <p class="text-xs text-slate-400">O chat público está vazio.</p>
-              ` : chat.messages.map(m => `
-                <div class="flex items-start justify-between gap-3 rounded-2xl border border-borderLine bg-surface p-3.5">
-                  <div class="space-y-1 min-w-0">
-                    <p class="text-xs font-bold text-white">${escapeHtml(m.senderName)} <span class="font-mono text-[10px] text-slate-400">(${escapeHtml(m.senderId)} • ${escapeHtml(m.time)})</span></p>
-                    <p class="text-xs sm:text-sm text-slate-200">${escapeHtml(m.text)}</p>
-                  </div>
-                  <button type="button" data-action="mod-delete-msg" data-mid="${m.id}" class="tactile-btn rounded-xl border border-roseGlow/40 bg-rose-950/35 px-3 py-1.5 text-xs font-bold text-roseGlow shrink-0">
-                    Apagar
-                  </button>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    // =========================================================================
-    // EVENTOS DE INTERAÇÃO, PIN SECRETO E INICIALIZAÇÃO
-    // =========================================================================
-    let brandTapCount = 0;
-    let brandTapTimer = null;
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const brandTrigger = document.getElementById('institutionalBrandTrigger');
-      if (brandTrigger) {
-        brandTrigger.addEventListener('click', () => {
-          brandTapCount += 1;
-          clearTimeout(brandTapTimer);
-          if (brandTapCount >= 2) {
-            brandTapCount = 0;
-            openPinModal();
-            return;
-          }
-          brandTapTimer = setTimeout(() => {
-            brandTapCount = 0;
-          }, 420);
-        });
-      }
-
-      SagaFrontendReformer.applyToDOM();
-      renderNavigationAndHeader();
-      renderSagaDrawer();
-      renderActiveView();
-    });
-
-    document.addEventListener('click', async (e) => {
-      const tabBtn = e.target.closest('[data-tab]');
-      if (tabBtn && tabBtn.dataset.tab) {
-        appState.ui.activeTab = tabBtn.dataset.tab;
-        saveAppState();
-        renderNavigationAndHeader();
-        renderActiveView();
-        return;
-      }
-
-      const quickSaga = e.target.closest('[data-saga-quick]');
-      if (quickSaga && quickSaga.dataset.sagaQuick) {
-        appState.ui.sagaOpen = true;
-        renderSagaDrawer();
-        await handleSagaSubmit(quickSaga.dataset.sagaQuick);
-        return;
-      }
-
-      const actBtn = e.target.closest('[data-action]');
-      if (!actBtn) return;
-      const action = actBtn.dataset.action;
-
-      switch (action) {
-        case 'toggle-saga':
-          appState.ui.sagaOpen = !appState.ui.sagaOpen;
-          saveAppState();
-          renderSagaDrawer();
-          break;
-
-        case 'clear-saga-chat':
-          appState.sagaMessages = [
-            {
-              id: Date.now(),
-              role: 'assistant',
-              time: nowClock(),
-              text: 'Conversa limpa. Como te posso ajudar agora nos estudos ou no visual do Sistema Áurea?'
-            }
-          ];
-          saveAppState();
-          renderSagaDrawer();
-          break;
-
-        case 'saga-rollback-ui':
-          SagaFrontendReformer.resetToFactory();
-          break;
-
-        case 'open-theme-modal': {
-          SagaFrontendReformer.syncThemeModalUI();
-          const m = document.getElementById('themeModal');
-          if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
-          break;
-        }
-
-        case 'close-theme-modal': {
-          const m = document.getElementById('themeModal');
-          if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
-          break;
-        }
-
-        case 'close-pin-modal':
-          closePinModal();
-          break;
-
-        case 'exit-restricted-role':
-          activateRole('student');
-          break;
-
-        case 'set-theme-preset':
-          SagaFrontendReformer.reform({
-            accentName: actBtn.dataset.name || 'Ciano Áurea',
-            accentHex: actBtn.dataset.hex || '#38bdf8',
-            accentSoft: actBtn.dataset.soft || '#7dd3fc'
-          }, `Paleta ${actBtn.dataset.name || 'Personalizada'}`);
-          showToast(`Ambiente ${actBtn.dataset.name} aplicado.`, 'success');
-          break;
-
-        case 'set-surface-mode':
-          SagaFrontendReformer.reform({
-            surfaceMode: actBtn.dataset.mode === 'light' ? 'light' : 'dark'
-          }, `Modo ${actBtn.dataset.mode === 'light' ? 'Claro' : 'Escuro'}`);
-          break;
-
-        case 'set-density':
-          SagaFrontendReformer.reform({
-            density: actBtn.dataset.density || 'comfortable'
-          }, `Densidade ${actBtn.dataset.density}`);
-          break;
-
-        case 'set-ui-scale':
-          SagaFrontendReformer.reform({
-            uiScale: Number(actBtn.dataset.scale) || 1
-          }, `Escala ${Math.round((Number(actBtn.dataset.scale) || 1) * 100)}%`);
-          break;
-
-        case 'select-lesson':
-          appState.ui.selectedLessonId = actBtn.dataset.lid;
-          saveAppState();
-          renderActiveView();
-          break;
-
-        case 'toggle-lesson-done': {
-          const ls = (appState.academyLessons || []).find(l => l.id === actBtn.dataset.lid);
-          if (ls) {
-            ls.completed = !ls.completed;
-            saveAppState();
-            renderActiveView();
-            showToast(ls.completed ? 'Aula marcada como concluída!' : 'Aula reaberta para revisão.', 'success');
-          }
-          break;
-        }
-
-        case 'add-focus-session':
-          appState.lado0.focusMinutesToday = Number(appState.lado0.focusMinutesToday || 0) + 25;
-          saveAppState();
-          renderActiveView();
-          showToast('+25 minutos de foco adicionados ao teu registo de hoje!', 'success');
-          break;
-
-        case 'toggle-habit': {
-          const hb = (appState.lado0.habits || []).find(h => h.id === actBtn.dataset.hid);
-          if (hb) {
-            hb.done = !hb.done;
-            saveAppState();
-            renderActiveView();
-          }
-          break;
-        }
-
-        case 'toggle-manager-task': {
-          const tk = (appState.managerTasks || []).find(t => t.id === actBtn.dataset.tid);
-          if (tk) {
-            tk.done = !tk.done;
-            saveAppState();
-            renderActiveView();
-          }
-          break;
-        }
-
-        case 'delete-manager-task':
-          appState.managerTasks = (appState.managerTasks || []).filter(t => t.id !== actBtn.dataset.tid);
-          saveAppState();
-          renderActiveView();
-          showToast('Tarefa removida.', 'info');
-          break;
-
-        // Ações Passe 1841 (Docente)
-        case 'doc-att': {
-          if (appState.activeRole !== '1841') return;
-          const st = appState.students.find(s => s.id === actBtn.dataset.uid);
-          const kind = actBtn.dataset.kind;
-          if (st && st.attendance && Object.prototype.hasOwnProperty.call(st.attendance, kind)) {
-            st.attendance[kind] = Number(st.attendance[kind] || 0) + 1;
-            saveAppState();
-            renderActiveView();
-            showToast(`Assiduidade atualizada para ${st.name}.`, 'success');
-          }
-          break;
-        }
-
-        // Ações Passe 2012 (Moderação)
-        case 'mod-delete-msg': {
-          if (appState.activeRole !== '2012') return;
-          const mid = Number(actBtn.dataset.mid);
-          appState.publicChat.messages = (appState.publicChat.messages || []).filter(m => m.id !== mid);
-          pushSystemLog('MOD-2012', `Mensagem #${mid} removida do mural público.`);
-          saveAppState();
-          renderActiveView();
-          showToast('Mensagem removida do chat público.', 'info');
-          break;
-        }
-
-        case 'mod-clear-all-chat':
-          if (appState.activeRole !== '2012') return;
-          appState.publicChat.messages = [];
-          pushSystemLog('MOD-2012', 'Mural público limpo pela moderação.');
-          saveAppState();
-          renderActiveView();
-          showToast('Mural público limpo.', 'info');
-          break;
-
-        case 'mod-toggle-mute': {
-          if (appState.activeRole !== '2012') return;
-          const uid = actBtn.dataset.uid;
-          const list = appState.publicChat.mutedStudentIds || [];
-          if (list.includes(uid)) {
-            appState.publicChat.mutedStudentIds = list.filter(x => x !== uid);
+      function restoreFrontendSnapshot() {
+        try {
+          const snapRaw = localStorage.getItem(SNAPSHOT_KEY);
+          if (snapRaw) {
+            state.uiReform = { ...structuredClone(DEFAULT_STATE.uiReform), ...JSON.parse(snapRaw) };
           } else {
-            appState.publicChat.mutedStudentIds = [...list, uid];
+            state.uiReform = structuredClone(DEFAULT_STATE.uiReform);
           }
-          saveAppState();
-          renderActiveView();
-          showToast('Permissão de escrita atualizada.', 'info');
-          break;
+        } catch (_err) {
+          state.uiReform = structuredClone(DEFAULT_STATE.uiReform);
         }
+        applyUiReform();
+        saveState();
+      }
 
-        // Ações Passe 2013 (Núcleo Técnico)
-        case 'tech-toggle-key':
-          if (appState.activeRole !== '2013') return;
-          appState.techConfig.showKeyPlain = !appState.techConfig.showKeyPlain;
-          saveAppState();
-          renderActiveView();
-          break;
-
-        case 'tech-clear-api':
-          if (appState.activeRole !== '2013') return;
-          appState.techConfig.apiKey = '';
-          appState.techConfig.diagnostics.statusText = 'Chave Removida';
-          appState.techConfig.diagnostics.httpCode = '—';
-          saveAppState();
-          renderActiveView();
-          showToast('Chave removida do núcleo técnico.', 'info');
-          break;
-
-        case 'tech-test-api': {
-          if (appState.activeRole !== '2013' || appState.techConfig.testing) return;
-          const inp = document.getElementById('techApiKeyInput');
-          const sel = document.getElementById('techModelSelect');
-          const key = sanitizeApiKey(inp ? inp.value : appState.techConfig.apiKey);
-          const model = sel ? sel.value : appState.techConfig.selectedModel;
-
-          appState.techConfig.apiKey = key;
-          appState.techConfig.selectedModel = model;
-
-          if (!key) {
-            showToast('Introduz uma chave válida antes de testar.', 'warn');
-            return;
-          }
-
-          appState.techConfig.testing = true;
-          renderActiveView();
-
-          try {
-            const res = await callGeminiSilent('Responde OK', 'Sistema Áurea', key, model);
-            appState.techConfig.testing = false;
-            appState.techConfig.diagnostics = {
-              statusText: `Online (${res.modelUsed})`,
-              httpCode: String(res.httpCode),
-              latencyMs: res.latencyMs,
-              transportUsed: res.transport,
-              modelUsed: res.modelUsed,
-              lastCheckedAt: nowFullDateTime(),
-              errorDetail: `Ligação confirmada (${res.latencyMs}ms).`
-            };
-            pushSystemLog('API-2013', `Teste OK (${res.modelUsed}, ${res.latencyMs}ms).`);
-            saveAppState();
-            renderActiveView();
-            showToast(`Ligação confirmada (${res.latencyMs}ms)!`, 'success');
-          } catch (err) {
-            appState.techConfig.testing = false;
-            appState.techConfig.diagnostics = {
-              statusText: 'Fallback Local Ativo',
-              httpCode: String(err.httpCode || 'ERR'),
-              latencyMs: err.latencyMs || 0,
-              transportUsed: err.transport || 'Local',
-              modelUsed: model,
-              lastCheckedAt: nowFullDateTime(),
-              errorDetail: err.message || 'Falha externa'
-            };
-            pushSystemLog('API-2013', `Falha no teste: ${err.message}`);
-            saveAppState();
-            renderActiveView();
-            showToast('Ligação externa indisponível; motor local operacional.', 'warn');
-          }
-          break;
-        }
-
-        case 'export-backup-2013': {
-          if (appState.activeRole !== '2013') return;
-          const blob = new Blob([JSON.stringify(appState, null, 2)], { type: 'application/json' });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `aurea-snapshot-${new Date().toISOString().slice(0, 10)}.json`;
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          URL.revokeObjectURL(url);
-          showToast('Snapshot exportado!', 'success');
-          break;
-        }
-
-        case 'run-self-test-2013': {
-          if (appState.activeRole !== '2013') return;
-          const ok = SagaFrontendReformer.validateIntegrity();
-          pushSystemLog('TEST-2013', `Prova de integridade estrutural: ${ok ? 'APROVADA' : 'RESTAURADA'}.`);
-          saveAppState();
-          renderActiveView();
-          showToast('Prova de integridade concluída com sucesso!', 'success');
-          break;
+      function applyUiReform() {
+        const reform = state.uiReform || DEFAULT_STATE.uiReform;
+        document.body.classList.toggle("theme-light", reform.theme === "light");
+        document.body.classList.toggle("compact-mode", Boolean(reform.compact));
+        const clampedSize = Math.max(14, Math.min(20, Number(reform.fontSize) || 16));
+        document.documentElement.style.setProperty("--font-size-base", clampedSize + "px");
+        if (reform.accent) {
+          document.documentElement.style.setProperty("--accent", reform.accent);
         }
       }
-    });
 
-    document.addEventListener('submit', async (e) => {
-      const form = e.target;
-      if (!form || !form.id) return;
-      e.preventDefault();
+      function showToast(message) {
+        const el = document.getElementById("toast");
+        el.textContent = message;
+        el.classList.add("show");
+        clearTimeout(showToast._timer);
+        showToast._timer = setTimeout(() => el.classList.remove("show"), 2400);
+      }
 
-      if (form.id === 'pinAccessForm') {
-        const val = (document.getElementById('pinCodeInput').value || '').trim();
-        if (val === '1841' || val === '2013' || val === '2012') {
-          closePinModal();
-          activateRole(val);
-        } else {
-          showToast('Código inválido.', 'error');
-          const inp = document.getElementById('pinCodeInput');
-          if (inp) { inp.value = ''; inp.focus(); }
+      function getActiveStudent() {
+        return state.students.find((s) => s.id === state.activeStudentId) || state.students[0];
+      }
+
+      function nowTime() {
+        const d = new Date();
+        return d.toTimeString().slice(0, 5);
+      }
+
+      function todayISO() {
+        return new Date().toISOString().slice(0, 10);
+      }
+
+      function escapeHtml(str) {
+        return String(str ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      // Auto-reforma segura do frontend pelo S.A.G.A.
+      function sagaReformFrontend(promptText) {
+        const q = promptText.toLowerCase();
+        saveFrontendSnapshot();
+        const changes = [];
+
+        if (q.includes("claro") || q.includes("light")) {
+          state.uiReform.theme = "light";
+          changes.push("tema claro");
+        } else if (q.includes("escuro") || q.includes("dark")) {
+          state.uiReform.theme = "dark";
+          changes.push("tema escuro");
         }
-      } else if (form.id === 'sagaChatForm') {
-        const inp = document.getElementById('sagaPromptInput');
-        const txt = inp ? inp.value.trim() : '';
-        if (!txt) return;
-        inp.value = '';
-        await handleSagaSubmit(txt);
-      } else if (form.id === 'lado0ReflectionForm') {
-        const val = (document.getElementById('lado0ReflectionInput').value || '').trim();
-        appState.lado0.dailyReflection = val;
-        saveAppState();
-        showToast('Reflexão guardada no teu espaço Lado 0!', 'success');
-      } else if (form.id === 'newTaskForm') {
-        const title = (document.getElementById('taskTitleInp').value || '').trim();
-        const subj = document.getElementById('taskSubjSel').value;
-        if (!title) return;
-        appState.managerTasks.unshift({
-          id: `t-${Date.now()}`,
+
+        if (q.includes("letra maior") || q.includes("fonte maior") || q.includes("aumenta")) {
+          state.uiReform.fontSize = Math.min(20, (Number(state.uiReform.fontSize) || 16) + 2);
+          changes.push("tamanho de letra aumentado");
+        } else if (q.includes("letra menor") || q.includes("diminui")) {
+          state.uiReform.fontSize = Math.max(14, (Number(state.uiReform.fontSize) || 16) - 2);
+          changes.push("tamanho de letra reduzido");
+        }
+
+        if (q.includes("compacto") || q.includes("condensar")) {
+          state.uiReform.compact = true;
+          changes.push("espaçamento compacto");
+        } else if (q.includes("espaçado") || q.includes("normal")) {
+          state.uiReform.compact = false;
+          changes.push("espaçamento padrão");
+        }
+
+        if (q.includes("azul")) {
+          state.uiReform.accent = "#38bdf8";
+          changes.push("destaque azul");
+        } else if (q.includes("verde")) {
+          state.uiReform.accent = "#10b981";
+          changes.push("destaque verde");
+        } else if (q.includes("dourado") || q.includes("âmbar") || q.includes("ambar")) {
+          state.uiReform.accent = "#f59e0b";
+          changes.push("destaque dourado");
+        }
+
+        if (changes.length > 0) {
+          applyUiReform();
+          saveState();
+          return "Frontend reformado com sucesso: " + changes.join(", ") + ". (Resguardo ativo para reversão imediata.)";
+        }
+        return null;
+      }
+
+      function sagaAcademicReply(promptText) {
+        const student = getActiveStudent();
+        const mineAssessments = state.assessments.filter((a) => a.studentId === student.id);
+        const avg = mineAssessments.length
+          ? (mineAssessments.reduce((acc, item) => acc + Number(item.score || 0), 0) / mineAssessments.length).toFixed(1)
+          : "N/A";
+        const mineTasks = state.tasks.filter((t) => t.studentId === student.id && !t.done);
+
+        const lower = promptText.toLowerCase();
+        if (lower.includes("média") || lower.includes("nota") || lower.includes("avaliaç")) {
+          return `${student.name} (${student.id}), tens ${mineAssessments.length} avaliação(ões) registada(s) e média atual de ${avg} valores.`;
+        }
+        if (lower.includes("tarefa") || lower.includes("manager")) {
+          return mineTasks.length
+            ? `Tens ${mineTasks.length} tarefa(s) pendente(s) no Manager: ${mineTasks.map((t) => t.title).join("; ")}.`
+            : "Não tens tarefas pendentes no Manager neste momento.";
+        }
+        return `Estou disponível para ${student.name} (${student.id}). Posso apoiar nos estudos, resumir temas ou ajustar o visual da interface (ex.: 'modo claro', 'letra maior', 'compacto').`;
+      }
+
+      async function callGeminiIfConfigured(promptText) {
+        const key = (state.tech?.apiKey || "").trim();
+        const model = state.tech?.model || "gemini-3.8-flash";
+        if (!key) return null;
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 7000);
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`;
+          const res = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            signal: controller.signal,
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: promptText }] }]
+            })
+          });
+          clearTimeout(timeoutId);
+          if (!res.ok) return null;
+          const data = await res.json();
+          const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+          return typeof text === "string" && text.trim() ? text.trim() : null;
+        } catch (_err) {
+          clearTimeout(timeoutId);
+          return null;
+        }
+      }
+
+      // Renderização
+      function renderRoleAndTabs() {
+        const badge = document.getElementById("roleBadge");
+        const tab1841 = document.getElementById("tab1841");
+        const tab2013 = document.getElementById("tab2013");
+        const tab2012 = document.getElementById("tab2012");
+
+        tab1841.style.display = state.activePass === "1841" ? "inline-flex" : "none";
+        tab2013.style.display = state.activePass === "2013" ? "inline-flex" : "none";
+        tab2012.style.display = state.activePass === "2012" ? "inline-flex" : "none";
+
+        if (state.activePass === "1841") {
+          badge.textContent = "Docente · 1841";
+          badge.className = "role-badge privileged";
+        } else if (state.activePass === "2013") {
+          badge.textContent = "Núcleo · 2013";
+          badge.className = "role-badge privileged";
+        } else if (state.activePass === "2012") {
+          badge.textContent = "Moderação · 2012";
+          badge.className = "role-badge privileged";
+        } else {
+          badge.textContent = "Aluno";
+          badge.className = "role-badge";
+        }
+      }
+
+      function activateTab(tabName) {
+        if (tabName === "passe1841" && state.activePass !== "1841") return;
+        if (tabName === "passe2013" && state.activePass !== "2013") return;
+        if (tabName === "passe2012" && state.activePass !== "2012") return;
+
+        document.querySelectorAll(".tab-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.tab === tabName);
+        });
+        document.querySelectorAll(".view-panel").forEach((panel) => {
+          panel.classList.toggle("active", panel.id === "view-" + tabName);
+        });
+      }
+
+      function renderStudents() {
+        const student = getActiveStudent();
+        const select = document.getElementById("activeStudentSelect");
+        const evalSelect = document.getElementById("evalStudentSelect");
+        const idPill = document.getElementById("activeStudentIdPill");
+        const academyLabel = document.getElementById("academyStudentLabel");
+
+        select.innerHTML = "";
+        evalSelect.innerHTML = "";
+
+        state.students.forEach((s) => {
+          const opt1 = document.createElement("option");
+          opt1.value = s.id;
+          opt1.textContent = `${s.name} (${s.id})`;
+          opt1.selected = s.id === student.id;
+          select.appendChild(opt1);
+
+          const opt2 = document.createElement("option");
+          opt2.value = s.id;
+          opt2.textContent = `${s.name} — ${s.id}`;
+          opt2.selected = s.id === student.id;
+          evalSelect.appendChild(opt2);
+        });
+
+        idPill.textContent = `ID: ${student.id}`;
+        academyLabel.textContent = `${student.name} · ${student.className}`;
+
+        const rosterEl = document.getElementById("studentsRosterList");
+        rosterEl.innerHTML = "";
+        state.students.forEach((s) => {
+          const row = document.createElement("div");
+          row.className = "item-row";
+          const isCurrent = s.id === student.id;
+          row.innerHTML = `
+            <div>
+              <strong>${escapeHtml(s.name)}</strong> ${isCurrent ? '<span class="pill pill-accent">Ativo</span>' : ""}
+              <div class="item-meta">ID: ${escapeHtml(s.id)} · Turma: ${escapeHtml(s.className)}</div>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-secondary btn-sm" data-select-student="${escapeHtml(s.id)}" type="button">Selecionar</button>
+              ${state.students.length > 1 ? `<button class="btn btn-danger btn-sm" data-delete-student="${escapeHtml(s.id)}" type="button">Remover</button>` : ""}
+            </div>
+          `;
+          rosterEl.appendChild(row);
+        });
+      }
+
+      function renderAcademyAndLado0() {
+        const tracksEl = document.getElementById("academyTracks");
+        const tracks = [
+          { title: "Fundamentos Essenciais", desc: "Revisão estruturada de conceitos base e exercícios graduais." },
+          { title: "Leitura e Expressão", desc: "Interpretação de textos, argumentação e síntese de ideias." },
+          { title: "Laboratório de Resolução", desc: "Resolução passo a passo com foco em clareza e método." }
+        ];
+        tracksEl.innerHTML = tracks.map((t) => `
+          <div class="stat-box">
+            <strong>${escapeHtml(t.title)}</strong>
+            <p class="card-desc">${escapeHtml(t.desc)}</p>
+          </div>
+        `).join("");
+
+        const lado0El = document.getElementById("lado0Cards");
+        const lado0Items = [
+          { title: "Origem das Ideias", desc: "Como decompor um problema complexo em partes simples e verificáveis." },
+          { title: "Mapas de Conexão", desc: "Relação entre tópicos estudados e aplicações práticas do dia a dia." }
+        ];
+        lado0El.innerHTML = lado0Items.map((item) => `
+          <div class="stat-box">
+            <strong>${escapeHtml(item.title)}</strong>
+            <p class="card-desc">${escapeHtml(item.desc)}</p>
+          </div>
+        `).join("");
+      }
+
+      function renderTasks() {
+        const student = getActiveStudent();
+        const listEl = document.getElementById("tasksList");
+        const mine = state.tasks.filter((t) => t.studentId === student.id);
+
+        if (!mine.length) {
+          listEl.innerHTML = `<p class="muted">Nenhuma tarefa registada para ${escapeHtml(student.name)}.</p>`;
+          return;
+        }
+
+        listEl.innerHTML = mine.map((t) => `
+          <div class="item-row">
+            <div>
+              <strong style="${t.done ? "text-decoration:line-through; opacity:0.65;" : ""}">${escapeHtml(t.title)}</strong>
+              <div class="item-meta">Disciplina: ${escapeHtml(t.subject || "Geral")}</div>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-secondary btn-sm" data-toggle-task="${escapeHtml(t.id)}" type="button">${t.done ? "Reabrir" : "Concluir"}</button>
+              <button class="btn btn-danger btn-sm" data-delete-task="${escapeHtml(t.id)}" type="button">Excluir</button>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      function renderAssessments() {
+        const student = getActiveStudent();
+        const mine = state.assessments.filter((a) => a.studentId === student.id);
+        const tbody = document.getElementById("studentAssessmentsBody");
+        const avgPill = document.getElementById("studentAvgPill");
+
+        if (!mine.length) {
+          avgPill.textContent = "Média: --";
+          tbody.innerHTML = `<tr><td colspan="5" class="muted">Sem avaliações registadas para este estudante.</td></tr>`;
+          return;
+        }
+
+        const avg = (mine.reduce((acc, item) => acc + Number(item.score || 0), 0) / mine.length).toFixed(1);
+        avgPill.textContent = `Média: ${avg} / 20`;
+
+        tbody.innerHTML = mine.map((a) => `
+          <tr>
+            <td><strong>${escapeHtml(a.title)}</strong></td>
+            <td>${escapeHtml(a.subject)}</td>
+            <td>${escapeHtml(a.date)}</td>
+            <td><strong>${Number(a.score).toFixed(1)}</strong></td>
+            <td>${escapeHtml(a.note || "-")}</td>
+          </tr>
+        `).join("");
+      }
+
+      function renderPublicChat() {
+        const pinnedEl = document.getElementById("pinnedBanner");
+        if (state.publicChat.pinnedNotice && state.publicChat.pinnedNotice.trim()) {
+          pinnedEl.style.display = "block";
+          pinnedEl.innerHTML = `<strong>Aviso Fixado:</strong> ${escapeHtml(state.publicChat.pinnedNotice)}`;
+        } else {
+          pinnedEl.style.display = "none";
+          pinnedEl.innerHTML = "";
+        }
+
+        const box = document.getElementById("publicChatBox");
+        if (!state.publicChat.messages.length) {
+          box.innerHTML = `<p class="muted">Nenhuma mensagem no chat da turma.</p>`;
+        } else {
+          box.innerHTML = state.publicChat.messages.map((m) => `
+            <div class="msg-bubble">
+              <div class="msg-header">
+                <strong>${escapeHtml(m.authorName)} (${escapeHtml(m.authorId)})</strong>
+                <span>${escapeHtml(m.time)}</span>
+              </div>
+              <div>${escapeHtml(m.text)}</div>
+            </div>
+          `).join("");
+          box.scrollTop = box.scrollHeight;
+        }
+
+        // Moderação (2012)
+        const modList = document.getElementById("moderationMessagesList");
+        document.getElementById("pinnedNoticeInput").value = state.publicChat.pinnedNotice || "";
+        if (!state.publicChat.messages.length) {
+          modList.innerHTML = `<p class="muted">Sem mensagens para moderar.</p>`;
+        } else {
+          modList.innerHTML = state.publicChat.messages.map((m) => `
+            <div class="item-row">
+              <div>
+                <strong>${escapeHtml(m.authorName)} (${escapeHtml(m.authorId)})</strong> · <span class="muted">${escapeHtml(m.time)}</span>
+                <div>${escapeHtml(m.text)}</div>
+              </div>
+              <button class="btn btn-danger btn-sm" data-delete-msg="${escapeHtml(m.id)}" type="button">Apagar</button>
+            </div>
+          `).join("");
+        }
+      }
+
+      function renderTeacherView() {
+        const tbody = document.getElementById("teacherRosterBody");
+        tbody.innerHTML = state.students.map((s) => {
+          const items = state.assessments.filter((a) => a.studentId === s.id);
+          const avg = items.length
+            ? (items.reduce((acc, item) => acc + Number(item.score || 0), 0) / items.length).toFixed(1)
+            : "--";
+          return `
+            <tr>
+              <td>${escapeHtml(s.id)}</td>
+              <td><strong>${escapeHtml(s.name)}</strong></td>
+              <td>${escapeHtml(s.className)}</td>
+              <td>${items.length}</td>
+              <td>${avg}</td>
+              <td>
+                <button class="btn btn-secondary btn-sm" data-inspect-student="${escapeHtml(s.id)}" type="button">Ver Histórico</button>
+              </td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      function renderTechView() {
+        document.getElementById("statStudentsCount").textContent = String(state.students.length);
+        document.getElementById("statAssessmentsCount").textContent = String(state.assessments.length);
+        document.getElementById("statChatCount").textContent = String(state.publicChat.messages.length);
+        document.getElementById("apiKeyInput").value = state.tech.apiKey || "";
+        document.getElementById("modelSelect").value = state.tech.model || "gemini-3.8-flash";
+      }
+
+      function renderSagaMessages() {
+        const box = document.getElementById("sagaChatBox");
+        box.innerHTML = state.sagaMessages.map((m) => `
+          <div class="msg-bubble ${m.sender === "S.A.G.A." ? "saga" : ""}">
+            <div class="msg-header">
+              <strong>${escapeHtml(m.sender)}</strong>
+            </div>
+            <div>${escapeHtml(m.text)}</div>
+          </div>
+        `).join("");
+        box.scrollTop = box.scrollHeight;
+      }
+
+      function renderAll() {
+        applyUiReform();
+        renderRoleAndTabs();
+        renderStudents();
+        renderAcademyAndLado0();
+        renderTasks();
+        renderAssessments();
+        renderPublicChat();
+        renderTeacherView();
+        renderTechView();
+        renderSagaMessages();
+      }
+
+      // Modal PIN
+      const pinModal = document.getElementById("pinModal");
+      const pinCodeInput = document.getElementById("pinCodeInput");
+
+      function openPinModal() {
+        pinCodeInput.value = "";
+        pinModal.classList.add("open");
+        setTimeout(() => pinCodeInput.focus(), 50);
+      }
+
+      function closePinModal() {
+        pinModal.classList.remove("open");
+        pinCodeInput.value = "";
+      }
+
+      function submitPin() {
+        const code = (pinCodeInput.value || "").trim();
+        if (code === "1841" || code === "2013" || code === "2012") {
+          state.activePass = code;
+          saveState();
+          closePinModal();
+          renderAll();
+          activateTab("passe" + code);
+          showToast("Acesso ativado.");
+        } else {
+          state.activePass = null;
+          saveState();
+          closePinModal();
+          renderAll();
+          activateTab("academy");
+          showToast("Código inválido.");
+        }
+      }
+
+      // Eventos
+      document.getElementById("brandTrigger").addEventListener("dblclick", openPinModal);
+      document.getElementById("btnOpenPin").addEventListener("click", () => {
+        if (state.activePass) {
+          state.activePass = null;
+          saveState();
+          renderAll();
+          activateTab("academy");
+          showToast("Sessão regressou ao modo aluno.");
+        } else {
+          openPinModal();
+        }
+      });
+      document.getElementById("btnCancelPin").addEventListener("click", closePinModal);
+      document.getElementById("btnSubmitPin").addEventListener("click", submitPin);
+      pinCodeInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") submitPin();
+      });
+
+      document.getElementById("navTabs").addEventListener("click", (e) => {
+        const btn = e.target.closest(".tab-btn");
+        if (!btn) return;
+        activateTab(btn.dataset.tab);
+      });
+
+      document.getElementById("activeStudentSelect").addEventListener("change", (e) => {
+        state.activeStudentId = e.target.value;
+        saveState();
+        renderAll();
+      });
+
+      function createStudentAccount(switchImmediately) {
+        const nameInput = document.getElementById("newStudentName");
+        const idInput = document.getElementById("newStudentId");
+        const classInput = document.getElementById("newStudentClass");
+
+        const name = (nameInput.value || "").trim();
+        const rawId = (idInput.value || "").trim();
+        const className = (classInput.value || "").trim() || "8.ª Classe";
+
+        if (!name) {
+          showToast("Indica o nome do estudante.");
+          return;
+        }
+
+        const uniqueId = rawId || ("ALU-" + String(Date.now()).slice(-4));
+        if (state.students.some((s) => s.id.toLowerCase() === uniqueId.toLowerCase())) {
+          showToast("Esse ID já existe.");
+          return;
+        }
+
+        const newAccount = { id: uniqueId, name, className };
+        state.students.push(newAccount);
+        if (switchImmediately) {
+          state.activeStudentId = uniqueId;
+        }
+        saveState();
+        nameInput.value = "";
+        idInput.value = "";
+        renderAll();
+        showToast(switchImmediately ? `Conta criada e ativa: ${name}` : `Conta criada: ${name}`);
+      }
+
+      document.getElementById("btnCreateStudent").addEventListener("click", () => createStudentAccount(false));
+      document.getElementById("btnSwitchToNewStudent").addEventListener("click", () => createStudentAccount(true));
+
+      document.getElementById("studentsRosterList").addEventListener("click", (e) => {
+        const selBtn = e.target.closest("[data-select-student]");
+        if (selBtn) {
+          state.activeStudentId = selBtn.dataset.selectStudent;
+          saveState();
+          renderAll();
+          showToast("Perfil de estudante alterado.");
+          return;
+        }
+        const delBtn = e.target.closest("[data-delete-student]");
+        if (delBtn) {
+          const targetId = delBtn.dataset.deleteStudent;
+          if (state.students.length <= 1) return;
+          state.students = state.students.filter((s) => s.id !== targetId);
+          if (state.activeStudentId === targetId) {
+            state.activeStudentId = state.students[0].id;
+          }
+          saveState();
+          renderAll();
+          showToast("Conta removida.");
+        }
+      });
+
+      document.getElementById("btnAddTask").addEventListener("click", () => {
+        const titleEl = document.getElementById("taskTitleInput");
+        const subjEl = document.getElementById("taskSubjectInput");
+        const title = (titleEl.value || "").trim();
+        const subject = (subjEl.value || "").trim() || "Geral";
+        if (!title) {
+          showToast("Escreve uma tarefa.");
+          return;
+        }
+        state.tasks.unshift({
+          id: "TSK-" + Date.now(),
+          studentId: getActiveStudent().id,
           title,
-          subject: subj,
-          due: 'Esta semana',
-          priority: 'Normal',
+          subject,
           done: false
         });
-        saveAppState();
-        renderActiveView();
-        showToast('Tarefa adicionada ao Manager!', 'success');
-      } else if (form.id === 'publicChatForm') {
-        const inp = document.getElementById('publicChatInput');
-        const txt = (inp ? inp.value : '').trim();
-        if (!txt) return;
-        const stu = appState.students.find(s => s.id === appState.ui.currentStudentId) || appState.students[0];
-        if ((appState.publicChat.mutedStudentIds || []).includes(stu.id)) return;
+        titleEl.value = "";
+        subjEl.value = "";
+        saveState();
+        renderTasks();
+        showToast("Tarefa adicionada.");
+      });
 
-        appState.publicChat.messages.push({
-          id: Date.now(),
-          senderId: stu.id,
-          senderName: stu.name,
-          roleTag: 'Estudante',
-          time: nowClock(),
-          text: txt
+      document.getElementById("tasksList").addEventListener("click", (e) => {
+        const toggleBtn = e.target.closest("[data-toggle-task]");
+        if (toggleBtn) {
+          const task = state.tasks.find((t) => t.id === toggleBtn.dataset.toggleTask);
+          if (task) {
+            task.done = !task.done;
+            saveState();
+            renderTasks();
+          }
+          return;
+        }
+        const delBtn = e.target.closest("[data-delete-task]");
+        if (delBtn) {
+          state.tasks = state.tasks.filter((t) => t.id !== delBtn.dataset.deleteTask);
+          saveState();
+          renderTasks();
+        }
+      });
+
+      // Passe 1841: criação de avaliações
+      document.getElementById("evalDateInput").value = todayISO();
+      document.getElementById("btnCreateAssessment").addEventListener("click", () => {
+        if (state.activePass !== "1841") return;
+        const studentId = document.getElementById("evalStudentSelect").value;
+        const title = (document.getElementById("evalTitleInput").value || "").trim();
+        const subject = (document.getElementById("evalSubjectInput").value || "").trim() || "Geral";
+        const score = Number(document.getElementById("evalScoreInput").value);
+        const date = document.getElementById("evalDateInput").value || todayISO();
+        const note = (document.getElementById("evalNoteInput").value || "").trim();
+
+        if (!title || Number.isNaN(score) || score < 0 || score > 20) {
+          showToast("Preenche o título e uma nota entre 0 e 20.");
+          return;
+        }
+
+        state.assessments.unshift({
+          id: "AVL-" + Date.now(),
+          studentId,
+          title,
+          subject,
+          date,
+          score,
+          note
         });
-        inp.value = '';
-        saveAppState();
-        renderActiveView();
-      } else if (form.id === 'techApiForm') {
-        if (appState.activeRole !== '2013') return;
-        const key = sanitizeApiKey(document.getElementById('techApiKeyInput').value);
-        const model = document.getElementById('techModelSelect').value;
-        appState.techConfig.apiKey = key;
-        appState.techConfig.selectedModel = model;
-        appState.techConfig.diagnostics.modelUsed = model;
-        appState.techConfig.diagnostics.statusText = key ? `Configurado (${model})` : 'Motor Local Ativo';
-        pushSystemLog('API-2013', 'Parâmetros atualizados no Núcleo Técnico.');
-        saveAppState();
-        renderActiveView();
-        showToast('Configuração guardada no Núcleo Técnico.', 'success');
-      } else if (form.id === 'modPinNoticeForm') {
-        if (appState.activeRole !== '2012') return;
-        appState.publicChat.pinnedNotice = (document.getElementById('modPinNoticeInput').value || '').trim();
-        pushSystemLog('MOD-2012', 'Aviso fixado atualizado no chat público.');
-        saveAppState();
-        renderActiveView();
-        showToast('Aviso oficial fixado no mural!', 'success');
-      }
-    });
+        saveState();
+        document.getElementById("evalTitleInput").value = "";
+        document.getElementById("evalScoreInput").value = "";
+        document.getElementById("evalNoteInput").value = "";
+        renderAssessments();
+        renderTeacherView();
+        renderTechView();
+        showToast("Avaliação registada.");
+      });
 
-    document.addEventListener('change', (e) => {
-      const t = e.target;
-      if (!t) return;
+      document.getElementById("teacherRosterBody").addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-inspect-student]");
+        if (!btn) return;
+        state.activeStudentId = btn.dataset.inspectStudent;
+        saveState();
+        renderAll();
+        activateTab("avaliacoes");
+      });
 
-      if (t.id === 'docenteSubjSel') {
-        appState.ui.selectedSubject = t.value;
-        saveAppState();
-        renderActiveView();
-      } else if (t.id === 'docenteTrimSel') {
-        appState.ui.selectedTrimester = t.value;
-        saveAppState();
-        renderActiveView();
-      } else if (t.classList.contains('doc-grade-input')) {
-        if (appState.activeRole !== '1841') return;
-        const uid = t.dataset.docUid;
-        const field = t.dataset.docField;
-        const subj = appState.ui.selectedSubject;
-        const trim = appState.ui.selectedTrimester;
-        const val = Math.max(0, Math.min(20, Number(t.value) || 0));
+      // Chat público e Moderação 2012
+      document.getElementById("btnSendPublicChat").addEventListener("click", () => {
+        const input = document.getElementById("publicChatInput");
+        const text = (input.value || "").trim();
+        if (!text) return;
+        const student = getActiveStudent();
+        state.publicChat.messages.push({
+          id: "MSG-" + Date.now(),
+          authorId: student.id,
+          authorName: student.name,
+          text,
+          time: nowTime()
+        });
+        input.value = "";
+        saveState();
+        renderPublicChat();
+        renderTechView();
+      });
 
-        const st = appState.students.find(s => s.id === uid);
-        if (st && st.grades && st.grades[subj] && st.grades[subj][trim]) {
-          st.grades[subj][trim][field] = val;
-          saveAppState();
-          renderActiveView();
+      document.getElementById("publicChatInput").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") document.getElementById("btnSendPublicChat").click();
+      });
+
+      document.getElementById("btnSetPinnedNotice").addEventListener("click", () => {
+        if (state.activePass !== "2012") return;
+        state.publicChat.pinnedNotice = (document.getElementById("pinnedNoticeInput").value || "").trim();
+        saveState();
+        renderPublicChat();
+        showToast("Aviso atualizado.");
+      });
+
+      document.getElementById("btnClearPinnedNotice").addEventListener("click", () => {
+        if (state.activePass !== "2012") return;
+        state.publicChat.pinnedNotice = "";
+        saveState();
+        renderPublicChat();
+        showToast("Aviso removido.");
+      });
+
+      document.getElementById("btnPurgePublicChat").addEventListener("click", () => {
+        if (state.activePass !== "2012") return;
+        state.publicChat.messages = [];
+        saveState();
+        renderPublicChat();
+        renderTechView();
+        showToast("Mensagens públicas apagadas.");
+      });
+
+      document.getElementById("moderationMessagesList").addEventListener("click", (e) => {
+        if (state.activePass !== "2012") return;
+        const btn = e.target.closest("[data-delete-msg]");
+        if (!btn) return;
+        state.publicChat.messages = state.publicChat.messages.filter((m) => m.id !== btn.dataset.deleteMsg);
+        saveState();
+        renderPublicChat();
+        renderTechView();
+        showToast("Mensagem removida.");
+      });
+
+      // Núcleo técnico 2013
+      document.getElementById("btnSaveTechConfig").addEventListener("click", () => {
+        if (state.activePass !== "2013") return;
+        state.tech.apiKey = (document.getElementById("apiKeyInput").value || "").trim();
+        state.tech.model = document.getElementById("modelSelect").value;
+        saveState();
+        showToast("Configuração guardada.");
+      });
+
+      document.getElementById("btnRunSelfProbe").addEventListener("click", () => {
+        if (state.activePass !== "2013") return;
+        const out = document.getElementById("probeOutput");
+        const report = [
+          "PROVA DO NÚCLEO · EXorg MT",
+          "Modelo ativo: " + state.tech.model,
+          "Chave configurada: " + (state.tech.apiKey ? "Sim" : "Não"),
+          "Estudantes registados: " + state.students.length,
+          "Avaliações registadas: " + state.assessments.length,
+          "Integridade do estado: OK"
+        ].join("\n");
+        out.textContent = report;
+        showToast("Prova concluída.");
+      });
+
+      document.getElementById("btnRestoreFrontend").addEventListener("click", () => {
+        restoreFrontendSnapshot();
+        showToast("Frontend restaurado.");
+      });
+
+      document.getElementById("btnResetAllData").addEventListener("click", () => {
+        if (state.activePass !== "2013") return;
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(SNAPSHOT_KEY);
+        state = structuredClone(DEFAULT_STATE);
+        saveState();
+        renderAll();
+        activateTab("academy");
+        showToast("Dados repostos.");
+      });
+
+      ["btnLockPass1841", "btnLockPass2013", "btnLockPass2012"].forEach((id) => {
+        document.getElementById(id).addEventListener("click", () => {
+          state.activePass = null;
+          saveState();
+          renderAll();
+          activateTab("academy");
+          showToast("Passe encerrado.");
+        });
+      });
+
+      // Gaveta S.A.G.A.
+      const sagaDrawer = document.getElementById("sagaDrawer");
+      document.getElementById("btnOpenSaga").addEventListener("click", () => {
+        sagaDrawer.classList.add("open");
+        renderSagaMessages();
+        setTimeout(() => document.getElementById("sagaPromptInput").focus(), 50);
+      });
+      document.getElementById("btnCloseSaga").addEventListener("click", () => {
+        sagaDrawer.classList.remove("open");
+      });
+      document.getElementById("btnSagaRollback").addEventListener("click", () => {
+        restoreFrontendSnapshot();
+        state.sagaMessages.push({
+          id: "SAGA-" + Date.now(),
+          sender: "S.A.G.A.",
+          text: "Visual revertido para o ponto de resguardo."
+        });
+        saveState();
+        renderSagaMessages();
+        showToast("Visual revertido.");
+      });
+
+      async function sendSagaMessage() {
+        const input = document.getElementById("sagaPromptInput");
+        const promptText = (input.value || "").trim();
+        if (!promptText) return;
+        input.value = "";
+
+        state.sagaMessages.push({
+          id: "USR-" + Date.now(),
+          sender: getActiveStudent().name,
+          text: promptText
+        });
+        saveState();
+        renderSagaMessages();
+
+        const reformReply = sagaReformFrontend(promptText);
+        if (reformReply) {
+          state.sagaMessages.push({
+            id: "SAGA-" + Date.now(),
+            sender: "S.A.G.A.",
+            text: reformReply
+          });
+          saveState();
+          renderSagaMessages();
+          return;
         }
-      } else if (t.classList.contains('doc-note-input')) {
-        if (appState.activeRole !== '1841') return;
-        const st = appState.students.find(s => s.id === t.dataset.docNoteUid);
-        if (st) {
-          st.pedagogicalNote = t.value;
-          saveAppState();
-          showToast('Observação pedagógica guardada.', 'success');
-        }
+
+        const remoteReply = await callGeminiIfConfigured(promptText);
+        const finalReply = remoteReply || sagaAcademicReply(promptText);
+        state.sagaMessages.push({
+          id: "SAGA-" + Date.now(),
+          sender: "S.A.G.A.",
+          text: finalReply
+        });
+        saveState();
+        renderSagaMessages();
       }
-    });
+
+      document.getElementById("btnSendSaga").addEventListener("click", sendSagaMessage);
+      document.getElementById("sagaPromptInput").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") sendSagaMessage();
+      });
+
+      renderAll();
+    })();
   </script>
 </body>
 </html>
